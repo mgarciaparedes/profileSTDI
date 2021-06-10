@@ -45,12 +45,12 @@ export const EditProfile = () => {
             name="addServiceData"
             id="addServiceData"
           >
-            <div class="row">
+            <div className="row">
               <div className="col-sm-12 col-md-12 text-right">
                 <a style={{ color: "#81BEF7" }}>Sign Out</a>
               </div>
             </div>
-            <div class="row">
+            <div className="row">
               <div className="col-sm-6 col-md-6">
                 <div className="form-group row">
                   <label style={{ color: "white" }}>Full Name:</label>
@@ -103,7 +103,7 @@ export const EditProfile = () => {
               </div>
 
               {/*Parte en donde se van mostrando los cambios*/}
-              <div class="col-sm-6">
+              <div className="col-sm-6">
                 <div className="form-group row">
                   <label style={{ color: "white" }}>Antonio</label>
                 </div>

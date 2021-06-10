@@ -3,7 +3,6 @@ import '../assets/css/App.css';
 import '../assets/scss/custom.scss';
 import '../components/body.css';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Redirect
