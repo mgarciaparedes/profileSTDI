@@ -8,6 +8,7 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
+import { withRouter } from "react-router";
 
 /*Views*/
 import {CreateYourProfile} from './views/CreateYourProfile/index';
@@ -16,10 +17,8 @@ import {EditProfile} from './views/EditProfile/index';
 import {ViewProfile} from './views/ViewProfile/index';
 
 /*Componente para el manejo de rutas de la app*/
-export const AppRoute = () => {
+const AppRoute = () => {
   return (
-    <Router>
-
     <div className="container mt-3">
       <div className="row">
         <div className="col-lg-12">
@@ -32,11 +31,9 @@ export const AppRoute = () => {
                 <Redirect to="/login"/>
             )}/>
           </Switch>
-          
-        
         </div>
       </div>
     </div>
-    </Router>
   );
 }
+export default withRouter(AppRoute);

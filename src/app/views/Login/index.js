@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Swal from 'sweetalert2'
+import history from '../../../components/History';
 
 const schema = Yup.object({
     email: Yup.string()
@@ -16,7 +17,7 @@ export const Login = () => {
 const onSubmit = (event) => {
 
     if(event.email==="johndoe@example.com" && event.password==="1234"){
-        //history.push("/edit-profile");
+        history.push("/edit-profile");
     }else{
         Swal.fire({
             title: 'Error',
