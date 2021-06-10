@@ -1,13 +1,13 @@
 import React from 'react';
 import '../assets/css/App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '../assets/scss/custom.scss';
 import '../components/body.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
-import Profile from '../components';
 
 /*Views*/
 import {CreateYourProfile} from './views/CreateYourProfile/index';
@@ -24,14 +24,13 @@ export const AppRoute = () => {
       <div className="row">
         <div className="col-lg-12">
           <Switch>
-            <Route exact path="/">
-              <Profile/> 
-            </Route>
             <Route exact path="/login" component={() => <Login/> } />
             <Route exact path="/create-profile" component={() => <CreateYourProfile/> } />
             <Route exact path="/edit-profile" component={() => <EditProfile/> } />
             <Route exact path="/view-profile" component={() => <ViewProfile/> }/>
-
+            <Route exact path="/" render={() => (
+                <Redirect to="/login"/>
+            )}/>
           </Switch>
           
         
