@@ -7,9 +7,12 @@ import history from '../../../components/History';
 
 const schema = Yup.object({
     email: Yup.string()
-    .required("Email es requerido")
-    .email("Formato de correo incorrecto"),
-    password: Yup.string().required("Contraseña es requerido"),
+    .required("Email is required")
+    .email("Incorrect email format"),
+    password: Yup.string().required("Password is required")
+    .matches(
+      /^\S*$/,
+    "Password can't have spaces."),
   });
 
 export const Login = () => {
