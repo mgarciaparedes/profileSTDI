@@ -95,10 +95,10 @@ const onSubmit = (event) => {
                 <button type="submit" className="btn btn-light">Sign in</button>
               </div>
               <div className="form-group row">
-                <a style={{ color: "#81BEF7" }}>Forgot password?</a>
+                <a href="/" style={{ color: "#81BEF7" }}>Forgot password?</a>
               </div>
               <div className="form-group row">
-                <a style={{ color: "#81BEF7" }}>
+                <a href="/" style={{ color: "#81BEF7" }}>
                   privacy policy terms of service
                 </a>
               </div>
