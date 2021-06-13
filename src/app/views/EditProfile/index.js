@@ -1,9 +1,13 @@
 import React, { useState, useEffect /*useCallback*/ } from "react";
 import { useForm } from "react-hooks-helper";
 import { Formik } from "formik";
-import { Form } from "react-bootstrap";
+import { Form, InputGroup, Alert, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 //import { SetChanges } from "./childComponent/SetChanges";
+import * as Icon from "react-bootstrap-icons";
 import userImage from "../../../assets/images/default-user-image.png";
+import IconX from "../../../assets/images/icon-eliminate.png";
+import BackgroundImage from "../../../assets/images/background.svg";
 
 //Está función está fuera del render porque si la dejo dentro de la func principal
 //se vuelve a renderizar y no funciona.
@@ -11,33 +15,49 @@ import userImage from "../../../assets/images/default-user-image.png";
 //seleccionadas. Si te fijas yo decido como se está viendo con el valor de view,
 //si view===1 me devuelve la vista de los campos que puedo editar
 //si view===2 me devuelve la vista de las redes sociales en columna derecha
-function Row({ onChange, onRemove, view, profile, socialNetwork }) {
+function Row({
+  onChange,
+  onRemove,
+  view,
+  profile,
+  socialNetwork,
+  socialNetworkIcon,
+}) {
   return (
     <>
       {view === 1 ? (
-        <>
-          <div className="col-sm-6">
+        <div className="row">
+          <div className="col-8 col-sm-10">
             <label className="text-white">{socialNetwork}</label>
             <Form.Control
               name="profile"
               value={profile}
               onChange={(e) => onChange("profile", e.target.value)}
               //onClick={e => onChange("touchedField1", true)}
-              placeholder="Type your value"
+              placeholder="Type your profile name in this social network"
+              className="mb-2"
             />
           </div>
 
-          <div className="col-sm-6">
-            <button className="btn btn-sm btn-danger" onClick={onRemove}>
-              <span>x</span>
+          <div className="col-4 col-sm-2">
+            <label className="text-white">&nbsp;</label>
+            <br />
+            <button className="button-transparent" onClick={onRemove}>
+              <img src={IconX} className="icon-eliminate" />
             </button>
           </div>
-        </>
+        </div>
       ) : (
         <>
-          <div className="col-sm-12 text-white">
-            <h6>{socialNetwork}</h6>
-            <label>{profile}</label>
+          <div className="border border-info m-1 col-sm-5">
+            <div className="p-3">
+              <h6>
+                {socialNetworkIcon}
+                &nbsp;
+                {socialNetwork}
+              </h6>
+              <label>{profile}</label>
+            </div>
           </div>
         </>
       )}
@@ -48,6 +68,7 @@ function Row({ onChange, onRemove, view, profile, socialNetwork }) {
 export const EditProfile = () => {
   const [nameState, setNameState] = useState("");
   const [bioState, setBioState] = useState("");
+  const [disabledButton, setDisabledButton] = useState(false);
 
   //Esto no le pares, es la prueba del useCallback del Curso
   //const [counter,setCounter] = useState(10);
@@ -76,8 +97,20 @@ export const EditProfile = () => {
       rows.concat({
         socialNetwork: e.target.value,
         profile: "",
+        //socialNetworkIcon: e.target.value === "Instagram" ? <Icon.Instagram /> : null,
+        socialNetworkIcon: findIcon(e.target.value),
       })
     );
+  };
+
+  //Función que devuelve el ícono elegido al seleccionar la Red Social
+  const findIcon = (iconName) => {
+    switch (iconName) {
+      case "Instagram":
+        return <Icon.Instagram />;
+      case "Youtube":
+        return <Icon.Youtube />;
+    }
   };
 
   //Función que elimina una fila determinada.
@@ -111,77 +144,124 @@ export const EditProfile = () => {
   };
 
   const onSubmit = () => {
+    setDisabledButton(true);
     console.log(rows);
+
+    setTimeout(() => {
+      setDisabledButton(false);
+      Swal.fire({
+        title: "Changes have been updated",
+        text: "Check your profile ;)",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    }, 2000);
   };
 
   return (
     <>
-      <Formik
-        onSubmit={(values, { resetForm }) => {
-          onSubmit(values);
-          resetForm({ values: null });
-        }}
-        initialValues={{ fullName: null, bio: null, socialMedia: null }}
-      >
-        {({
-          handleSubmit,
-          handleChange,
-          handleBlur,
-          setFieldValue,
-          values,
-          touched,
-          isValid,
-          errors,
-        }) => (
-          <Form
-            onSubmit={handleSubmit}
-            noValidate
-            autoComplete="off"
-            name="addServiceData"
-            id="addServiceData"
-          >
-            <div className="row">
-              <div className="col-sm-12 col-md-12 text-right">
-                <a href="/" style={{ color: "#81BEF7" }}>
-                  Sign Out
-                </a>
-              </div>
-            </div>
-            <div className="mt-5 row">
-              <div
+      <div className="row">
+        <div className="col-sm-12 col-md-12 text-right">
+          <Form.Check
+            type="switch"
+            id="custom-switch"
+            label="Sign Out"
+            className="text-white"
+          />
+        </div>
+      </div>
+      
+      <div className="mt-5 row">
+      <div
                 className="p-5 
               col-sm-6 col-md-6"
               >
-                <div className="form-group row">
-                  <label style={{ color: "white" }}>Full Name:</label>
+      <Formik
+          onSubmit={(values, { resetForm }) => {
+            onSubmit(values);
+            resetForm({ values: null });
+          }}
+          initialValues={{
+            fullName: null,
+            bio: null,
+            socialMedia: null,
+          }}
+        >
+          {({
+            handleSubmit,
+            handleChange,
+            handleBlur,
+            setFieldValue,
+            values,
+            touched,
+            isValid,
+            errors,
+          }) => (
+            <Form
+              onSubmit={handleSubmit}
+              noValidate
+              autoComplete="off"
+              name="addServiceData"
+              id="addServiceData"
+            >
+              
+                {/*Inicio Campo Profile Fullname*/}
+                <Form.Label
+                  className="text-white form-label"
+                  htmlFor="basic-url"
+                >
+                  Profile Full Name:
+                </Form.Label>
+                <InputGroup className="mb-2">
                   <Form.Control
+                    name="fullName"
                     values={values.fullName}
                     type="text"
                     placeholder="Type your profile name"
                     onChange={handleNameChange}
                   />
-                  {/*<SetChanges increment={increment} />*/}
-                </div>
-                <div className="form-group row">
-                  <label style={{ color: "white" }}>Pofile Photo:</label>
-                  <input type="file" />
-                </div>
-                <div className="form-group row">
-                  <label style={{ color: "white" }}>Bio:</label>
+                </InputGroup>
+                {/*Fin Campo Profile Fullname*/}
+                {/*Inicio Campo Profile Photo*/}
+                <InputGroup className="mb-2">
+                  <Form.Group controlId="formFile" className="mb-2">
+                    <Form.Label className="text-white form-label">
+                      Profile Photo:
+                    </Form.Label>
+                    <Form.Control type="file" />
+                  </Form.Group>
+                </InputGroup>
+                {/*Fin Campo Profile Photo*/}
+                {/*Inicio Campo Profile Bio*/}
+                <Form.Label
+                  className="text-white form-label"
+                  htmlFor="basic-url"
+                >
+                  Profile Bio:
+                </Form.Label>
+                <InputGroup className="mb-2">
                   <Form.Control
+                    name="bio"
                     values={values.bio}
-                    type="text"
-                    placeholder="Write something about yourself..."
+                    as="textarea"
+                    placeholder="Type your profile name"
                     onChange={handleBioChange}
+                    style={{ height: "100px" }}
                   />
-                </div>
-                <div className="form-group row">
-                  <label style={{ color: "white" }}>
-                    Social Media Channels
-                  </label>
-                  <small style={{ color: "#E6E6E6" }}>
-                    click from the drop down to add the social media link
-                  </small>
+                </InputGroup>
+                {/*Fin Campo Profile Bio*/}
+                {/*Inicio Select Social Media Channels*/}
+                <Form.Label
+                  className="text-white form-label"
+                  htmlFor="basic-url"
+                >
+                  Social Media Channels:
+                </Form.Label>
+                <Alert variant="info">
+                  <Icon.ListCheck size={25} />
+                  &nbsp; Click from the drop down to add the social media link.
+                </Alert>
+                <InputGroup>
                   <Form.Control
                     as="select"
                     name="socialMedia"
@@ -190,7 +270,7 @@ export const EditProfile = () => {
                       handleOnAdd(e);
                       handleSocialMedia(e);
                     }}
-                    className="form-control"
+                    className="mb-4"
                   >
                     <option value="Social Media Sites">
                       Social Media Sites
@@ -201,13 +281,42 @@ export const EditProfile = () => {
                     <option value="Facebook">Facebook</option>
                     <option value="Soundcloud">Soundcloud</option>
                     <option value="Linkedin">Linkedin</option>
+                    <option value="TikTok">TikTok</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="Spotify">Spotify</option>
+                    <option value="Apple Music">Apple Music</option>
+                    <option value="Venmo">Venmo</option>
+                    <option value="CashApp">CashApp</option>
+                    <option value="Phone Number">Phone Number</option>
+                    <option value="Email">Email</option>
+                    <option value="Website">Website</option>
+                    <option value="CustomURL">CustomURL</option>
                   </Form.Control>
-                </div>
-                <div className="form-group row">
-                  <button type="submit" className="btn btn-primary">
-                    Update changes
-                  </button>
-                </div>
+                </InputGroup>
+
+                <InputGroup className="mb-2">
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    disabled={disabledButton === true}
+                    block
+                  >
+                    <div className="d-flex d-inline-block justify-content-center">
+                      <span
+                        className="spinner-grow spinner-grow-sm mt-1 mr-2"
+                        role="status"
+                        style={{
+                          display:
+                            disabledButton === true ? "inline-block" : "none",
+                        }}
+                        aria-hidden="true"
+                      ></span>
+                      {disabledButton === true
+                        ? " Loading, please wait..."
+                        : "Update Changes"}
+                    </div>
+                  </Button>
+                </InputGroup>
 
                 {
                   //Aquí se muestran las RRSS seleccionadas
@@ -219,7 +328,8 @@ export const EditProfile = () => {
                   //en esta parte de la vista tienes que mostrarme los campos
                   //para editar
                 }
-                <div className="form-group row">
+                <div>
+                  {rows.length > 0 ? <hr className="hr-dashed" /> : null}
                   {rows.map((row, index) => (
                     <Row
                       {...row}
@@ -232,52 +342,59 @@ export const EditProfile = () => {
                     />
                   ))}
                 </div>
-              </div>
+              
+            </Form>
+          )}
+        </Formik>
+        </div>
 
-              {/*Columna en donde se van mostrando los cambios*/}
-              <div className="border-bold col-sm-6">
-                <div className="p-4 form-group row">
-                  <div className="col-sm-3">
-                    <img
-                      src={userImage}
-                      className="rounded-circle"
-                      alt="Cinque Terre"
-                    />
-                  </div>
-                  <div className="col-sm-9">
-                    <label style={{ color: "white" }}>{nameState}</label>
-                    <br />
-                    <label className="pt-1" style={{ color: "white" }}>
-                      {bioState}
-                    </label>
-                  </div>
-                </div>
-                <div className="p-4 form-group row">
-                  {
-                    //Aquí es en donde muestro cómo va quedando el perfil
-                    //Si te fijas mapeo el mismo arreglo rows pero lo único
-                    //que cambia es el view=2, con esto le digo que me muestre
-                    //la vista determinada para ver en tiempo real como se va
-                    //mostrando el perfil
-                    //en este tipo de vista no se puede modificar nada
-                  }
-                  {rows.map((row, index) => (
-                    <Row
-                      {...row}
-                      onChange={(name, value) => {
-                        handleOnChange(index, name, value);
-                      }}
-                      onRemove={() => handleOnRemove(index)}
-                      key={index}
-                      view={2}
-                    />
-                  ))}
-                </div>
-              </div>
+        {/*Columna en donde se van mostrando los cambios*/}
+        <div className="bg-white col-sm-6">
+          <div className="row">
+            <img
+              src={BackgroundImage}
+              className="w-100"
+              alt="backgroundImageProfile"
+            />
+          </div>
+          <div className="row">
+            <div className="col-sm-12 d-flex justify-content-center">
+              <img
+                src={userImage}
+                className="rounded-circle img-profile"
+                alt="ProfilePhoto"
+              />
             </div>
-          </Form>
-        )}
-      </Formik>
+            <div className="col-sm-12 d-flex justify-content-center">
+              <label className="form-label">{nameState}</label>
+            </div>
+            <div className="col-sm-12 d-flex justify-content-center">
+              <label className="pt-1 text-justify">{bioState}</label>
+            </div>
+          </div>
+          <div className="row p-3 d-flex justify-content-around">
+            {
+              //Aquí es en donde muestro cómo va quedando el perfil
+              //Si te fijas mapeo el mismo arreglo rows pero lo único
+              //que cambia es el view=2, con esto le digo que me muestre
+              //la vista determinada para ver en tiempo real como se va
+              //mostrando el perfil
+              //en este tipo de vista no se puede modificar nada
+            }
+            {rows.map((row, index) => (
+              <Row
+                {...row}
+                onChange={(name, value) => {
+                  handleOnChange(index, name, value);
+                }}
+                onRemove={() => handleOnRemove(index)}
+                key={index}
+                view={2}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 };

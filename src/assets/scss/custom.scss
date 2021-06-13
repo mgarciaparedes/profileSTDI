@@ -18,6 +18,38 @@ $font-family-sans-serif: 'Cairo Regular';
   border: 5px solid white;
 }
 
+.img-profile{
+  width:30%;
+  margin-top: -80px;
+}
+
+.form-label{
+  font-family: 'Cairo Bold';
+  letter-spacing: 1px;
+}
+
+.hr-dashed{
+  border: 4px dashed white;
+}
+
+.w-100{
+  width:100%;
+}
+
+.button-transparent{
+  background-color: transparent !important;
+  color: red;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+}
+
+.icon-eliminate{
+  width: 30px;
+}
+
 // Import Bootstrap and its default variables
 @import "./node_modules/bootstrap/scss/bootstrap";
 @import "./_fonts";
