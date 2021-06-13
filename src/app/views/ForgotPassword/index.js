@@ -3,7 +3,6 @@ import { Form, InputGroup, Button } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
-import history from "../../../components/History";
 import LogoWhite from "../../../assets/images/logo-white.png";
 import * as Icon from "react-bootstrap-icons";
 
@@ -11,27 +10,29 @@ const schema = Yup.object({
   email: Yup.string()
     .required("Email is required")
     .email("Incorrect email format"),
-  password: Yup.string()
-    .required("Password is required")
-    .matches(/^\S*$/, "Password can't have spaces."),
 });
 
-export const Login = () => {
+export const ForgotPassword = () => {
   const [disabledButton, setDisabledButton] = useState(false);
 
   const onSubmit = (event) => {
     setDisabledButton(true);
 
-    if (event.email === "johndoe@example.com" && event.password === "1234") {
+    if (event.email === "johndoe@example.com") {
       setDisabledButton(false);
-      history.push("/edit-profile");
+      Swal.fire({
+        title: "Verification code was sent!",
+        text: "Check your email and follow its detailed steps.",
+        icon: "info",
+        confirmButtonText: "OK",
+      });
     } else {
       //setTimeout de prueba para ver la animación del loading del button login
       setTimeout(() => {
         setDisabledButton(false);
         Swal.fire({
           title: "Error",
-          text: "Invalid login or password",
+          text: "Invalid Email",
           icon: "error",
           confirmButtonText: "Try again",
         });
@@ -45,7 +46,7 @@ export const Login = () => {
         <div className="d-flex justify-content-center">
           <div className="card-login">
             <div className="card-header">
-              <h3>Sign in</h3>
+              <h3>Forgot Password?</h3>
               <div className="d-flex justify-content-end social_icon">
                 <img className="logo-login" src={LogoWhite} alt="Logo" />
               </div>
@@ -60,7 +61,6 @@ export const Login = () => {
                 onSubmit={onSubmit}
                 initialValues={{
                   email: "johndoe@example.com",
-                  password: "1234",
                 }}
               >
                 {({
@@ -99,25 +99,6 @@ export const Login = () => {
                         {errors.email}
                       </Form.Control.Feedback>
                     </InputGroup>
-                    <InputGroup className="mb-2">
-                      <InputGroup.Prepend>
-                        <InputGroup.Text>
-                          <Icon.KeyFill />
-                        </InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <Form.Control
-                        type="password"
-                        placeholder="Enter your password"
-                        name="password"
-                        value={values.password}
-                        onChange={handleChange}
-                        isValid={!!touched.password && !errors.password}
-                        isInvalid={!!errors.password && !!touched.password}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.password}
-                      </Form.Control.Feedback>
-                    </InputGroup>
                     <InputGroup>
                       <Button
                         type="submit"
@@ -139,7 +120,7 @@ export const Login = () => {
                           ></span>
                           {disabledButton === true
                             ? " Loading, please wait..."
-                            : "Login"}
+                            : "Send verification code"}
                         </div>
                       </Button>
                     </InputGroup>
@@ -149,11 +130,12 @@ export const Login = () => {
             </div>
             <div className="card-footer">
               <div className="d-flex justify-content-center text-white">
+                Back to Login? &nbsp;
+                <a href="/login"> Click Here</a>
+              </div>
+              <div className="d-flex justify-content-center text-white">
                 Don't have an account? &nbsp;
                 <a href="/create-profile"> Sign Up</a>
-              </div>
-              <div className="d-flex justify-content-center">
-                <a href="/forgot-password">Forgot your password?</a>
               </div>
               <div className="d-flex justify-content-center">
                 <a href="/">Privacy Policy and Terms of Service</a>

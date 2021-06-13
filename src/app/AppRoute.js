@@ -1,7 +1,5 @@
 import React from 'react';
-import '../assets/css/App.css';
 import '../assets/scss/custom.scss';
-import '../components/body.css';
 import {
   Switch,
   Route,
@@ -14,6 +12,7 @@ import {CreateYourProfile} from './views/CreateYourProfile/index';
 import {Login} from './views/Login/index';
 import {EditProfile} from './views/EditProfile/index';
 import {ViewProfile} from './views/ViewProfile/index';
+import {ForgotPassword} from './views/ForgotPassword/index';
 
 /*Componente para el manejo de rutas de la app*/
 const AppRoute = () => {
@@ -26,6 +25,7 @@ const AppRoute = () => {
             <Route exact path="/create-profile" component={() => <CreateYourProfile/> } />
             <Route exact path="/edit-profile" component={() => <EditProfile/> } />
             <Route exact path="/view-profile" component={() => <ViewProfile/> }/>
+            <Route exact path="/forgot-password" component={() => <ForgotPassword/> }/>
             <Route exact path="/" render={() => (
                 <Redirect to="/login"/>
             )}/>

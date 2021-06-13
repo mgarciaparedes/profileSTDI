@@ -1,3 +1,11 @@
+.body{
+  background-image: url("../images/Wallpaper.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  width:100%;
+}
+
 //Estilo de clases principales de colores bootstrap
 $theme-colors: (
   //"primary": red,
@@ -13,3 +21,4 @@ $font-family-sans-serif: 'Cairo Regular';
 // Import Bootstrap and its default variables
 @import "./node_modules/bootstrap/scss/bootstrap";
 @import "./_fonts";
+@import "./_login";

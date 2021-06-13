@@ -1,0 +1,38 @@
+.container-login{
+    //height: 100%;
+    align-content: center;
+}
+
+.card-login{
+    width: 400px;
+    background-color: rgba(0,0,0,0.5) !important; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.card-sign-up{
+    width: 600px;
+    background-color: rgba(0,0,0,0.5) !important; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.card-header h3{
+    color: white;
+}
+
+.logo-login{
+    width: 100px;
+}
+
+.social_icon{
+position: absolute;
+right: 20px;
+top: -45px;
+}
