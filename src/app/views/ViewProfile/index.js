@@ -1,11 +1,19 @@
 import React from 'react';
 import userImage from "../../../assets/images/default-user-image.png";
-import bg from "../../../assets/images/test.png";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import Swal from "sweetalert2";
 
 export const ViewProfile = () => {
 
-    console.log(bg);
+    const viewPrivateLinks = () => {
+        Swal.fire({
+            title: "PIN",
+            html: `<input type="password" placeholder="PIN to unlock private information" 
+            class="swal2-input" maxLength="4">`,
+            icon: "warning",
+            confirmButtonText: "OK",
+        }); 
+    }
 
     return (
         <>
@@ -21,16 +29,10 @@ export const ViewProfile = () => {
                 <h3 style={{ color: "white" }}>John Doe.</h3>
             </div>
 
-            <div className="row d-flex justify-content-center h5">
-                <div className="col-sm-4 text-center">
-                    <a href="/edit-profile" className="btn btn-primary btn-sm">
-                        Edit Profile
-                    </a>
-                </div>
-                <div className="col-sm-4 text-center">
-                    <button className="btn btn-primary btn-sm">
-                        Sign Out
-                    </button>                            
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <a  href="/edit-profile" class="mr-2 btn btn-primary btn-sm center-block" Style="width: 100px;">Edit Profile</a>
+                    <a class="ml-2 btn btn-primary btn-sm center-block" Style="width: 100px;">Sign Out</a>
                 </div>
             </div>
 
@@ -98,6 +100,19 @@ export const ViewProfile = () => {
                             >
                                 <i className="bi bi-envelope-fill"></i></span>&#160; 
                             <label style={{ color: "black" }}> Email</label>
+                    </div>
+                </div>
+            </div>
+
+            <div className="row d-flex justify-content-center h5">
+                <div className="m-2 card col-sm-3" onClick={viewPrivateLinks} style={{cursor: 'pointer'}}>
+                    <div className="card-body">
+                        <span className="btn-sm" style={{backgroundColor: 'black', 
+                            borderRadius: '15px',
+                            textAlign: 'center', color: 'white' }}
+                        >
+                        <i class="bi bi-lock-fill"></i></span>
+                        &#160;<label style={{ color: "black" }}> Private</label>
                     </div>
                 </div>
             </div>
