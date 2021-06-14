@@ -22,6 +22,7 @@ function Row({
   profile,
   socialNetwork,
   socialNetworkIcon,
+  socialNetworkURL,
 }) {
   return (
     <>
@@ -49,15 +50,21 @@ function Row({
         </div>
       ) : (
         <>
-          <div className="border border-info m-1 col-sm-5">
+          <div className="border m-1 col-sm-5">
+            <a className="btn-no-style" target="_blank" href={socialNetworkURL+profile}>
             <div className="p-3">
-              <h6>
+              <div className="d-flex justify-content-center">
                 {socialNetworkIcon}
-                &nbsp;
-                {socialNetwork}
-              </h6>
-              <label>{profile}</label>
+              </div>
+              <div className="d-flex justify-content-center">
+                <h6>{socialNetwork}</h6>
+              </div>
+              <div className="d-flex justify-content-center">
+                <h5>{profile}</h5>
+                
+              </div>
             </div>
+            </a>
           </div>
         </>
       )}
@@ -99,6 +106,7 @@ export const EditProfile = () => {
         profile: "",
         //socialNetworkIcon: e.target.value === "Instagram" ? <Icon.Instagram /> : null,
         socialNetworkIcon: findIcon(e.target.value),
+        socialNetworkURL: findURL(e.target.value)
       })
     );
   };
@@ -107,9 +115,24 @@ export const EditProfile = () => {
   const findIcon = (iconName) => {
     switch (iconName) {
       case "Instagram":
-        return <Icon.Instagram />;
+        return (
+          <Icon.Instagram
+            style={{ color: "#C13584" }}
+            size={40}
+          />
+        );
       case "Youtube":
-        return <Icon.Youtube />;
+        return <Icon.Youtube style={{ color: "red" }} size={40} />;
+    }
+  };
+
+  //Función que devuelve la url de la red social seleccionada
+  const findURL = (iconName) => {
+    switch (iconName) {
+      case "Instagram":
+        return "http://www.instagram.com/";
+      case "Youtube":
+        return "http://www.youtube.com/";
     }
   };
 
@@ -170,41 +193,40 @@ export const EditProfile = () => {
           />
         </div>
       </div>
-      
+
       <div className="mt-5 row">
-      <div
-                className="p-5 
+        <div
+          className="p-5 
               col-sm-6 col-md-6"
-              >
-      <Formik
-          onSubmit={(values, { resetForm }) => {
-            onSubmit(values);
-            resetForm({ values: null });
-          }}
-          initialValues={{
-            fullName: null,
-            bio: null,
-            socialMedia: null,
-          }}
         >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            setFieldValue,
-            values,
-            touched,
-            isValid,
-            errors,
-          }) => (
-            <Form
-              onSubmit={handleSubmit}
-              noValidate
-              autoComplete="off"
-              name="addServiceData"
-              id="addServiceData"
-            >
-              
+          <Formik
+            onSubmit={(values, { resetForm }) => {
+              onSubmit(values);
+              resetForm({ values: null });
+            }}
+            initialValues={{
+              fullName: null,
+              bio: null,
+              socialMedia: null,
+            }}
+          >
+            {({
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              setFieldValue,
+              values,
+              touched,
+              isValid,
+              errors,
+            }) => (
+              <Form
+                onSubmit={handleSubmit}
+                noValidate
+                autoComplete="off"
+                name="addServiceData"
+                id="addServiceData"
+              >
                 {/*Inicio Campo Profile Fullname*/}
                 <Form.Label
                   className="text-white form-label"
@@ -328,24 +350,23 @@ export const EditProfile = () => {
                   //en esta parte de la vista tienes que mostrarme los campos
                   //para editar
                 }
-                <div>
-                  {rows.length > 0 ? <hr className="hr-dashed" /> : null}
-                  {rows.map((row, index) => (
-                    <Row
-                      {...row}
-                      onChange={(name, value) => {
-                        handleOnChange(index, name, value);
-                      }}
-                      onRemove={() => handleOnRemove(index)}
-                      key={index}
-                      view={1}
-                    />
-                  ))}
-                </div>
-              
-            </Form>
-          )}
-        </Formik>
+              </Form>
+            )}
+          </Formik>
+          <div>
+            {rows.length > 0 ? <hr className="hr-dashed" /> : null}
+            {rows.map((row, index) => (
+              <Row
+                {...row}
+                onChange={(name, value) => {
+                  handleOnChange(index, name, value);
+                }}
+                onRemove={() => handleOnRemove(index)}
+                key={index}
+                view={1}
+              />
+            ))}
+          </div>
         </div>
 
         {/*Columna en donde se van mostrando los cambios*/}

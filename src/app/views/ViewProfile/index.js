@@ -23,9 +23,9 @@ export const ViewProfile = () => {
 
             <div className="row d-flex justify-content-center h5">
                 <div className="col-sm-4 text-center">
-                    <button className="btn btn-primary btn-sm">
+                    <a href="/edit-profile" className="btn btn-primary btn-sm">
                         Edit Profile
-                    </button>
+                    </a>
                 </div>
                 <div className="col-sm-4 text-center">
                     <button className="btn btn-primary btn-sm">
