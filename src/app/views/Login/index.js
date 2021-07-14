@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import history from "../../../components/History";
 import LogoWhite from "../../../assets/images/logo-white.png";
 import * as Icon from "react-bootstrap-icons";
+import axios from 'axios';
 
 const schema = Yup.object({
   email: Yup.string()
@@ -16,27 +17,68 @@ const schema = Yup.object({
     .matches(/^\S*$/, "Password can't have spaces."),
 });
 
-export const Login = () => {
+export const Login = (sessionProps) => {
   const [disabledButton, setDisabledButton] = useState(false);
 
   const onSubmit = (event) => {
+
+    const {email, password } = event;
+
     setDisabledButton(true);
 
-    if (event.email === "johndoe@example.com" && event.password === "1234") {
-      setDisabledButton(false);
-      history.push("/edit-profile");
-    } else {
-      //setTimeout de prueba para ver la animación del loading del button login
-      setTimeout(() => {
+    const payload = {
+      email: email,
+      password: password
+    };
+
+    axios.post(`http://localhost:4000/api/auth/login`, payload,{
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },)
+    .then(res => {
+
+      console.log(res.data);
+
+      const {ok, msg, token, userid,} = res.data;
+      
+      const {session, setSession} = sessionProps;
+
+      setSession({target: {
+        name: "token",
+        value: token,
+        }
+      });
+
+      setSession({target: {
+        name: "userid",
+        value: userid,
+        }
+      });
+
+      console.log(session);
+
+      if(ok && msg === "login"){
         setDisabledButton(false);
+        history.push("/edit-profile");
+      }
+    })
+    .catch((e) => {
+
+      const {msg, ok} = e.response.data;
+
+      if(!ok){
         Swal.fire({
           title: "Error",
-          text: "Invalid login or password",
+          text: msg,
           icon: "error",
           confirmButtonText: "Try again",
         });
-      }, 2000);
-    }
+      }
+
+      setDisabledButton(false);
+    });
+
   };
 
   return (
@@ -59,8 +101,8 @@ export const Login = () => {
                 // }}
                 onSubmit={onSubmit}
                 initialValues={{
-                  email: "johndoe@example.com",
-                  password: "1234",
+                  email: "jlzd1994@gmail.com",
+                  password: "123456789",
                 }}
               >
                 {({
