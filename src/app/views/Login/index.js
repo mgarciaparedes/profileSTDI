@@ -38,10 +38,9 @@ export const Login = (sessionProps) => {
     },)
     .then(res => {
 
-      console.log(res.data);
+      const {ok, msg, token, userid} = res.data;
 
-      const {ok, msg, token, userid,} = res.data;
-      
+      /*Esto hay que revisarlo, para setear el token y el userid en con UseContext
       const {session, setSession} = sessionProps;
 
       setSession({target: {
@@ -54,10 +53,9 @@ export const Login = (sessionProps) => {
         name: "userid",
         value: userid,
         }
-      });
+      });*/
 
-      console.log(session);
-
+      /*Sí el login es ok, loguea*/
       if(ok && msg === "login"){
         setDisabledButton(false);
         history.push("/edit-profile");
@@ -65,8 +63,20 @@ export const Login = (sessionProps) => {
     })
     .catch((e) => {
 
-      const {msg, ok} = e.response.data;
+      /*Sí los servicios están OFF, retornamos este swal*/
+      if(e.response === undefined){
+          Swal.fire({
+            title: "Error",
+            text: "Access is not possible at this time",
+            icon: "error",
+            confirmButtonText: "Try again",
+          }); 
+        setDisabledButton(false);
+        return 1;
+      }
 
+      /*Si ocurre algo el request, retoramos esto*/
+      const {msg, ok} = e.response.data;
       if(!ok){
         Swal.fire({
           title: "Error",

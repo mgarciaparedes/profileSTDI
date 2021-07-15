@@ -8,6 +8,7 @@ import * as Icon from "react-bootstrap-icons";
 import userImage from "../../../assets/images/default-user-image.png";
 import IconX from "../../../assets/images/icon-eliminate.png";
 import BackgroundImage from "../../../assets/images/background.svg";
+import history from "../../../components/History";
 
 //Está función está fuera del render porque si la dejo dentro de la func principal
 //se vuelve a renderizar y no funciona.
@@ -184,13 +185,14 @@ export const EditProfile = () => {
   return (
     <>
       <div className="row">
-        <div className="col-sm-12 col-md-12 text-right">
-          <Form.Check
-            type="switch"
-            id="custom-switch"
-            label="Sign Out"
-            className="text-white"
-          />
+        <div className="col-sm-12 col-md-12 d-flex justify-content-end">
+        <Button variant="primary" onClick={() => {
+          history.push("/login");
+        }}>
+          <div className="d-flex d-inline-block justify-content-center">
+             Sign Out
+          </div>
+        </Button>
         </div>
       </div>
 
