@@ -6,6 +6,10 @@ import Swal from "sweetalert2";
 import history from "../../../components/History";
 import LogoWhite from "../../../assets/images/logo-white.png";
 import * as Icon from "react-bootstrap-icons";
+import axios from 'axios';
+import helpers from "../../../components/Helpers";
+
+const { swalOffBackend } = helpers;
 
 const schema = Yup.object({
   fullName: Yup.string().required("Fullname is required."),
@@ -27,18 +31,59 @@ export const CreateYourProfile = () => {
   const [disabledButton, setDisabledButton] = useState(false);
 
   const onSubmit = (event) => {
-    Swal.fire({
-      title: "Success",
-      text: "Your profile account have been created.",
-      icon: "success",
-      confirmButtonText: "Ok",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        history.push("/login");
-      } else {
-        history.push("/login");
+
+    const {userName, fullName, email, serialNumber, password} = event;
+
+    const payload = {
+      name: fullName,
+      username: userName,
+      email: email,
+      serialNumber: serialNumber,
+      password: password
+    };
+
+    axios.post(`http://localhost:4000/api/users/saveNewUser`, payload)
+    .then(res => {
+      
+      const {ok, msg} = res.data;
+      if(ok && msg === "User created succesfully."){
+
+        Swal.fire({
+          title: "Success",
+          text: "Your profile account have been created.",
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            history.push("/login");
+          } else {
+            history.push("/login");
+          }
+        });
+        
+      }
+    })
+    .catch(e => {
+
+      /*Sí los servicios están OFF, retornamos este swal*/
+      if(e.response === undefined){
+        swalOffBackend();
+        setDisabledButton(false);
+        return 1;
+      }
+
+      /*Si ocurre algo en el request, retoramos esto*/
+      const {msg, ok} = e.response.data;
+      if(!ok){
+        Swal.fire({
+          title: "Error",
+          text: msg,
+          icon: "error",
+          confirmButtonText: "Try again",
+        });
       }
     });
+
   };
 
   return (

@@ -7,6 +7,9 @@ import history from "../../../components/History";
 import LogoWhite from "../../../assets/images/logo-white.png";
 import * as Icon from "react-bootstrap-icons";
 import axios from 'axios';
+import helpers from "../../../components/Helpers";
+
+const { swalOffBackend } = helpers;
 
 const schema = Yup.object({
   email: Yup.string()
@@ -31,11 +34,7 @@ export const Login = (sessionProps) => {
       password: password
     };
 
-    axios.post(`http://localhost:4000/api/auth/login`, payload,{
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },)
+    axios.post(`http://localhost:4000/api/auth/login`, payload)
     .then(res => {
 
       const {ok, msg, token, userid} = res.data;
@@ -65,17 +64,12 @@ export const Login = (sessionProps) => {
 
       /*Sí los servicios están OFF, retornamos este swal*/
       if(e.response === undefined){
-          Swal.fire({
-            title: "Error",
-            text: "Access is not possible at this time",
-            icon: "error",
-            confirmButtonText: "Try again",
-          }); 
+        swalOffBackend();
         setDisabledButton(false);
         return 1;
       }
 
-      /*Si ocurre algo el request, retoramos esto*/
+      /*Si ocurre algo en el request, retoramos esto*/
       const {msg, ok} = e.response.data;
       if(!ok){
         Swal.fire({
