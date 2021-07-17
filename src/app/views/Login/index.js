@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import LogoWhite from "../../../assets/images/logo-white.png";
 import * as Icon from "react-bootstrap-icons";
 import axios from 'axios';
 import helpers from "../../../components/Helpers";
+import { AppContext } from "../../../components/AppProvider";
 
 const { swalOffBackend } = helpers;
 
@@ -20,7 +21,10 @@ const schema = Yup.object({
     .matches(/^\S*$/, "Password can't have spaces."),
 });
 
-export const Login = (sessionProps) => {
+export const Login = () => {
+  
+  const { session } = useContext(AppContext);
+
   const [disabledButton, setDisabledButton] = useState(false);
 
   const onSubmit = (event) => {
@@ -38,21 +42,6 @@ export const Login = (sessionProps) => {
     .then(res => {
 
       const {ok, msg, token, userid} = res.data;
-
-      /*Esto hay que revisarlo, para setear el token y el userid en con UseContext
-      const {session, setSession} = sessionProps;
-
-      setSession({target: {
-        name: "token",
-        value: token,
-        }
-      });
-
-      setSession({target: {
-        name: "userid",
-        value: userid,
-        }
-      });*/
 
       /*Sí el login es ok, loguea*/
       if(ok && msg === "login"){
