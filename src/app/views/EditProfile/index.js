@@ -7,10 +7,11 @@ import Swal from "sweetalert2";
 import * as Icon from "react-bootstrap-icons";
 import userImage from "../../../assets/images/default-user-image.png";
 import IconX from "../../../assets/images/icon-eliminate.png";
-import BackgroundImage from "../../../assets/images/background.svg";
+import BannerImage from "../../../assets/images/background.svg";
 import history from "../../../components/History";
 import { AppContext } from "../../../components/AppContext";
 import axios from "axios";
+const QRCode = require("qrcode.react");
 
 //Está función está fuera del render porque si la dejo dentro de la func principal
 //se vuelve a renderizar y no funciona.
@@ -66,9 +67,6 @@ function Row({
                 <div className="d-flex justify-content-center">
                   <h6>{socialNetwork}</h6>
                 </div>
-                <div className="d-flex justify-content-center">
-                  <h5>{profile}</h5>
-                </div>
               </div>
             </a>
           </div>
@@ -82,8 +80,9 @@ export const EditProfile = () => {
   const [existentProfile, setExistentProfile] = useState(true);
   const [nameState, setNameState] = useState("");
   const [bioState, setBioState] = useState("");
-  const [base64Img, setBase64ImgProfile] = useState(""); 
-  const [base64ImgBanner, setBase64ImgBanner] = useState(""); 
+  const [username, setUsername] = useState("");
+  const [base64ImgProfile, setBase64ImgProfile] = useState("");
+  const [base64ImgBanner, setBase64ImgBanner] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
 
   const { objLogin, logoutContext } = useContext(AppContext);
@@ -92,11 +91,12 @@ export const EditProfile = () => {
     axios.get("/users/getProfileUserData").then((res) => {
       console.log(res.data);
       if (res.data.ok === false) {
-        setExistentProfile(false);
+        setExistentProfile(false); //Diferenciar si se le pega al servicio save
       } else {
-        setExistentProfile(true);
+        setExistentProfile(true); //Diferenciar si se le pega al servicio update
         setNameState(res.data.data.profileFullName);
         setBioState(res.data.data.profileBio);
+        setUsername(res.data.username);
       }
     });
   }, []);
@@ -184,6 +184,27 @@ export const EditProfile = () => {
     setFormEditProfile(e);
     console.log(formEditProfile);
   };
+
+  //Función que convierte imágenes a base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      // use a regex to remove data url part
+      const base64String = reader.result
+        .replace("data:", "")
+        .replace(/^.+,/, "");
+
+      setBase64ImgProfile(base64String);
+    };
+
+    const reader2 = new FileReader();
+    reader2.onloadend = () => {
+      // use a regex to remove data url part
+      const base64String2 = reader2.result
+        .replace("data:", "")
+        .replace(/^.+,/, "");
+
+      setBase64ImgBanner(base64String2);
+    };
 
   const onSubmit = () => {
     setDisabledButton(true);
@@ -276,10 +297,42 @@ export const EditProfile = () => {
                     <Form.Label className="text-white form-label">
                       Profile Photo:
                     </Form.Label>
-                    <Form.Control type="file" />
+                    <Form.Control
+                      type="file"
+                      onChange={(e) => {
+                        //alert("cambió");
+                        console.log(e.target.files);
+                        if (e.target.files.length > 0) {
+                          reader.readAsDataURL(e.target.files[0]);
+                        }else{
+                          setBase64ImgProfile("");
+                        }
+                      }}
+                    />
                   </Form.Group>
                 </InputGroup>
                 {/*Fin Campo Profile Photo*/}
+                {/*Inicio Campo Banner Photo*/}
+                <InputGroup className="mb-2">
+                  <Form.Group controlId="formFile" className="mb-2">
+                    <Form.Label className="text-white form-label">
+                      Banner Photo:
+                    </Form.Label>
+                    <Form.Control
+                      type="file"
+                      onChange={(e) => {
+                        //alert("cambió");
+                        console.log(e.target.files);
+                        if (e.target.files.length > 0) {
+                          reader2.readAsDataURL(e.target.files[0]);
+                        }else{
+                          setBase64ImgBanner("");
+                        }
+                      }}
+                    />
+                  </Form.Group>
+                </InputGroup>
+                {/*Fin Campo Banner Photo*/}
                 {/*Inicio Campo Profile Bio*/}
                 <Form.Label
                   className="text-white form-label"
@@ -400,7 +453,11 @@ export const EditProfile = () => {
         <div className="bg-white col-sm-6">
           <div className="row">
             <img
-              src={BackgroundImage}
+              src={
+                base64ImgBanner === ""
+                  ? BannerImage
+                  : `data:image/jpeg;base64,${base64ImgBanner}`
+              }
               className="w-100"
               alt="backgroundImageProfile"
             />
@@ -408,7 +465,11 @@ export const EditProfile = () => {
           <div className="row">
             <div className="col-sm-12 d-flex justify-content-center">
               <img
-                src={userImage}
+                src={
+                  base64ImgProfile === ""
+                    ? userImage
+                    : `data:image/jpeg;base64,${base64ImgProfile}`
+                }
                 className="rounded-circle img-profile"
                 alt="ProfilePhoto"
               />
@@ -440,6 +501,13 @@ export const EditProfile = () => {
                 view={2}
               />
             ))}
+          </div>
+          <div className="row p-3">
+            <div className="col-lg-12">
+              <div className="d-flex justify-content-center">
+                <QRCode value={"https://profile.stdicompany.com/" + username} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
