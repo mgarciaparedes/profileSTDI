@@ -6,9 +6,9 @@ import Swal from "sweetalert2";
 import history from "../../../components/History";
 import LogoWhite from "../../../assets/images/logo-white.png";
 import * as Icon from "react-bootstrap-icons";
-import axios from 'axios';
+import axios from "axios";
 import helpers from "../../../components/Helpers";
-import { AppContext } from "../../../components/AppProvider";
+import { AppContext } from "../../../components/AppContext";
 
 const { swalOffBackend } = helpers;
 
@@ -22,56 +22,62 @@ const schema = Yup.object({
 });
 
 export const Login = () => {
-  
-  const { session } = useContext(AppContext);
+  const { loginContext } = useContext(AppContext);
 
   const [disabledButton, setDisabledButton] = useState(false);
 
   const onSubmit = (event) => {
-
-    const {email, password } = event;
+    const { email, password } = event;
 
     setDisabledButton(true);
 
     const payload = {
       email: email,
-      password: password
+      password: password,
     };
 
-    axios.post(`http://localhost:4000/api/auth/login`, payload)
-    .then(res => {
+    axios
+      .post(`/auth/login`, payload)
+      .then((res) => {
+        const { ok, msg, token, name, userid } = res.data;
 
-      const {ok, msg, token, userid} = res.data;
+        /*Sí el login es ok, loguea*/
+        if (ok && msg === "login") {
+          setDisabledButton(false);
 
-      /*Sí el login es ok, loguea*/
-      if(ok && msg === "login"){
+          const json = {
+            authenticated: true,
+            userName: name,
+            token: token,
+          };
+
+          loginContext(json);
+          axios.defaults.headers.common["x-token"] = res.data.token;
+          //axios.defaults.headers.common["x-token"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpsemQxOTk0QGdtYWlsLmNvbSIsInVzZXJpZCI6IjYwZWUyZTk0NTMyZWJkMjRkYzFkNWNmNCIsImlhdCI6MTYyNjU3ODYxOCwiZXhwIjoxNjI2NTg1ODE4fQ.QxQllK-jAbBwRrmSuT_G1IxCeuK9wtmr0xMmfmxpgLU"
+          history.push("/edit-profile");
+        }
+      })
+      .catch((e) => {
+        /*Sí los servicios están OFF, retornamos este swal*/
+        if (e.response === undefined) {
+          swalOffBackend();
+          setDisabledButton(false);
+          return 1;
+        }
+
+        /*Si ocurre algo en el request, retoramos esto*/
+        const { msg, ok } = e.response.data;
+        if (!ok) {
+          Swal.fire({
+            title: "Error",
+            text: msg,
+            icon: "error",
+            confirmButtonText: "Try again",
+          });
+        }
+
         setDisabledButton(false);
-        history.push("/edit-profile");
-      }
-    })
-    .catch((e) => {
-
-      /*Sí los servicios están OFF, retornamos este swal*/
-      if(e.response === undefined){
-        swalOffBackend();
-        setDisabledButton(false);
-        return 1;
-      }
-
-      /*Si ocurre algo en el request, retoramos esto*/
-      const {msg, ok} = e.response.data;
-      if(!ok){
-        Swal.fire({
-          title: "Error",
-          text: msg,
-          icon: "error",
-          confirmButtonText: "Try again",
-        });
-      }
-
-      setDisabledButton(false);
-    });
-
+      });
   };
 
   return (
@@ -94,8 +100,8 @@ export const Login = () => {
                 // }}
                 onSubmit={onSubmit}
                 initialValues={{
-                  email: "jlzd1994@gmail.com",
-                  password: "123456789",
+                  email: "miguelgarciaparedes22@gmail.com",
+                  password: "test123.-",
                 }}
               >
                 {({

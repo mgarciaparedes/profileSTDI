@@ -1,4 +1,4 @@
-import React, { useState, useEffect /*useCallback*/ } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hooks-helper";
 import { Formik } from "formik";
 import { Form, InputGroup, Alert, Button } from "react-bootstrap";
@@ -9,6 +9,8 @@ import userImage from "../../../assets/images/default-user-image.png";
 import IconX from "../../../assets/images/icon-eliminate.png";
 import BackgroundImage from "../../../assets/images/background.svg";
 import history from "../../../components/History";
+import { AppContext } from "../../../components/AppContext";
+import axios from "axios";
 
 //Está función está fuera del render porque si la dejo dentro de la func principal
 //se vuelve a renderizar y no funciona.
@@ -52,19 +54,22 @@ function Row({
       ) : (
         <>
           <div className="border m-1 col-sm-5">
-            <a className="btn-no-style" target="_blank" href={socialNetworkURL+profile}>
-            <div className="p-3">
-              <div className="d-flex justify-content-center">
-                {socialNetworkIcon}
+            <a
+              className="btn-no-style"
+              target="_blank"
+              href={socialNetworkURL + profile}
+            >
+              <div className="p-3">
+                <div className="d-flex justify-content-center">
+                  {socialNetworkIcon}
+                </div>
+                <div className="d-flex justify-content-center">
+                  <h6>{socialNetwork}</h6>
+                </div>
+                <div className="d-flex justify-content-center">
+                  <h5>{profile}</h5>
+                </div>
               </div>
-              <div className="d-flex justify-content-center">
-                <h6>{socialNetwork}</h6>
-              </div>
-              <div className="d-flex justify-content-center">
-                <h5>{profile}</h5>
-                
-              </div>
-            </div>
             </a>
           </div>
         </>
@@ -74,9 +79,27 @@ function Row({
 }
 
 export const EditProfile = () => {
+  const [existentProfile, setExistentProfile] = useState(true);
   const [nameState, setNameState] = useState("");
   const [bioState, setBioState] = useState("");
+  const [base64Img, setBase64ImgProfile] = useState(""); 
+  const [base64ImgBanner, setBase64ImgBanner] = useState(""); 
   const [disabledButton, setDisabledButton] = useState(false);
+
+  const { objLogin, logoutContext } = useContext(AppContext);
+
+  useEffect(() => {
+    axios.get("/users/getProfileUserData").then((res) => {
+      console.log(res.data);
+      if (res.data.ok === false) {
+        setExistentProfile(false);
+      } else {
+        setExistentProfile(true);
+        setNameState(res.data.data.profileFullName);
+        setBioState(res.data.data.profileBio);
+      }
+    });
+  }, []);
 
   //Esto no le pares, es la prueba del useCallback del Curso
   //const [counter,setCounter] = useState(10);
@@ -107,7 +130,7 @@ export const EditProfile = () => {
         profile: "",
         //socialNetworkIcon: e.target.value === "Instagram" ? <Icon.Instagram /> : null,
         socialNetworkIcon: findIcon(e.target.value),
-        socialNetworkURL: findURL(e.target.value)
+        socialNetworkURL: findURL(e.target.value),
       })
     );
   };
@@ -116,12 +139,7 @@ export const EditProfile = () => {
   const findIcon = (iconName) => {
     switch (iconName) {
       case "Instagram":
-        return (
-          <Icon.Instagram
-            style={{ color: "#C13584" }}
-            size={40}
-          />
-        );
+        return <Icon.Instagram style={{ color: "#C13584" }} size={40} />;
       case "Youtube":
         return <Icon.Youtube style={{ color: "red" }} size={40} />;
     }
@@ -186,13 +204,18 @@ export const EditProfile = () => {
     <>
       <div className="row">
         <div className="col-sm-12 col-md-12 d-flex justify-content-end">
-        <Button variant="primary" onClick={() => {
-          history.push("/login");
-        }}>
-          <div className="d-flex d-inline-block justify-content-center">
-             Sign Out
-          </div>
-        </Button>
+          <div className="text-white mt-2">{objLogin.userName}&nbsp;&nbsp;</div>
+          <Button
+            variant="primary"
+            onClick={() => {
+              //history.push("/login");
+              logoutContext();
+            }}
+          >
+            <div className="d-flex d-inline-block justify-content-center">
+              Sign Out
+            </div>
+          </Button>
         </div>
       </div>
 
@@ -207,8 +230,8 @@ export const EditProfile = () => {
               resetForm({ values: null });
             }}
             initialValues={{
-              fullName: null,
-              bio: null,
+              fullName: nameState,
+              bio: bioState,
               socialMedia: null,
             }}
           >
@@ -224,7 +247,7 @@ export const EditProfile = () => {
             }) => (
               <Form
                 onSubmit={handleSubmit}
-                noValidate
+                //noValidate
                 autoComplete="off"
                 name="addServiceData"
                 id="addServiceData"
@@ -239,7 +262,8 @@ export const EditProfile = () => {
                 <InputGroup className="mb-2">
                   <Form.Control
                     name="fullName"
-                    values={values.fullName}
+                    //values={values.fullName}
+                    defaultValue={nameState}
                     type="text"
                     placeholder="Type your profile name"
                     onChange={handleNameChange}
@@ -266,7 +290,8 @@ export const EditProfile = () => {
                 <InputGroup className="mb-2">
                   <Form.Control
                     name="bio"
-                    values={values.bio}
+                    //values={values.bio}
+                    defaultValue={bioState}
                     as="textarea"
                     placeholder="Type your profile name"
                     onChange={handleBioChange}

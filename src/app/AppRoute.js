@@ -7,6 +7,9 @@ import {
 } from "react-router-dom";
 import { withRouter } from "react-router";
 
+//Aquí importamos módulo que permite guardar las variables de sesión en la aplicación
+import AppProvider from "../components/AppContext";
+
 /*Views*/
 import {CreateYourProfile} from './views/CreateYourProfile/index';
 import {Login} from './views/Login/index';
@@ -22,6 +25,7 @@ const AppRoute = () => {
     <div className="container mt-3">
       <div className="row">
         <div className="col-lg-12">
+        <AppProvider>
           <Switch>
             <Route exact path="/login" component={() => <Login /> } />
             <Route exact path="/create-profile" component={() => <CreateYourProfile/> } />
@@ -36,6 +40,7 @@ const AppRoute = () => {
             )}/>
 
           </Switch>
+          </AppProvider>
         </div>
       </div>
     </div>
