@@ -58,10 +58,76 @@ function Row({
             <a
               className="btn-no-style"
               target="_blank"
-              href={"https://youtube.com" + profile}
+              href={
+                socialNetwork === "Instagram"
+                  ? "https://www.instagram.com/" + profile
+                  : socialNetwork === "Snapchat"
+                  ? "https://www.snapchat.com/" + profile
+                  : socialNetwork === "Youtube"
+                  ? "https://www.youtube.com/" + profile
+                  : socialNetwork === "Facebook"
+                  ? "https://www.facebook.com/" + profile
+                  : socialNetwork === "Soundcloud"
+                  ? "https://www.soundcloud.com/" + profile
+                  : socialNetwork === "Linkedin"
+                  ? "https://www.linkedin.com/" + profile
+                  : socialNetwork === "TikTok"
+                  ? "https://www.tiktok.com/" + profile
+                  : socialNetwork === "Twitter"
+                  ? "https://www.twitter.com/" + profile
+                  : socialNetwork === "Spotify"
+                  ? "https://www.spotify.com/" + profile
+                  : socialNetwork === "Apple Music"
+                  ? "https://www.apple.com/" + profile
+                  : socialNetwork === "Venmo"
+                  ? "https://www.venmo.com/" + profile
+                  : socialNetwork === "CashApp"
+                  ? "https://www.cashapp.com/" + profile
+                  : socialNetwork === "Phone Number"
+                  ? "tel:" + profile
+                  : socialNetwork === "Email"
+                  ? "mailto:" + profile
+                  : profile
+              }
             >
               <div className="p-3">
-                <div className="d-flex justify-content-center">Ícono</div>
+                <div className="d-flex justify-content-center">
+                {
+                socialNetwork === "Instagram"
+                  ? <Icon.Instagram size={50} />
+                  : socialNetwork === "Snapchat"
+                  ? "Snapchat" //<Icon.Snapchat size={50} />
+                  : socialNetwork === "Youtube"
+                  ? <Icon.Youtube size={50} />
+                  : socialNetwork === "Facebook"
+                  ? <Icon.Facebook size={50} />
+                  : socialNetwork === "Soundcloud"
+                  ? "Soundcloud" //<Icon.Instagram size={50} />
+                  : socialNetwork === "Linkedin"
+                  ? <Icon.Linkedin size={50} />
+                  : socialNetwork === "TikTok"
+                  ? "TikTok" //<Icon.Instagram size={50} />
+                  : socialNetwork === "Twitter"
+                  ? <Icon.Twitter size={50} />
+                  : socialNetwork === "Spotify"
+                  ? "Spotify" //<Icon.Instagram size={50} />
+                  : socialNetwork === "Apple Music"
+                  ? "Apple Music" //<Icon.Instagram size={50} />
+                  : socialNetwork === "Venmo"
+                  ? "Venmo" //<Icon.Instagram size={50} />
+                  : socialNetwork === "CashApp"
+                  ? "CashApp" //https://www.cashapp.com/" + profile
+                  : socialNetwork === "Phone Number"
+                  ? <Icon.TelephoneForwardFill size={50} />
+                  : socialNetwork === "Email"
+                  ? <Icon.Envelope size={50} />
+                  : socialNetwork === "Website"
+                  ? <Icon.BoxArrowUpRight size={50} />
+                  : socialNetwork === "CustomURL"
+                  ? <Icon.PinAngle size={50} />
+                  : profile
+              }
+                </div>
                 <div className="d-flex justify-content-center">
                   <h6>{socialNetwork}</h6>
                 </div>
@@ -142,8 +208,8 @@ export const EditProfile = () => {
         socialNetwork: e.target.value,
         profile: "",
         //socialNetworkIcon: e.target.value === "Instagram" ? <Icon.Instagram /> : null,
-        socialNetworkIcon: findIcon(e.target.value),
-        socialNetworkURL: findURL(e.target.value),
+        //socialNetworkIcon: findIcon(e.target.value),
+        //socialNetworkURL: findURL(e.target.value),
       })
     );
   };
@@ -163,8 +229,36 @@ export const EditProfile = () => {
     switch (iconName) {
       case "Instagram":
         return "http://www.instagram.com/";
+      case "Snapchat":
+        return "http://www.snapchat.com/";
       case "Youtube":
         return "http://www.youtube.com/";
+      case "Facebook":
+        return "http://www.facebook.com/";
+      case "Soundcloud":
+        return "http://www.soundcloud.com/";
+      case "Linkedin":
+        return "http://www.linkedin.com/";
+      case "TikTok":
+        return "http://www.tiktok.com/";
+      case "Twitter":
+        return "http://www.twitter.com/";
+      case "Spotify":
+        return "http://www.spotify.com/";
+      case "Apple Music":
+        return "http://www.apple.com/";
+      case "Venmo":
+        return "http://www.venmo.com/";
+      case "CashApp":
+        return "http://www.cashapp.com/";
+      case "Phone Number":
+        return "tel:";
+      case "Email":
+        return "mailto";
+      case "Website":
+        return "";
+      case "CustomURL":
+        return "";
     }
   };
 
