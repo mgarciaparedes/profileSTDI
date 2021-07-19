@@ -25,8 +25,8 @@ function Row({
   view,
   profile,
   socialNetwork,
-  socialNetworkIcon,
-  socialNetworkURL,
+  //socialNetworkIcon,
+  //socialNetworkURL,
 }) {
   return (
     <>
@@ -58,12 +58,10 @@ function Row({
             <a
               className="btn-no-style"
               target="_blank"
-              href={socialNetworkURL + profile}
+              href={"https://youtube.com" + profile}
             >
               <div className="p-3">
-                <div className="d-flex justify-content-center">
-                  {socialNetworkIcon}
-                </div>
+                <div className="d-flex justify-content-center">Ícono</div>
                 <div className="d-flex justify-content-center">
                   <h6>{socialNetwork}</h6>
                 </div>
@@ -81,6 +79,7 @@ export const EditProfile = () => {
   const [nameState, setNameState] = useState("");
   const [bioState, setBioState] = useState("");
   const [username, setUsername] = useState("");
+  const [profileData, setProfileData] = useState([]); //Este de momento no se usa
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
@@ -88,17 +87,31 @@ export const EditProfile = () => {
   const { objLogin, logoutContext } = useContext(AppContext);
 
   useEffect(() => {
-    axios.get("/users/getProfileUserData").then((res) => {
-      console.log(res.data);
-      if (res.data.ok === false) {
-        setExistentProfile(false); //Diferenciar si se le pega al servicio save
-      } else {
-        setExistentProfile(true); //Diferenciar si se le pega al servicio update
-        setNameState(res.data.data.profileFullName);
-        setBioState(res.data.data.profileBio);
-        setUsername(res.data.username);
-      }
-    });
+    axios
+      .get("/users/getProfileUserData")
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.ok === false) {
+          setExistentProfile(false); //Diferenciar si se le pega al servicio save
+        } else {
+          setExistentProfile(true); //Diferenciar si se le pega al servicio update
+          setNameState(res.data.data.profileFullName);
+          setBioState(res.data.data.profileBio);
+          setUsername(res.data.username);
+          setProfileData(res.data.data.socialMedia);
+          setRows(res.data.data.socialMedia); //Aquí guardo si es que el profile tiene alguna red social
+        }
+      })
+      .catch((error) => {
+        setExistentProfile(false);
+        Swal.fire({
+          title: "Hi, welcome to STDI profiles",
+          text: "Save your data to see your profile ;)",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      });
+    console.log("Se ejecuta EditProfile");
   }, []);
 
   //Esto no le pares, es la prueba del useCallback del Curso
@@ -162,10 +175,6 @@ export const EditProfile = () => {
     setRows(copyRows);
   };
 
-  useEffect(() => {
-    console.log("Se ejecuta EditProfile");
-  }, []);
-
   const handleNameChange = (e) => {
     setNameState(e.target.value);
   };
@@ -186,31 +195,109 @@ export const EditProfile = () => {
   };
 
   //Función que convierte imágenes a base64
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      // use a regex to remove data url part
-      const base64String = reader.result
-        .replace("data:", "")
-        .replace(/^.+,/, "");
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    // use a regex to remove data url part
+    const base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
 
-      setBase64ImgProfile(base64String);
-    };
+    setBase64ImgProfile(base64String);
+  };
 
-    const reader2 = new FileReader();
-    reader2.onloadend = () => {
-      // use a regex to remove data url part
-      const base64String2 = reader2.result
-        .replace("data:", "")
-        .replace(/^.+,/, "");
+  const reader2 = new FileReader();
+  reader2.onloadend = () => {
+    // use a regex to remove data url part
+    const base64String2 = reader2.result
+      .replace("data:", "")
+      .replace(/^.+,/, "");
 
-      setBase64ImgBanner(base64String2);
-    };
+    setBase64ImgBanner(base64String2);
+  };
 
   const onSubmit = () => {
     setDisabledButton(true);
-    console.log(rows);
+    //console.log(rows);
 
-    setTimeout(() => {
+    const payload = {
+      profileFullName: nameState,
+      //base64ProfilePhoto: base64ImgProfile,
+      base64ProfilePhoto: "",
+      profileBio: bioState,
+      socialMedia: rows,
+    };
+
+    if (existentProfile === false) {
+      //Si existentProfile es false, quiere decir que no existe un perfil guardado para este usuario
+      //Eso quiere decir que le pega al servicio de saveProfileUserData
+      axios
+        .post("/users/saveProfileUserData", payload)
+        .then((res) => {
+          const { ok, msg } = res.data;
+
+          if (ok && msg === "Profile was created succesfully.") {
+            setDisabledButton(false);
+            Swal.fire({
+              title: "Changes have been updated",
+              text: "Check your profile ;)",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            setDisabledButton(false);
+            Swal.fire({
+              title: "Sorry. Try again please!",
+              text: msg,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+        .catch((error) => {
+          setDisabledButton(false);
+          Swal.fire({
+            title: "Sorry. Try again please!",
+            text: "",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        });
+    } else {
+      //Si existentProfile es true, quiere decir que no existe un perfil guardado para este usuario
+      //Eso quiere decir que le pega al servicio de updateProfileUserData
+      axios
+        .post("/users/updateProfileUserData", payload)
+        .then((res) => {
+          const { ok, msg } = res.data;
+
+          if (ok === true) {
+            setDisabledButton(false);
+            Swal.fire({
+              title: "Changes have been updated",
+              text: "Check your profile ;)",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          } else {
+            setDisabledButton(false);
+            Swal.fire({
+              title: "Sorry. Try again please!",
+              text: msg,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        })
+        .catch((error) => {
+          setDisabledButton(false);
+          Swal.fire({
+            title: "Sorry. Try again please!",
+            text: "",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        });
+    }
+
+    /*setTimeout(() => {
       setDisabledButton(false);
       Swal.fire({
         title: "Changes have been updated",
@@ -218,7 +305,7 @@ export const EditProfile = () => {
         icon: "success",
         confirmButtonText: "OK",
       });
-    }, 2000);
+    }, 2000);*/
   };
 
   return (
@@ -304,7 +391,7 @@ export const EditProfile = () => {
                         console.log(e.target.files);
                         if (e.target.files.length > 0) {
                           reader.readAsDataURL(e.target.files[0]);
-                        }else{
+                        } else {
                           setBase64ImgProfile("");
                         }
                       }}
@@ -314,7 +401,7 @@ export const EditProfile = () => {
                 {/*Fin Campo Profile Photo*/}
                 {/*Inicio Campo Banner Photo*/}
                 <InputGroup className="mb-2">
-                  <Form.Group controlId="formFile" className="mb-2">
+                  <Form.Group controlId="formFile2" className="mb-2">
                     <Form.Label className="text-white form-label">
                       Banner Photo:
                     </Form.Label>
@@ -325,7 +412,7 @@ export const EditProfile = () => {
                         console.log(e.target.files);
                         if (e.target.files.length > 0) {
                           reader2.readAsDataURL(e.target.files[0]);
-                        }else{
+                        } else {
                           setBase64ImgBanner("");
                         }
                       }}
