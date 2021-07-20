@@ -92,41 +92,41 @@ function Row({
             >
               <div className="p-3">
                 <div className="d-flex justify-content-center">
-                {
-                socialNetwork === "Instagram"
-                  ? <Icon.Instagram size={50} />
-                  : socialNetwork === "Snapchat"
-                  ? "Snapchat" //<Icon.Snapchat size={50} />
-                  : socialNetwork === "Youtube"
-                  ? <Icon.Youtube size={50} />
-                  : socialNetwork === "Facebook"
-                  ? <Icon.Facebook size={50} />
-                  : socialNetwork === "Soundcloud"
-                  ? "Soundcloud" //<Icon.Instagram size={50} />
-                  : socialNetwork === "Linkedin"
-                  ? <Icon.Linkedin size={50} />
-                  : socialNetwork === "TikTok"
-                  ? "TikTok" //<Icon.Instagram size={50} />
-                  : socialNetwork === "Twitter"
-                  ? <Icon.Twitter size={50} />
-                  : socialNetwork === "Spotify"
-                  ? "Spotify" //<Icon.Instagram size={50} />
-                  : socialNetwork === "Apple Music"
-                  ? "Apple Music" //<Icon.Instagram size={50} />
-                  : socialNetwork === "Venmo"
-                  ? "Venmo" //<Icon.Instagram size={50} />
-                  : socialNetwork === "CashApp"
-                  ? "CashApp" //https://www.cashapp.com/" + profile
-                  : socialNetwork === "Phone Number"
-                  ? <Icon.TelephoneForwardFill size={50} />
-                  : socialNetwork === "Email"
-                  ? <Icon.Envelope size={50} />
-                  : socialNetwork === "Website"
-                  ? <Icon.BoxArrowUpRight size={50} />
-                  : socialNetwork === "CustomURL"
-                  ? <Icon.PinAngle size={50} />
-                  : profile
-              }
+                  {socialNetwork === "Instagram" ? (
+                    <Icon.Instagram size={50} />
+                  ) : socialNetwork === "Snapchat" ? (
+                    "Snapchat" //<Icon.Snapchat size={50} />
+                  ) : socialNetwork === "Youtube" ? (
+                    <Icon.Youtube size={50} />
+                  ) : socialNetwork === "Facebook" ? (
+                    <Icon.Facebook size={50} />
+                  ) : socialNetwork === "Soundcloud" ? (
+                    "Soundcloud" //<Icon.Instagram size={50} />
+                  ) : socialNetwork === "Linkedin" ? (
+                    <Icon.Linkedin size={50} />
+                  ) : socialNetwork === "TikTok" ? (
+                    "TikTok" //<Icon.Instagram size={50} />
+                  ) : socialNetwork === "Twitter" ? (
+                    <Icon.Twitter size={50} />
+                  ) : socialNetwork === "Spotify" ? (
+                    "Spotify" //<Icon.Instagram size={50} />
+                  ) : socialNetwork === "Apple Music" ? (
+                    "Apple Music" //<Icon.Instagram size={50} />
+                  ) : socialNetwork === "Venmo" ? (
+                    "Venmo" //<Icon.Instagram size={50} />
+                  ) : socialNetwork === "CashApp" ? (
+                    "CashApp" //https://www.cashapp.com/" + profile
+                  ) : socialNetwork === "Phone Number" ? (
+                    <Icon.TelephoneForwardFill size={50} />
+                  ) : socialNetwork === "Email" ? (
+                    <Icon.Envelope size={50} />
+                  ) : socialNetwork === "Website" ? (
+                    <Icon.BoxArrowUpRight size={50} />
+                  ) : socialNetwork === "CustomURL" ? (
+                    <Icon.PinAngle size={50} />
+                  ) : (
+                    profile
+                  )}
                 </div>
                 <div className="d-flex justify-content-center">
                   <h6>{socialNetwork}</h6>
@@ -145,6 +145,7 @@ export const EditProfile = () => {
   const [nameState, setNameState] = useState("");
   const [bioState, setBioState] = useState("");
   const [username, setUsername] = useState("");
+  const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
   const [profileData, setProfileData] = useState([]); //Este de momento no se usa
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
@@ -159,17 +160,22 @@ export const EditProfile = () => {
         console.log(res.data);
         if (res.data.ok === false) {
           setExistentProfile(false); //Diferenciar si se le pega al servicio save
+          setLoadingProfileData(false);
         } else {
           setExistentProfile(true); //Diferenciar si se le pega al servicio update
           setNameState(res.data.data.profileFullName);
           setBioState(res.data.data.profileBio);
           setUsername(res.data.username);
           setProfileData(res.data.data.socialMedia);
+          setBase64ImgProfile(res.data.data.base64ProfilePhoto);
+          setBase64ImgBanner(res.data.data.base64BannerPhoto);
           setRows(res.data.data.socialMedia); //Aquí guardo si es que el profile tiene alguna red social
+          setLoadingProfileData(false);
         }
       })
       .catch((error) => {
         setExistentProfile(false);
+        setLoadingProfileData(false);
         Swal.fire({
           title: "Hi, welcome to STDI profiles",
           text: "Save your data to see your profile ;)",
@@ -212,54 +218,6 @@ export const EditProfile = () => {
         //socialNetworkURL: findURL(e.target.value),
       })
     );
-  };
-
-  //Función que devuelve el ícono elegido al seleccionar la Red Social
-  const findIcon = (iconName) => {
-    switch (iconName) {
-      case "Instagram":
-        return <Icon.Instagram style={{ color: "#C13584" }} size={40} />;
-      case "Youtube":
-        return <Icon.Youtube style={{ color: "red" }} size={40} />;
-    }
-  };
-
-  //Función que devuelve la url de la red social seleccionada
-  const findURL = (iconName) => {
-    switch (iconName) {
-      case "Instagram":
-        return "http://www.instagram.com/";
-      case "Snapchat":
-        return "http://www.snapchat.com/";
-      case "Youtube":
-        return "http://www.youtube.com/";
-      case "Facebook":
-        return "http://www.facebook.com/";
-      case "Soundcloud":
-        return "http://www.soundcloud.com/";
-      case "Linkedin":
-        return "http://www.linkedin.com/";
-      case "TikTok":
-        return "http://www.tiktok.com/";
-      case "Twitter":
-        return "http://www.twitter.com/";
-      case "Spotify":
-        return "http://www.spotify.com/";
-      case "Apple Music":
-        return "http://www.apple.com/";
-      case "Venmo":
-        return "http://www.venmo.com/";
-      case "CashApp":
-        return "http://www.cashapp.com/";
-      case "Phone Number":
-        return "tel:";
-      case "Email":
-        return "mailto";
-      case "Website":
-        return "";
-      case "CustomURL":
-        return "";
-    }
   };
 
   //Función que elimina una fila determinada.
@@ -313,8 +271,8 @@ export const EditProfile = () => {
 
     const payload = {
       profileFullName: nameState,
-      //base64ProfilePhoto: base64ImgProfile,
-      base64ProfilePhoto: "",
+      base64ProfilePhoto: base64ImgProfile,
+      base64BannerPhoto: base64ImgBanner,
       profileBio: bioState,
       socialMedia: rows,
     };
@@ -639,7 +597,11 @@ export const EditProfile = () => {
                   ? BannerImage
                   : `data:image/jpeg;base64,${base64ImgBanner}`
               }
+              style={{
+                height: '250px'
+              }}
               className="w-100"
+              
               alt="backgroundImageProfile"
             />
           </div>
@@ -671,17 +633,32 @@ export const EditProfile = () => {
               //mostrando el perfil
               //en este tipo de vista no se puede modificar nada
             }
-            {rows.map((row, index) => (
-              <Row
-                {...row}
-                onChange={(name, value) => {
-                  handleOnChange(index, name, value);
+            {loadingProfileData === true ? (
+              <div className="d-flex d-inline-block justify-content-center">
+              <span
+                className="spinner-grow spinner-grow-sm mt-1 mr-2"
+                role="status"
+                style={{
+                  display: "inline-block",
                 }}
-                onRemove={() => handleOnRemove(index)}
-                key={index}
-                view={2}
-              />
-            ))}
+                aria-hidden="true"
+              >
+              </span>
+              Loading...
+              </div>
+            ) : (
+              rows.map((row, index) => (
+                <Row
+                  {...row}
+                  onChange={(name, value) => {
+                    handleOnChange(index, name, value);
+                  }}
+                  onRemove={() => handleOnRemove(index)}
+                  key={index}
+                  view={2}
+                />
+              ))
+            )}
           </div>
           <div className="row p-3">
             <div className="col-lg-12">
