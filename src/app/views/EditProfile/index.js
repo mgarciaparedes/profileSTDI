@@ -25,6 +25,7 @@ function Row({
   view,
   profile,
   socialNetwork,
+  convertStringWithPlus,
   //socialNetworkIcon,
   //socialNetworkURL,
 }) {
@@ -83,6 +84,9 @@ function Row({
                   ? "https://www.venmo.com/" + profile
                   : socialNetwork === "CashApp"
                   ? "https://www.cashapp.com/" + profile
+                  : socialNetwork === "Address"
+                  ? "https://www.google.com/maps/search/" +
+                    convertStringWithPlus(profile)
                   : socialNetwork === "Phone Number"
                   ? "tel:" + profile
                   : socialNetwork === "Email"
@@ -124,7 +128,9 @@ function Row({
                     <Icon.BoxArrowUpRight size={50} />
                   ) : socialNetwork === "CustomURL" ? (
                     <Icon.PinAngle size={50} />
-                  ) : (
+                  ) : socialNetwork === "Address" ? (
+                    <Icon.GeoAltFill size={50} />
+                  ): (
                     profile
                   )}
                 </div>
@@ -192,6 +198,12 @@ export const EditProfile = () => {
   // const increment = useCallback( () => {
   //   setCounter(c => c + 1);
   // }, [setCounter]);
+
+  //Convertir espacios en signos de plus
+  const convertStringWithPlus = (value) => {
+    const newString = value.replace(" ", "+");
+    return newString;
+  };
 
   //Esta función va a guardar cada vez que se cambie algo en los campos de RRSS
   const handleOnChange = (index, name, value) => {
@@ -291,12 +303,19 @@ export const EditProfile = () => {
               title: "Changes have been updated",
               text: "Check your profile ;)",
               icon: "success",
-              confirmButtonText: "OK",
+              confirmButtonText: "Go to check profile",
+              showCancelButton: true,
+              cancelButtonText: "No, thats ok",
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                window.open("https://profile.stdicompany.com/"+username, '_blank').focus();
+              }
             });
           } else {
             setDisabledButton(false);
             Swal.fire({
-              title: "Sorry. Try again please!",
+              title: "Sorry. Try again please! 1",
               text: msg,
               icon: "error",
               confirmButtonText: "OK",
@@ -306,7 +325,7 @@ export const EditProfile = () => {
         .catch((error) => {
           setDisabledButton(false);
           Swal.fire({
-            title: "Sorry. Try again please!",
+            title: "Sorry. Try again please! 2",
             text: "",
             icon: "error",
             confirmButtonText: "OK",
@@ -326,7 +345,14 @@ export const EditProfile = () => {
               title: "Changes have been updated",
               text: "Check your profile ;)",
               icon: "success",
-              confirmButtonText: "OK",
+              confirmButtonText: "Go to check profil",
+              showCancelButton: true,
+              cancelButtonText: "No, thats ok",
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                window.open("https://profile.stdicompany.com/"+username, '_blank').focus();
+              }
             });
           } else {
             setDisabledButton(false);
@@ -529,6 +555,7 @@ export const EditProfile = () => {
                     <option value="Venmo">Venmo</option>
                     <option value="CashApp">CashApp</option>
                     <option value="Phone Number">Phone Number</option>
+                    <option value="Address">Address</option>
                     <option value="Email">Email</option>
                     <option value="Website">Website</option>
                     <option value="CustomURL">CustomURL</option>
@@ -573,7 +600,7 @@ export const EditProfile = () => {
             )}
           </Formik>
           <div>
-            {rows.length > 0 ? <hr className="hr-dashed" /> : null}
+            {rows.length > 0 ? <hr className="hr" /> : null}
             {rows.map((row, index) => (
               <Row
                 {...row}
@@ -598,10 +625,9 @@ export const EditProfile = () => {
                   : `data:image/jpeg;base64,${base64ImgBanner}`
               }
               style={{
-                height: '250px'
+                height: "250px",
               }}
               className="w-100"
-              
               alt="backgroundImageProfile"
             />
           </div>
@@ -635,16 +661,15 @@ export const EditProfile = () => {
             }
             {loadingProfileData === true ? (
               <div className="d-flex d-inline-block justify-content-center">
-              <span
-                className="spinner-grow spinner-grow-sm mt-1 mr-2"
-                role="status"
-                style={{
-                  display: "inline-block",
-                }}
-                aria-hidden="true"
-              >
-              </span>
-              Loading...
+                <span
+                  className="spinner-grow spinner-grow-sm mt-1 mr-2"
+                  role="status"
+                  style={{
+                    display: "inline-block",
+                  }}
+                  aria-hidden="true"
+                ></span>
+                Loading...
               </div>
             ) : (
               rows.map((row, index) => (
@@ -656,6 +681,7 @@ export const EditProfile = () => {
                   onRemove={() => handleOnRemove(index)}
                   key={index}
                   view={2}
+                  convertStringWithPlus={convertStringWithPlus}
                 />
               ))
             )}
@@ -664,6 +690,14 @@ export const EditProfile = () => {
             <div className="col-lg-12">
               <div className="d-flex justify-content-center">
                 <QRCode value={"https://profile.stdicompany.com/" + username} />
+              </div>
+              <div className="d-flex justify-content-center mt-3">
+                <a
+                  target="_blank"
+                  href={"https://profile.stdicompany.com/" + username}
+                >
+                  Tap here to see your profile
+                </a>
               </div>
             </div>
           </div>
