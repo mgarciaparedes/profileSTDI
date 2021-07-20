@@ -7,6 +7,17 @@ import axios from "axios";
 import helpers from "../../../components/Helpers";
 import { Switch, Route, Redirect } from "react-router-dom";
 
+/*Iconos que no están en boostrap-icons.css*/
+import SnapchatIcon from "../../../assets/fonts/iconfinder_snapchat.svg";
+import AppleMusicIcon from "../../../assets/fonts/iconfinder_apple_music.svg";
+import CashappIcon from "../../../assets/fonts/iconfinder_cashapp.svg";
+import SoundcloudIcon from "../../../assets/fonts/iconfinder_soundcloud.svg";
+import SpotifyIcon from "../../../assets/fonts/iconfinder_spotify.svg";
+import TiktokIcon from "../../../assets/fonts/iconfinder_tiktok.svg";
+import VenmoIcon from "../../../assets/fonts/iconfinder_venmo.svg";
+import PaypalIcon from "../../../assets/fonts/iconfinder_paypal.svg";
+import MapPinIcon from "../../../assets/fonts/iconfinder_map_pin.svg";
+
 const { swalOffBackend } = helpers;
 const QRCode = require("qrcode.react");
 
@@ -94,7 +105,7 @@ export const UserName = ({ location }) => {
 
         <div className="row d-flex justify-content-center h5">
           <h3 style={{ color: "black" }}>
-            {profileName} ({username})
+            {profileName}
           </h3>
         </div>
 
@@ -199,14 +210,14 @@ export const UserName = ({ location }) => {
                             color: "#3b5998",
                             fontSize: "40px",
                           }}
-                          className="bi bi-instagram"
+                          className="bi bi-facebook"
                         >
                           {""}
                         </i>
                       </div>
 
                       <div className="d-flex justify-content-center">
-                        Instagram
+                        Facebook
                       </div>
                     </div>
                   </a>
@@ -263,17 +274,8 @@ export const UserName = ({ location }) => {
                     href={"https://www.snapchat.com/" + elemento.profile}
                   >
                     <div className="pb-2">
-                      <div className="d-flex justify-content-center">
-                        {/*<i
-                          style={{
-                            color: "#FF0080",
-                            fontSize: "40px",
-                          }}
-                          className="bi bi-snapchat"
-                        >
-                          {""}
-                        </i>*/}
-                        Snapchat
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="40" height="40" src={SnapchatIcon} alt="Snapchat" />
                       </div>
 
                       <div className="d-flex justify-content-center">
@@ -288,19 +290,9 @@ export const UserName = ({ location }) => {
                     href={"https://www.soundcloud.com/" + elemento.profile}
                   >
                     <div className="pb-2">
-                      <div className="d-flex justify-content-center">
-                        {/*<i
-                          style={{
-                            color: "#FF0080",
-                            fontSize: "40px",
-                          }}
-                          className="bi bi-snapchat"
-                        >
-                          {""}
-                        </i>*/}
-                        Soundcloud
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="40" height="40" src={SoundcloudIcon} alt="Soundcloud" />
                       </div>
-
                       <div className="d-flex justify-content-center">
                         Soundcloud
                       </div>
@@ -362,19 +354,9 @@ export const UserName = ({ location }) => {
                     href={"www.tiktok.com/"+elemento.profile}
                   >
                     <div className="pb-2">
-                      <div className="d-flex justify-content-center">
-                        {/*<i
-                          style={{
-                            color: "#2867B2",
-                            fontSize: "40px",
-                          }}
-                          className="bi bi-tiktok"
-                        >
-                          {""}
-                        </i>*/}
-                        TikTok
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="40" height="40" src={TiktokIcon} alt="Tiktok" />
                       </div>
-
                       <div className="d-flex justify-content-center">
                         TikTok
                       </div>
@@ -387,19 +369,9 @@ export const UserName = ({ location }) => {
                     href={"www.spotify.com/"+elemento.profile}
                   >
                     <div className="pb-2">
-                      <div className="d-flex justify-content-center">
-                        {/*<i
-                          style={{
-                            color: "#2867B2",
-                            fontSize: "40px",
-                          }}
-                          className="bi bi-linkedin"
-                        >
-                          {""}
-                        </i>*/}
-                        Spotify
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="40" height="40" src={SpotifyIcon} alt="Spotify" />
                       </div>
-
                       <div className="d-flex justify-content-center">
                         Spotify
                       </div>
@@ -412,19 +384,9 @@ export const UserName = ({ location }) => {
                     href={"https://www.apple.com/"+elemento.profile}
                   >
                     <div className="pb-2">
-                      <div className="d-flex justify-content-center">
-                        {/*<i
-                          style={{
-                            color: "#2867B2",
-                            fontSize: "40px",
-                          }}
-                          className="bi bi-linkedin"
-                        >
-                          {""}
-                        </i>*/}
-                        Apple Music
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="40" height="40" src={AppleMusicIcon} alt="AppleMusic" />
                       </div>
-
                       <div className="d-flex justify-content-center">
                         Apple Music
                       </div>
@@ -437,46 +399,26 @@ export const UserName = ({ location }) => {
                     href={"https://www.venmo.com/"+elemento.profile}
                   >
                     <div className="pb-2">
-                      <div className="d-flex justify-content-center">
-                        {/*<i
-                          style={{
-                            color: "#2867B2",
-                            fontSize: "40px",
-                          }}
-                          className="bi bi-linkedin"
-                        >
-                          {""}
-                        </i>*/}
-                        Social Media Sites
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="40" height="40" src={VenmoIcon} alt="Tiktok" />
                       </div>
-
                       <div className="d-flex justify-content-center">
-                        Social Media Sites
+                        Venmo
                       </div>
                     </div>
                   </a>
                 ) : elemento.socialNetwork === "CashApp" ? (
-                    <a
+                  <a
                     className="btn-no-style"
                     target="_blank"
-                    href={"https://www.venmo.com/"+elemento.profile}
+                    href={"https://cash.app/$"+elemento.profile}
                   >
                     <div className="pb-2">
-                      <div className="d-flex justify-content-center">
-                        {/*<i
-                          style={{
-                            color: "#2867B2",
-                            fontSize: "40px",
-                          }}
-                          className="bi bi-linkedin"
-                        >
-                          {""}
-                        </i>*/}
-                        Venmo
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="40" height="40" src={CashappIcon} alt="Cashapp" />
                       </div>
-
                       <div className="d-flex justify-content-center">
-                        Venmo
+                        CashApp
                       </div>
                     </div>
                   </a>
@@ -528,9 +470,39 @@ export const UserName = ({ location }) => {
                       </div>
                     </div>
                   </a>
-                ) : (
-                  <></>
-                )
+                ) : elemento.socialNetwork === "Paypal" ? (
+                  <a
+                    className="btn-no-style"
+                    target="_blank"
+                    href={"https://www.paypal.com/paypalme/"+elemento.profile}
+                  >
+                    <div className="pb-2">
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="40" height="40" src={PaypalIcon} alt="Paypal" />
+                      </div>
+                      <div className="d-flex justify-content-center">
+                        Paypal
+                      </div>
+                    </div>
+                  </a>
+              ) : elemento.socialNetwork === "Address" ? (
+                  <a
+                    className="btn-no-style"
+                    target="_blank"
+                    href={"https://google.com/maps/search/"+elemento.profile}
+                  >
+                    <div className="pb-2">
+                      <div className="d-flex justify-content-center mt-3">
+                        <img width="25" height="35" src={MapPinIcon} alt="mappin" />
+                      </div>
+                      <div className="d-flex justify-content-center">
+                        Address
+                      </div>
+                    </div>
+                  </a>
+              ) : (
+                <></>
+              )
               }
             </div>
           ))}
