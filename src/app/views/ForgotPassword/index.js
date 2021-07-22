@@ -3,8 +3,14 @@ import { Form, InputGroup, Button } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
+import history from "../../../components/History";
 import LogoWhite from "../../../assets/images/logo-white.png";
 import * as Icon from "react-bootstrap-icons";
+import axios from "axios";
+import helpers from "../../../components/Helpers";
+
+const { swalOffBackend } = helpers;
+
 
 const schema = Yup.object({
   email: Yup.string()
@@ -18,26 +24,69 @@ export const ForgotPassword = () => {
   const onSubmit = (event) => {
     setDisabledButton(true);
 
-    if (event.email === "johndoe@example.com") {
-      setDisabledButton(false);
-      Swal.fire({
-        title: "Verification code was sent!",
-        text: "Check your email and follow its detailed steps.",
-        icon: "info",
-        confirmButtonText: "OK",
-      });
-    } else {
-      //setTimeout de prueba para ver la animación del loading del button login
-      setTimeout(() => {
+    const { email } = event;
+    const payload = {
+      email: email,
+    };
+
+    axios
+      .post(`auth/forgotPassword`, payload)
+      .then((res) => {
+        const { ok, msg } = res.data;
+
+        if (ok && msg === "Password was sent to your email, please follow the steps to login again.") {
+          setDisabledButton(false);
+
+          Swal.fire({
+            title: "Verification code was sent!",
+            text: msg,
+            icon: "info",
+            confirmButtonText: "OK",
+          }).then((result) => {
+            
+            if (result.isConfirmed) {
+              history.push("/login");
+            } else {
+              history.push("/login");
+            }
+
+          });
+
+        } else {
+
+            setDisabledButton(false);
+
+            Swal.fire({
+              title: "Error",
+              text: "An error occurred while trying to change the password",
+              icon: "error",
+              confirmButtonText: "Try again",
+            });
+        }
+
         setDisabledButton(false);
-        Swal.fire({
-          title: "Error",
-          text: "Invalid Email",
-          icon: "error",
-          confirmButtonText: "Try again",
-        });
-      }, 2000);
-    }
+      })
+      .catch((e) => {
+        /*Sí los servicios están OFF, retornamos este swal*/
+        if (e.response === undefined) {
+          swalOffBackend();
+          setDisabledButton(false);
+          return 1;
+        }
+
+        /*Si ocurre algo en el request, retoramos esto*/
+        const { msg, ok } = e.response.data;
+        if (!ok) {
+          Swal.fire({
+            title: "Error",
+            text: msg,
+            icon: "error",
+            confirmButtonText: "Try again",
+          });
+          setDisabledButton(false);
+        }
+    });
+    
   };
 
   return (
