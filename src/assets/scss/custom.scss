@@ -1,9 +1,42 @@
-.body{
+.body {
   background-image: url("../images/Wallpaper.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  width:100%;
+  width: 100%;
+}
+
+.font-bold {
+  font-family: "Cairo Bold";
+}
+
+.border-link {
+  -webkit-box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.container-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
+}
+
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -20px;
+  margin-left: -25px;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
 }
 
 //Estilo de clases principales de colores bootstrap
@@ -12,63 +45,68 @@ $theme-colors: (
   //#2F75BA
 );
 
-$font-family-sans-serif: 'Cairo Regular';
+$font-family-sans-serif: "Cairo Regular";
 
-.border-bold{
+.border-bold {
   border: 5px solid white;
 }
 
-.img-profile{
-  width:150px;
-  height: 150px;
-  margin-top: -80px;
+.img-profile {
+  width: 210px;
+  height: 250px;
+  margin-top: -200px;
 }
 
-.form-label{
-  font-family: 'Cairo Bold';
+.img-profile-logo {
+  width: 150px;
+  height: 150px;
+}
+
+.form-label {
+  font-family: "Cairo Bold";
   letter-spacing: 1px;
 }
 
-.hr{
+.hr {
   border: 1px solid white;
 }
 
-.w-100{
-  width:100%;
+.w-100 {
+  width: 100%;
 }
 
-.button-transparent{
+.button-transparent {
   background-color: transparent !important;
   color: red;
-  background-repeat:no-repeat;
+  background-repeat: no-repeat;
   border: none;
-  cursor:pointer;
+  cursor: pointer;
   overflow: hidden;
-  outline:none;
+  outline: none;
 }
 
-.icon-eliminate{
+.icon-eliminate {
   width: 30px;
 }
 
 .btn-no-style {
   background: none;
   border: 0;
-  color:black;
+  color: black;
   font: inherit;
   line-height: normal;
   -webkit-user-select: none; /* for button */
-   //-webkit-appearance: button; /* for input */
-     -moz-user-select: none;
-      -ms-user-select: none;
+  //-webkit-appearance: button; /* for input */
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
-.btn-no-style:hover{
+.btn-no-style:hover {
   color: #006fb4;
-  text-decoration:none;
+  text-decoration: none;
 }
 
-.btn-no-style:focus{
+.btn-no-style:focus {
   outline: none !important;
   box-shadow: none;
 }

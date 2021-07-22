@@ -100,8 +100,10 @@ export const Login = () => {
                 // }}
                 onSubmit={onSubmit}
                 initialValues={{
-                  email: "miguelgarciaparedes22@gmail.com",
-                  password: "test123.-",
+                  //email: "miguelgarciaparedes22@gmail.com",
+                  //password: "test123.-",
+                  email: "",
+                  password: ""
                 }}
               >
                 {({

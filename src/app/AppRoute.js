@@ -22,7 +22,7 @@ import { UserName } from './views/UserName/index';
 const AppRoute = () => {
 
   return (
-    <div className="">
+    <div className="container mt-3">
       <div className="row">
         <div className="col-lg-12">
         <AppProvider>

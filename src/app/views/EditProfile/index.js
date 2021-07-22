@@ -11,6 +11,27 @@ import BannerImage from "../../../assets/images/background.svg";
 import history from "../../../components/History";
 import { AppContext } from "../../../components/AppContext";
 import axios from "axios";
+
+/*Iconos que no están en boostrap-icons.css*/
+import YoutubeIcon from "../../../assets/svg/youtube.svg";
+import InstagramIcon from "../../../assets/svg/instagram.svg";
+import TwitterIcon from "../../../assets/svg/twitter.svg";
+import FacebookIcon from "../../../assets/svg/facebook.svg";
+import LinkedinIcon from "../../../assets/svg/linkedin.svg";
+import SnapchatIcon from "../../../assets/svg/snapchat.svg";
+import AppleMusicIcon from "../../../assets/svg/apple-music.svg";
+import CashappIcon from "../../../assets/svg/cashapp.svg";
+import SoundcloudIcon from "../../../assets/svg/soundcloud.svg";
+import SpotifyIcon from "../../../assets/svg/spotify.svg";
+import TiktokIcon from "../../../assets/svg/tiktok.svg";
+import VenmoIcon from "../../../assets/svg/venmo.svg";
+import PaypalIcon from "../../../assets/svg/paypal.svg";
+import MapPinIcon from "../../../assets/svg/locationmap.svg";
+import EmailIcon from "../../../assets/svg/mail.svg";
+import PhoneIcon from "../../../assets/svg/phone.svg";
+import WebsiteIcon from "../../../assets/svg/website.svg";
+import CustomURLIcon from "../../../assets/svg/customurl.svg";
+
 const QRCode = require("qrcode.react");
 
 //Está función está fuera del render porque si la dejo dentro de la func principal
@@ -55,7 +76,7 @@ function Row({
         </div>
       ) : (
         <>
-          <div className="border m-1 col-sm-5">
+          <div className="border border-link m-2 col-3">
             <a
               className="btn-no-style"
               target="_blank"
@@ -94,42 +115,134 @@ function Row({
                   : profile
               }
             >
-              <div className="p-3">
+              <div className="pt-3 pb-3">
                 <div className="d-flex justify-content-center">
                   {socialNetwork === "Instagram" ? (
-                    <Icon.Instagram size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={InstagramIcon}
+                    alt="Instagram"
+                  />
                   ) : socialNetwork === "Snapchat" ? (
-                    "Snapchat" //<Icon.Snapchat size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={SnapchatIcon}
+                    alt="Snapchat"
+                  />
                   ) : socialNetwork === "Youtube" ? (
-                    <Icon.Youtube size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={YoutubeIcon}
+                    alt="Youtube"
+                  />
                   ) : socialNetwork === "Facebook" ? (
-                    <Icon.Facebook size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={FacebookIcon}
+                    alt="Facebook"
+                  />
                   ) : socialNetwork === "Soundcloud" ? (
-                    "Soundcloud" //<Icon.Instagram size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={SoundcloudIcon}
+                    alt="Soundcloud"
+                  />
                   ) : socialNetwork === "Linkedin" ? (
-                    <Icon.Linkedin size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={LinkedinIcon}
+                    alt="Linkedin"
+                  />
                   ) : socialNetwork === "TikTok" ? (
-                    "TikTok" //<Icon.Instagram size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={TiktokIcon}
+                    alt="TikTok"
+                  />
                   ) : socialNetwork === "Twitter" ? (
-                    <Icon.Twitter size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={TwitterIcon}
+                    alt="Twitter"
+                  />
                   ) : socialNetwork === "Spotify" ? (
-                    "Spotify" //<Icon.Instagram size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={SpotifyIcon}
+                    alt="Spotify"
+                  />
                   ) : socialNetwork === "Apple Music" ? (
-                    "Apple Music" //<Icon.Instagram size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={AppleMusicIcon}
+                    alt="Apple Music"
+                  />
                   ) : socialNetwork === "Venmo" ? (
-                    "Venmo" //<Icon.Instagram size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={VenmoIcon}
+                    alt="Venmo"
+                  />
                   ) : socialNetwork === "CashApp" ? (
-                    "CashApp" //https://www.cashapp.com/" + profile
+                    <img
+                    width="50"
+                    height="50"
+                    src={CashappIcon}
+                    alt="CashApp"
+                  />
                   ) : socialNetwork === "Phone Number" ? (
-                    <Icon.TelephoneForwardFill size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={PhoneIcon}
+                    alt="Phone"
+                  />
                   ) : socialNetwork === "Email" ? (
-                    <Icon.Envelope size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={EmailIcon}
+                    alt="Email"
+                  />
                   ) : socialNetwork === "Website" ? (
-                    <Icon.BoxArrowUpRight size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={WebsiteIcon}
+                    alt="Website"
+                  />
                   ) : socialNetwork === "CustomURL" ? (
-                    <Icon.PinAngle size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={CustomURLIcon}
+                    alt="CustomURL"
+                  />
                   ) : socialNetwork === "Address" ? (
-                    <Icon.GeoAltFill size={50} />
+                    <img
+                    width="50"
+                    height="50"
+                    src={MapPinIcon}
+                    alt="Google Maps"
+                  />
+                  ): socialNetwork === "Paypal" ? (
+                    <img
+                    width="50"
+                    height="50"
+                    src={PaypalIcon}
+                    alt="Paypal"
+                  />
                   ): (
                     profile
                   )}
@@ -345,7 +458,7 @@ export const EditProfile = () => {
               title: "Changes have been updated",
               text: "Check your profile ;)",
               icon: "success",
-              confirmButtonText: "Go to check profil",
+              confirmButtonText: "Go to check profile",
               showCancelButton: true,
               cancelButtonText: "No, thats ok",
             }).then((result) => {
@@ -539,9 +652,6 @@ export const EditProfile = () => {
                     }}
                     className="mb-4"
                   >
-                    <option value="Social Media Sites">
-                      Social Media Sites
-                    </option>
                     <option value="Instagram">Instagram</option>
                     <option value="Snapchat">Snapchat</option>
                     <option value="Youtube">Youtube</option>
@@ -555,6 +665,7 @@ export const EditProfile = () => {
                     <option value="Venmo">Venmo</option>
                     <option value="CashApp">CashApp</option>
                     <option value="Phone Number">Phone Number</option>
+                    <option value="Paypal">Paypal</option>
                     <option value="Address">Address</option>
                     <option value="Email">Email</option>
                     <option value="Website">Website</option>
@@ -644,7 +755,7 @@ export const EditProfile = () => {
               />
             </div>
             <div className="col-sm-12 d-flex justify-content-center">
-              <label className="form-label">{nameState}</label>
+              <label className="form-label mt-3">{nameState}</label>
             </div>
             <div className="col-sm-12 d-flex justify-content-center">
               <label className="pt-1 text-justify">{bioState}</label>
