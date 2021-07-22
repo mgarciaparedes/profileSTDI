@@ -410,10 +410,11 @@ export const EditProfile = () => {
         .then((res) => {
           const { ok, msg } = res.data;
 
-          if (ok && msg === "Profile was created succesfully.") {
+          if (ok === true) {
             setDisabledButton(false);
+            setExistentProfile(true); //Activar al usuario para que pueda logear
             Swal.fire({
-              title: "Changes have been updated",
+              title: "Great! This is your first profile.",
               text: "Check your profile ;)",
               icon: "success",
               confirmButtonText: "Go to check profile",
