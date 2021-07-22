@@ -1,15 +1,24 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useForm } from "react-hooks-helper";
 import { Formik } from "formik";
-import { Form, InputGroup, Alert, Button } from "react-bootstrap";
+import * as Yup from "yup";
+import {
+  Form,
+  InputGroup,
+  Alert,
+  Button,
+  Overlay,
+  Tooltip,
+} from "react-bootstrap";
 import Swal from "sweetalert2";
 //import { SetChanges } from "./childComponent/SetChanges";
 import * as Icon from "react-bootstrap-icons";
 import userImage from "../../../assets/images/default-user-image.png";
 import IconX from "../../../assets/images/icon-eliminate.png";
 import BannerImage from "../../../assets/images/background.svg";
-import history from "../../../components/History";
 import { AppContext } from "../../../components/AppContext";
+import helpers from "../../../components/Helpers";
+import { SpinnerLoading } from "../../../components/SpinnerLoading";
 import axios from "axios";
 
 /*Iconos que no están en boostrap-icons.css*/
@@ -33,6 +42,8 @@ import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
 
 const QRCode = require("qrcode.react");
+
+const { swalOffBackend, convertStringWithPlus, copyToClipboard } = helpers;
 
 //Está función está fuera del render porque si la dejo dentro de la func principal
 //se vuelve a renderizar y no funciona.
@@ -119,131 +130,106 @@ function Row({
                 <div className="d-flex justify-content-center">
                   {socialNetwork === "Instagram" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={InstagramIcon}
-                    alt="Instagram"
-                  />
+                      width="50"
+                      height="50"
+                      src={InstagramIcon}
+                      alt="Instagram"
+                    />
                   ) : socialNetwork === "Snapchat" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={SnapchatIcon}
-                    alt="Snapchat"
-                  />
+                      width="50"
+                      height="50"
+                      src={SnapchatIcon}
+                      alt="Snapchat"
+                    />
                   ) : socialNetwork === "Youtube" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={YoutubeIcon}
-                    alt="Youtube"
-                  />
+                      width="50"
+                      height="50"
+                      src={YoutubeIcon}
+                      alt="Youtube"
+                    />
                   ) : socialNetwork === "Facebook" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={FacebookIcon}
-                    alt="Facebook"
-                  />
+                      width="50"
+                      height="50"
+                      src={FacebookIcon}
+                      alt="Facebook"
+                    />
                   ) : socialNetwork === "Soundcloud" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={SoundcloudIcon}
-                    alt="Soundcloud"
-                  />
+                      width="50"
+                      height="50"
+                      src={SoundcloudIcon}
+                      alt="Soundcloud"
+                    />
                   ) : socialNetwork === "Linkedin" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={LinkedinIcon}
-                    alt="Linkedin"
-                  />
+                      width="50"
+                      height="50"
+                      src={LinkedinIcon}
+                      alt="Linkedin"
+                    />
                   ) : socialNetwork === "TikTok" ? (
-                    <img
-                    width="50"
-                    height="50"
-                    src={TiktokIcon}
-                    alt="TikTok"
-                  />
+                    <img width="50" height="50" src={TiktokIcon} alt="TikTok" />
                   ) : socialNetwork === "Twitter" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={TwitterIcon}
-                    alt="Twitter"
-                  />
+                      width="50"
+                      height="50"
+                      src={TwitterIcon}
+                      alt="Twitter"
+                    />
                   ) : socialNetwork === "Spotify" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={SpotifyIcon}
-                    alt="Spotify"
-                  />
+                      width="50"
+                      height="50"
+                      src={SpotifyIcon}
+                      alt="Spotify"
+                    />
                   ) : socialNetwork === "Apple Music" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={AppleMusicIcon}
-                    alt="Apple Music"
-                  />
+                      width="50"
+                      height="50"
+                      src={AppleMusicIcon}
+                      alt="Apple Music"
+                    />
                   ) : socialNetwork === "Venmo" ? (
-                    <img
-                    width="50"
-                    height="50"
-                    src={VenmoIcon}
-                    alt="Venmo"
-                  />
+                    <img width="50" height="50" src={VenmoIcon} alt="Venmo" />
                   ) : socialNetwork === "CashApp" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={CashappIcon}
-                    alt="CashApp"
-                  />
+                      width="50"
+                      height="50"
+                      src={CashappIcon}
+                      alt="CashApp"
+                    />
                   ) : socialNetwork === "Phone Number" ? (
-                    <img
-                    width="50"
-                    height="50"
-                    src={PhoneIcon}
-                    alt="Phone"
-                  />
+                    <img width="50" height="50" src={PhoneIcon} alt="Phone" />
                   ) : socialNetwork === "Email" ? (
-                    <img
-                    width="50"
-                    height="50"
-                    src={EmailIcon}
-                    alt="Email"
-                  />
+                    <img width="50" height="50" src={EmailIcon} alt="Email" />
                   ) : socialNetwork === "Website" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={WebsiteIcon}
-                    alt="Website"
-                  />
+                      width="50"
+                      height="50"
+                      src={WebsiteIcon}
+                      alt="Website"
+                    />
                   ) : socialNetwork === "CustomURL" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={CustomURLIcon}
-                    alt="CustomURL"
-                  />
+                      width="50"
+                      height="50"
+                      src={CustomURLIcon}
+                      alt="CustomURL"
+                    />
                   ) : socialNetwork === "Address" ? (
                     <img
-                    width="50"
-                    height="50"
-                    src={MapPinIcon}
-                    alt="Google Maps"
-                  />
-                  ): socialNetwork === "Paypal" ? (
-                    <img
-                    width="50"
-                    height="50"
-                    src={PaypalIcon}
-                    alt="Paypal"
-                  />
-                  ): (
+                      width="50"
+                      height="50"
+                      src={MapPinIcon}
+                      alt="Google Maps"
+                    />
+                  ) : socialNetwork === "Paypal" ? (
+                    <img width="50" height="50" src={PaypalIcon} alt="Paypal" />
+                  ) : (
                     profile
                   )}
                 </div>
@@ -269,6 +255,8 @@ export const EditProfile = () => {
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   const { objLogin, logoutContext } = useContext(AppContext);
 
@@ -305,19 +293,6 @@ export const EditProfile = () => {
     console.log("Se ejecuta EditProfile");
   }, []);
 
-  //Esto no le pares, es la prueba del useCallback del Curso
-  //const [counter,setCounter] = useState(10);
-
-  // const increment = useCallback( () => {
-  //   setCounter(c => c + 1);
-  // }, [setCounter]);
-
-  //Convertir espacios en signos de plus
-  const convertStringWithPlus = (value) => {
-    const newString = value.replace(" ", "+");
-    return newString;
-  };
-
   //Esta función va a guardar cada vez que se cambie algo en los campos de RRSS
   const handleOnChange = (index, name, value) => {
     const copyRows = [...rows];
@@ -332,17 +307,19 @@ export const EditProfile = () => {
   const [rows, setRows] = useState([]);
 
   //Función que guarda una fila nueva cada vez que se seleccione una opción nueva de RRSS
-  //OJO: FALTA VALIDAR QUE UNA VEZ UNA OPCIÓN SEA SELECCIONADA NO PUEDA SELECCIONARSE NUEVAMENTE
   const handleOnAdd = (e) => {
-    setRows(
-      rows.concat({
-        socialNetwork: e.target.value,
-        profile: "",
-        //socialNetworkIcon: e.target.value === "Instagram" ? <Icon.Instagram /> : null,
-        //socialNetworkIcon: findIcon(e.target.value),
-        //socialNetworkURL: findURL(e.target.value),
-      })
-    );
+    //Aquí valido que si eligen choose your media no se agregue nada
+    if (e.target.value !== "") {
+      setRows(
+        rows.concat({
+          socialNetwork: e.target.value,
+          profile: "",
+          //socialNetworkIcon: e.target.value === "Instagram" ? <Icon.Instagram /> : null,
+          //socialNetworkIcon: findIcon(e.target.value),
+          //socialNetworkURL: findURL(e.target.value),
+        })
+      );
+    }
   };
 
   //Función que elimina una fila determinada.
@@ -402,419 +379,547 @@ export const EditProfile = () => {
       socialMedia: rows,
     };
 
-    if (existentProfile === false) {
-      //Si existentProfile es false, quiere decir que no existe un perfil guardado para este usuario
-      //Eso quiere decir que le pega al servicio de saveProfileUserData
-      axios
-        .post("/users/saveProfileUserData", payload)
-        .then((res) => {
-          const { ok, msg } = res.data;
+    if (nameState === "") {
+      setDisabledButton(false);
+      Swal.fire({
+        title: "Profile Fullname is required",
+        text: "We need at least this information to save your profile",
+        icon: "info",
+        confirmButtonText: "OK",
+      });
+    } else {
+      if (existentProfile === false) {
+        //Si existentProfile es false, quiere decir que no existe un perfil guardado para este usuario
+        //Eso quiere decir que le pega al servicio de saveProfileUserData
+        axios
+          .post("/users/saveProfileUserData", payload)
+          .then((res) => {
+            const { ok, msg } = res.data;
 
-          if (ok === true) {
+            if (ok === true) {
+              setDisabledButton(false);
+              //Activar al usuario para que pueda modificar luego de la primera inserción en la BBDD
+              setExistentProfile(true);
+              Swal.fire({
+                title: "Great! This is your first profile.",
+                text: "Check your profile ;)",
+                icon: "success",
+                confirmButtonText: "Go to check profile",
+                showCancelButton: true,
+                cancelButtonText: "No, thats ok",
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                  window
+                    .open(
+                      "https://profile.stdicompany.com/" + username,
+                      "_blank"
+                    )
+                    .focus();
+                }
+              });
+            } else {
+              setDisabledButton(false);
+              Swal.fire({
+                title: "Sorry. Try again please! 1",
+                text: msg,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .catch((error) => {
             setDisabledButton(false);
-            setExistentProfile(true); //Activar al usuario para que pueda logear
             Swal.fire({
-              title: "Great! This is your first profile.",
-              text: "Check your profile ;)",
-              icon: "success",
-              confirmButtonText: "Go to check profile",
-              showCancelButton: true,
-              cancelButtonText: "No, thats ok",
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                window.open("https://profile.stdicompany.com/"+username, '_blank').focus();
-              }
-            });
-          } else {
-            setDisabledButton(false);
-            Swal.fire({
-              title: "Sorry. Try again please! 1",
-              text: msg,
+              title: "Sorry. Try again please! 2",
+              text: "",
               icon: "error",
               confirmButtonText: "OK",
             });
-          }
-        })
-        .catch((error) => {
-          setDisabledButton(false);
-          Swal.fire({
-            title: "Sorry. Try again please! 2",
-            text: "",
-            icon: "error",
-            confirmButtonText: "OK",
           });
-        });
-    } else {
-      //Si existentProfile es true, quiere decir que no existe un perfil guardado para este usuario
-      //Eso quiere decir que le pega al servicio de updateProfileUserData
-      axios
-        .post("/users/updateProfileUserData", payload)
-        .then((res) => {
-          const { ok, msg } = res.data;
+      } else {
+        //Si existentProfile es true, quiere decir que no existe un perfil guardado para este usuario
+        //Eso quiere decir que le pega al servicio de updateProfileUserData
+        axios
+          .post("/users/updateProfileUserData", payload)
+          .then((res) => {
+            const { ok, msg } = res.data;
 
-          if (ok === true) {
-            setDisabledButton(false);
-            Swal.fire({
-              title: "Changes have been updated",
-              text: "Check your profile ;)",
-              icon: "success",
-              confirmButtonText: "Go to check profile",
-              showCancelButton: true,
-              cancelButtonText: "No, thats ok",
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                window.open("https://profile.stdicompany.com/"+username, '_blank').focus();
-              }
-            });
-          } else {
+            if (ok === true) {
+              setDisabledButton(false);
+              Swal.fire({
+                title: "Changes have been updated",
+                text: "Check your profile ;)",
+                icon: "success",
+                confirmButtonText: "Go to check profile",
+                showCancelButton: true,
+                cancelButtonText: "No, thats ok",
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                  window
+                    .open(
+                      "https://profile.stdicompany.com/" + username,
+                      "_blank"
+                    )
+                    .focus();
+                }
+              });
+            } else {
+              setDisabledButton(false);
+              Swal.fire({
+                title: "Sorry. Try again please!",
+                text: msg,
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            }
+          })
+          .catch((error) => {
             setDisabledButton(false);
             Swal.fire({
               title: "Sorry. Try again please!",
-              text: msg,
+              text: "",
               icon: "error",
               confirmButtonText: "OK",
             });
-          }
-        })
-        .catch((error) => {
-          setDisabledButton(false);
-          Swal.fire({
-            title: "Sorry. Try again please!",
-            text: "",
-            icon: "error",
-            confirmButtonText: "OK",
           });
-        });
+      }
     }
-
-    /*setTimeout(() => {
-      setDisabledButton(false);
-      Swal.fire({
-        title: "Changes have been updated",
-        text: "Check your profile ;)",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-    }, 2000);*/
   };
 
   return (
     <>
-      <div className="row">
-        <div className="col-sm-12 col-md-12 d-flex justify-content-end">
-          <div className="text-white mt-2">{objLogin.userName}&nbsp;&nbsp;</div>
-          <Button
-            variant="primary"
-            onClick={() => {
-              //history.push("/login");
-              logoutContext();
-            }}
-          >
-            <div className="d-flex d-inline-block justify-content-center">
-              Sign Out
-            </div>
-          </Button>
-        </div>
-      </div>
-
-      <div className="mt-5 row">
-        <div
-          className="p-5 
-              col-sm-6 col-md-6"
-        >
-          <Formik
-            onSubmit={(values, { resetForm }) => {
-              onSubmit(values);
-              resetForm({ values: null });
-            }}
-            initialValues={{
-              fullName: nameState,
-              bio: bioState,
-              socialMedia: null,
-            }}
-          >
-            {({
-              handleSubmit,
-              handleChange,
-              handleBlur,
-              setFieldValue,
-              values,
-              touched,
-              isValid,
-              errors,
-            }) => (
-              <Form
-                onSubmit={handleSubmit}
-                //noValidate
-                autoComplete="off"
-                name="addServiceData"
-                id="addServiceData"
+      {loadingProfileData === true ? (
+        <SpinnerLoading />
+      ) : (
+        <div className="container mt-3">
+          <div className="row">
+            <div className="col-sm-12 d-flex justify-content-end">
+              <div className="text-white mt-2">
+                {objLogin.userName}&nbsp;&nbsp;
+              </div>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  //history.push("/login");
+                  logoutContext();
+                }}
               >
-                {/*Inicio Campo Profile Fullname*/}
-                <Form.Label
-                  className="text-white form-label"
-                  htmlFor="basic-url"
-                >
-                  Profile Full Name:
-                </Form.Label>
-                <InputGroup className="mb-2">
-                  <Form.Control
-                    name="fullName"
-                    //values={values.fullName}
-                    defaultValue={nameState}
-                    type="text"
-                    placeholder="Type your profile name"
-                    onChange={handleNameChange}
-                  />
-                </InputGroup>
-                {/*Fin Campo Profile Fullname*/}
-                {/*Inicio Campo Profile Photo*/}
-                <InputGroup className="mb-2">
-                  <Form.Group controlId="formFile" className="mb-2">
-                    <Form.Label className="text-white form-label">
-                      Profile Photo:
-                    </Form.Label>
-                    <Form.Control
-                      type="file"
-                      onChange={(e) => {
-                        //alert("cambió");
-                        console.log(e.target.files);
-                        if (e.target.files.length > 0) {
-                          reader.readAsDataURL(e.target.files[0]);
-                        } else {
-                          setBase64ImgProfile("");
-                        }
-                      }}
-                    />
-                  </Form.Group>
-                </InputGroup>
-                {/*Fin Campo Profile Photo*/}
-                {/*Inicio Campo Banner Photo*/}
-                <InputGroup className="mb-2">
-                  <Form.Group controlId="formFile2" className="mb-2">
-                    <Form.Label className="text-white form-label">
-                      Banner Photo:
-                    </Form.Label>
-                    <Form.Control
-                      type="file"
-                      onChange={(e) => {
-                        //alert("cambió");
-                        console.log(e.target.files);
-                        if (e.target.files.length > 0) {
-                          reader2.readAsDataURL(e.target.files[0]);
-                        } else {
-                          setBase64ImgBanner("");
-                        }
-                      }}
-                    />
-                  </Form.Group>
-                </InputGroup>
-                {/*Fin Campo Banner Photo*/}
-                {/*Inicio Campo Profile Bio*/}
-                <Form.Label
-                  className="text-white form-label"
-                  htmlFor="basic-url"
-                >
-                  Profile Bio:
-                </Form.Label>
-                <InputGroup className="mb-2">
-                  <Form.Control
-                    name="bio"
-                    //values={values.bio}
-                    defaultValue={bioState}
-                    as="textarea"
-                    placeholder="Type your profile name"
-                    onChange={handleBioChange}
-                    style={{ height: "100px" }}
-                  />
-                </InputGroup>
-                {/*Fin Campo Profile Bio*/}
-                {/*Inicio Select Social Media Channels*/}
-                <Form.Label
-                  className="text-white form-label"
-                  htmlFor="basic-url"
-                >
-                  Social Media Channels:
-                </Form.Label>
-                <Alert variant="info">
-                  <Icon.ListCheck size={25} />
-                  &nbsp; Click from the drop down to add the social media link.
-                </Alert>
-                <InputGroup>
-                  <Form.Control
-                    as="select"
-                    name="socialMedia"
-                    values={values.socialMedia}
-                    onChange={(e) => {
-                      handleOnAdd(e);
-                      handleSocialMedia(e);
-                    }}
-                    className="mb-4"
-                  >
-                    <option value="Instagram">Instagram</option>
-                    <option value="Snapchat">Snapchat</option>
-                    <option value="Youtube">Youtube</option>
-                    <option value="Facebook">Facebook</option>
-                    <option value="Soundcloud">Soundcloud</option>
-                    <option value="Linkedin">Linkedin</option>
-                    <option value="TikTok">TikTok</option>
-                    <option value="Twitter">Twitter</option>
-                    <option value="Spotify">Spotify</option>
-                    <option value="Apple Music">Apple Music</option>
-                    <option value="Venmo">Venmo</option>
-                    <option value="CashApp">CashApp</option>
-                    <option value="Phone Number">Phone Number</option>
-                    <option value="Paypal">Paypal</option>
-                    <option value="Address">Address</option>
-                    <option value="Email">Email</option>
-                    <option value="Website">Website</option>
-                    <option value="CustomURL">CustomURL</option>
-                  </Form.Control>
-                </InputGroup>
+                <div className="d-flex d-inline-block justify-content-center">
+                  Sign Out
+                </div>
+              </Button>
+            </div>
+          </div>
 
-                <InputGroup className="mb-2">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    disabled={disabledButton === true}
-                    block
+          <div className="mt-5 row">
+            <div
+              className="
+              col-sm-6 col-md-6"
+            >
+              <Formik
+                onSubmit={(values, { resetForm }) => {
+                  onSubmit(values);
+                  resetForm({ values: null });
+                }}
+                initialValues={{
+                  fullName: nameState,
+                  bio: bioState,
+                  socialMedia: null,
+                }}
+              >
+                {({
+                  handleSubmit,
+                  handleChange,
+                  handleBlur,
+                  setFieldValue,
+                  values,
+                  touched,
+                  isValid,
+                  errors,
+                }) => (
+                  <Form
+                    onSubmit={handleSubmit}
+                    noValidate
+                    autoComplete="off"
+                    name="addProfileData"
+                    id="addProfileeData"
                   >
+                    <div className="row">
+                      <div className="col-12 col-sm-12">
+                        {/*Inicio Campo Profile Fullname*/}
+                        <Form.Label
+                          className="text-white form-label"
+                          htmlFor="basic-url"
+                        >
+                          Profile Full Name:
+                        </Form.Label>
+                        <InputGroup className="mb-2">
+                          <Form.Control
+                            name="fullName"
+                            //values={values.fullName}
+                            defaultValue={nameState}
+                            type="text"
+                            placeholder="Type your profile name"
+                            onChange={handleNameChange}
+                            isValid={!!touched.fullName && !errors.fullName}
+                            isInvalid={!!errors.fullName && !!touched.fullName}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.fullName}
+                          </Form.Control.Feedback>
+                        </InputGroup>
+                        {/*Fin Campo Profile Fullname*/}
+                        {/*Inicio Campo Profile Photo*/}
+                        <InputGroup className="mb-2">
+                          <Form.Group controlId="formFile" className="mb-2">
+                            <Form.Label className="text-white form-label">
+                              Profile Photo:
+                            </Form.Label>
+                            <Form.Control
+                              type="file"
+                              onChange={(e) => {
+                                if (e.target.files.length > 0) {
+                                  if (
+                                    e.target.files[0].type === "image/jpeg" ||
+                                    e.target.files[0].type === "image/jpg" ||
+                                    e.target.files[0].type === "image/png" ||
+                                    e.target.files[0].type === "image/gif"
+                                  ) {
+                                    reader.readAsDataURL(e.target.files[0]);
+                                  } else {
+                                    Swal.fire({
+                                      title: "Unsupported format",
+                                      text: "Format supported: JPG, JPEG, PNG and GIF.",
+                                      icon: "info",
+                                      confirmButtonText: "OK",
+                                    });
+                                  }
+                                } else {
+                                  setBase64ImgBanner("");
+                                }
+                              }}
+                            />
+                          </Form.Group>
+                        </InputGroup>
+                        {/*Fin Campo Profile Photo*/}
+                        {/*Inicio Campo Banner Photo*/}
+                        <InputGroup className="mb-2">
+                          <Form.Group controlId="formFile2" className="mb-2">
+                            <Form.Label className="text-white form-label">
+                              Banner Photo:
+                            </Form.Label>
+                            <Form.Control
+                              type="file"
+                              onChange={(e) => {
+                                if (e.target.files.length > 0) {
+                                  if (
+                                    e.target.files[0].type === "image/jpeg" ||
+                                    e.target.files[0].type === "image/jpg" ||
+                                    e.target.files[0].type === "image/png" ||
+                                    e.target.files[0].type === "image/gif"
+                                  ) {
+                                    reader2.readAsDataURL(e.target.files[0]);
+                                  } else {
+                                    Swal.fire({
+                                      title: "Unsupported format",
+                                      text: "Format supported: JPG, JPEG, PNG and GIF.",
+                                      icon: "info",
+                                      confirmButtonText: "OK",
+                                    });
+                                  }
+                                } else {
+                                  setBase64ImgBanner("");
+                                }
+                              }}
+                            />
+                          </Form.Group>
+                        </InputGroup>
+                        {/*Fin Campo Banner Photo*/}
+                        {/*Inicio Campo Profile Bio*/}
+                        <Form.Label
+                          className="text-white form-label"
+                          htmlFor="basic-url"
+                        >
+                          Profile Bio:
+                        </Form.Label>
+                        <InputGroup className="mb-2">
+                          <Form.Control
+                            name="bio"
+                            //values={values.bio}
+                            defaultValue={bioState}
+                            as="textarea"
+                            placeholder="Type your profile name"
+                            onChange={handleBioChange}
+                            style={{ height: "100px" }}
+                          />
+                        </InputGroup>
+                        {/*Fin Campo Profile Bio*/}
+                        {/*Inicio Select Social Media Channels*/}
+                        <Form.Label
+                          className="text-white form-label"
+                          htmlFor="basic-url"
+                        >
+                          Social Media Channels:
+                        </Form.Label>
+                        <Alert variant="info">
+                          <Icon.ListCheck size={25} />
+                          &nbsp; Click from the drop down to add the social
+                          media link.
+                        </Alert>
+                        <InputGroup>
+                          <Form.Control
+                            as="select"
+                            name="socialMedia"
+                            values={values.socialMedia}
+                            onChange={(e) => {
+                              handleOnAdd(e);
+                              handleSocialMedia(e);
+                            }}
+                            className="mb-4"
+                          >
+                            <option value="">Choose your media...</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Snapchat">Snapchat</option>
+                            <option value="Youtube">Youtube</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Soundcloud">Soundcloud</option>
+                            <option value="Linkedin">Linkedin</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="Twitter">Twitter</option>
+                            <option value="Spotify">Spotify</option>
+                            <option value="Apple Music">Apple Music</option>
+                            <option value="Venmo">Venmo</option>
+                            <option value="CashApp">CashApp</option>
+                            <option value="Phone Number">Phone Number</option>
+                            <option value="Paypal">Paypal</option>
+                            <option value="Address">Address</option>
+                            <option value="Email">Email</option>
+                            <option value="Website">Website</option>
+                            <option value="CustomURL">CustomURL</option>
+                          </Form.Control>
+                        </InputGroup>
+                      </div>
+
+                      <div className="col-12 col-sm-12 col-md-6">
+                        <InputGroup className="mb-2">
+                          <Button
+                            type="submit"
+                            variant="primary"
+                            disabled={disabledButton === true}
+                            block
+                          >
+                            <div className="d-flex d-inline-block justify-content-center">
+                              <span
+                                className="spinner-border spinner-border-sm mt-1 mr-2"
+                                role="status"
+                                style={{
+                                  display:
+                                    disabledButton === true
+                                      ? "inline-block"
+                                      : "none",
+                                }}
+                                aria-hidden="true"
+                              ></span>
+                              {disabledButton === true ? (
+                                " Loading, please wait..."
+                              ) : (
+                                <>
+                                  <Icon.PersonLinesFill className="mt-1" />
+                                  &nbsp;&nbsp;
+                                  <span>Upload Changes</span>
+                                </>
+                              )}
+                            </div>
+                          </Button>
+                        </InputGroup>
+                      </div>
+
+                      <div className="col-12 col-sm-12 col-md-6">
+                        <InputGroup className="mb-2">
+                          <Button
+                            type="button"
+                            variant="danger"
+                            onClick={() => setRows([])}
+                            block
+                          >
+                            <div className="d-flex d-inline-block justify-content-center">
+                              <Icon.BackspaceFill className="mt-1" />
+                              &nbsp;&nbsp;
+                              <span>Clear Data</span>
+                            </div>
+                          </Button>
+                        </InputGroup>
+                      </div>
+                    </div>
+
+                    {
+                      //Aquí se muestran las RRSS seleccionadas
+                      //Si te fijas estoy dentro de la columna de Edición
+                      //En esta columna hay que mostrar la vista de las RRSS
+                      //seleccionadas y el campo para editarlas
+                      //por eso dentro del componente Row (primera func arriba)
+                      //le envío un view=1, así le estoy diciendo mira
+                      //en esta parte de la vista tienes que mostrarme los campos
+                      //para editar
+                    }
+                  </Form>
+                )}
+              </Formik>
+
+              {/*Comienzo de sección en donde se van mostrando los campos para escribir las rrss*/}
+              <div>
+                {rows.length > 0 ? <hr className="hr" /> : null}
+                {rows.map((row, index) => (
+                  <Row
+                    {...row}
+                    onChange={(name, value) => {
+                      handleOnChange(index, name, value);
+                    }}
+                    onRemove={() => handleOnRemove(index)}
+                    key={index}
+                    view={1}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/*Columna en donde se van mostrando los cambios*/}
+            <div className="col-sm-6">
+              <div className="d-md-none">
+                <hr className="hr" />
+              </div>
+              <div className="bg-white">
+                <div className="row">
+                  <div className="col-sm-12">
+                    <img
+                      src={
+                        base64ImgBanner === ""
+                          ? BannerImage
+                          : `data:image/jpeg;base64,${base64ImgBanner}`
+                      }
+                      style={{
+                        height: "250px",
+                      }}
+                      className="w-100"
+                      alt="backgroundImageProfile"
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-sm-12 d-flex justify-content-center">
+                    <img
+                      src={
+                        base64ImgProfile === ""
+                          ? userImage
+                          : `data:image/jpeg;base64,${base64ImgProfile}`
+                      }
+                      className="rounded-circle img-profile"
+                      alt="ProfilePhoto"
+                    />
+                  </div>
+                  <div className="col-sm-12 d-flex justify-content-center">
+                    <label className="form-label mt-3">{nameState}</label>
+                  </div>
+                  <div className="col-sm-12 d-flex justify-content-center">
+                    <label className="pt-1 text-justify">{bioState}</label>
+                  </div>
+                </div>
+                <div className="row p-3 d-flex justify-content-around">
+                  {
+                    //Aquí es en donde muestro cómo va quedando el perfil
+                    //Si te fijas mapeo el mismo arreglo rows pero lo único
+                    //que cambia es el view=2, con esto le digo que me muestre
+                    //la vista determinada para ver en tiempo real como se va
+                    //mostrando el perfil
+                    //en este tipo de vista no se puede modificar nada
+                  }
+                  {loadingProfileData === true ? (
                     <div className="d-flex d-inline-block justify-content-center">
                       <span
                         className="spinner-grow spinner-grow-sm mt-1 mr-2"
                         role="status"
                         style={{
-                          display:
-                            disabledButton === true ? "inline-block" : "none",
+                          display: "inlineBlock",
                         }}
                         aria-hidden="true"
                       ></span>
-                      {disabledButton === true
-                        ? " Loading, please wait..."
-                        : "Update Changes"}
+                      Loading...
                     </div>
-                  </Button>
-                </InputGroup>
+                  ) : (
+                    rows.map((row, index) => (
+                      <Row
+                        {...row}
+                        onChange={(name, value) => {
+                          handleOnChange(index, name, value);
+                        }}
+                        onRemove={() => handleOnRemove(index)}
+                        key={index}
+                        view={2}
+                        convertStringWithPlus={convertStringWithPlus}
+                      />
+                    ))
+                  )}
+                </div>
+                <div className="row mt-1">
+                  <div className="col-lg-12">
+                    <div className="d-flex justify-content-center">
+                      <div className="border p-3 border-link">
+                        <Button
+                          ref={target}
+                          onClick={() => {
+                            setShow(!show);
+                            copyToClipboard(username);
+                          }}
+                        >
+                          <span>
+                            <i className="bi bi-clipboard" />
+                          </span>
+                          &nbsp; Copy Link
+                        </Button>
+                        <Overlay
+                          target={target.current}
+                          show={show}
+                          placement="top"
+                        >
+                          {(props) => (
+                            <Tooltip id="overlay-example" {...props}>
+                              Profile copied to clipboard!
+                            </Tooltip>
+                          )}
+                        </Overlay>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mt-3">
+                    <div className="d-flex justify-content-center">
+                      <div className="border p-3 border-link">
+                        <h5 className="font-bold pb-3 text-center">QR Code</h5>
+                        <QRCode
+                          value={"https://profile.stdicompany.com/" + username}
+                        />
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-center mt-3">
+                      <a
+                        target="_blank"
+                        href={"https://profile.stdicompany.com/" + username}
+                      >
+                        Tap here to see your profile
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/*Fin de Formulario y muestra en vivo de como va quedando el perfil*/}
 
-                {
-                  //Aquí se muestran las RRSS seleccionadas
-                  //Si te fijas estoy dentro de la columna de Edición
-                  //En esta columna hay que mostrar la vista de las RRSS
-                  //seleccionadas y el campo para editarlas
-                  //por eso dentro del componente Row (primera func arriba)
-                  //le envío un view=1, así le estoy diciendo mira
-                  //en esta parte de la vista tienes que mostrarme los campos
-                  //para editar
-                }
-              </Form>
-            )}
-          </Formik>
-          <div>
-            {rows.length > 0 ? <hr className="hr" /> : null}
-            {rows.map((row, index) => (
-              <Row
-                {...row}
-                onChange={(name, value) => {
-                  handleOnChange(index, name, value);
-                }}
-                onRemove={() => handleOnRemove(index)}
-                key={index}
-                view={1}
-              />
-            ))}
-          </div>
+          {/*Margen inferior*/}
+          <div className="mt-5"></div>
         </div>
-
-        {/*Columna en donde se van mostrando los cambios*/}
-        <div className="bg-white col-sm-6">
-          <div className="row">
-            <img
-              src={
-                base64ImgBanner === ""
-                  ? BannerImage
-                  : `data:image/jpeg;base64,${base64ImgBanner}`
-              }
-              style={{
-                height: "250px",
-              }}
-              className="w-100"
-              alt="backgroundImageProfile"
-            />
-          </div>
-          <div className="row">
-            <div className="col-sm-12 d-flex justify-content-center">
-              <img
-                src={
-                  base64ImgProfile === ""
-                    ? userImage
-                    : `data:image/jpeg;base64,${base64ImgProfile}`
-                }
-                className="rounded-circle img-profile"
-                alt="ProfilePhoto"
-              />
-            </div>
-            <div className="col-sm-12 d-flex justify-content-center">
-              <label className="form-label mt-3">{nameState}</label>
-            </div>
-            <div className="col-sm-12 d-flex justify-content-center">
-              <label className="pt-1 text-justify">{bioState}</label>
-            </div>
-          </div>
-          <div className="row p-3 d-flex justify-content-around">
-            {
-              //Aquí es en donde muestro cómo va quedando el perfil
-              //Si te fijas mapeo el mismo arreglo rows pero lo único
-              //que cambia es el view=2, con esto le digo que me muestre
-              //la vista determinada para ver en tiempo real como se va
-              //mostrando el perfil
-              //en este tipo de vista no se puede modificar nada
-            }
-            {loadingProfileData === true ? (
-              <div className="d-flex d-inline-block justify-content-center">
-                <span
-                  className="spinner-grow spinner-grow-sm mt-1 mr-2"
-                  role="status"
-                  style={{
-                    display: "inline-block",
-                  }}
-                  aria-hidden="true"
-                ></span>
-                Loading...
-              </div>
-            ) : (
-              rows.map((row, index) => (
-                <Row
-                  {...row}
-                  onChange={(name, value) => {
-                    handleOnChange(index, name, value);
-                  }}
-                  onRemove={() => handleOnRemove(index)}
-                  key={index}
-                  view={2}
-                  convertStringWithPlus={convertStringWithPlus}
-                />
-              ))
-            )}
-          </div>
-          <div className="row p-3">
-            <div className="col-lg-12">
-              <div className="d-flex justify-content-center">
-                <QRCode value={"https://profile.stdicompany.com/" + username} />
-              </div>
-              <div className="d-flex justify-content-center mt-3">
-                <a
-                  target="_blank"
-                  href={"https://profile.stdicompany.com/" + username}
-                >
-                  Tap here to see your profile
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
     </>
   );
 };

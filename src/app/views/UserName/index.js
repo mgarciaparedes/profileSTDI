@@ -2,15 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { Button, Overlay, Tooltip } from "react-bootstrap";
 import userImage from "../../../assets/images/default-user-image.png";
 import logoImage from "../../../assets/images/logo-white.png";
+import noBanner from "../../../assets/images/no-banner.jpg";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Swal from "sweetalert2";
 import history from "../../../components/History";
 import axios from "axios";
 import helpers from "../../../components/Helpers";
-import { Switch, Route, Redirect } from "react-router-dom";
-
-//Componente Hijo
-import { SpinnerLoading } from "./childComponent/spinnerLoading";
+import { SpinnerLoading } from "../../../components/SpinnerLoading";
 
 /*Iconos que no están en boostrap-icons.css*/
 import YoutubeIcon from "../../../assets/svg/youtube.svg";
@@ -32,7 +30,7 @@ import PhoneIcon from "../../../assets/svg/phone.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
 
-const { swalOffBackend } = helpers;
+const { swalOffBackend, convertStringWithPlus, copyToClipboard } = helpers;
 const QRCode = require("qrcode.react");
 
 /*Componente para manejar nombre del usuario*/
@@ -111,22 +109,15 @@ export const UserName = ({ location }) => {
     });
   };
 
-  //Función para copiar la url
-  const copyToClipboard = () => {
-    var inputc = document.body.appendChild(document.createElement("input"));
-    inputc.value = "https://profile.stdicompany.com/"+username;
-    inputc.focus();
-    inputc.select();
-    document.execCommand("copy");
-    inputc.parentNode.removeChild(inputc);
-  };
-
   return (
-    <>
+    <div>
       {loadingProfileData === true ? (
         <SpinnerLoading />
       ) : (
-        <div style={{ width: "100%" }}>
+        <div>
+          {
+            //style={{ width: "100%" }}
+          }
           <div
             style={{
               backgroundColor: "#424242",
@@ -137,7 +128,7 @@ export const UserName = ({ location }) => {
             <img
               src={
                 base64ImgBanner === ""
-                  ? null
+                  ? noBanner
                   : `data:image/jpeg;base64,${base64ImgBanner}`
               }
               style={{
@@ -148,7 +139,7 @@ export const UserName = ({ location }) => {
             />
           </div>
           <div
-            className="g-white col-sm-12 card-body"
+            className="col-sm-12 card-body"
             style={{ backgroundColor: "white" }}
           >
             <div className="row justify-content-center">
@@ -164,7 +155,7 @@ export const UserName = ({ location }) => {
             </div>
 
             <div className="row d-flex justify-content-center h5 mt-3">
-              <h3 style={{ color: "black" }}>{profileName}</h3>
+              <h3 className="font-bold">{profileName}</h3>
             </div>
 
             <div className="row d-flex justify-content-center h5">
@@ -549,7 +540,8 @@ export const UserName = ({ location }) => {
                         className="btn-no-style"
                         target="_blank"
                         href={
-                          "https://google.com/maps/search/" + elemento.profile
+                          "https://google.com/maps/search/" +
+                          convertStringWithPlus(elemento.profile)
                         }
                       >
                         <div className="pt-3 pb-3">
@@ -584,7 +576,7 @@ export const UserName = ({ location }) => {
                       ref={target}
                       onClick={() => {
                         setShow(!show);
-                        copyToClipboard();
+                        copyToClipboard(username);
                       }}
                     >
                       <span>
@@ -616,15 +608,32 @@ export const UserName = ({ location }) => {
                     <div className="d-flex justify-content-center">
                       <h5 className="font-bold pb-3">QR Code</h5>
                     </div>
-                    <QRCode id="QR" value={"https://profile.stdicompany.com/" + username} />
+                    <QRCode
+                      id="QR"
+                      value={"https://profile.stdicompany.com/" + username}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="row p-3 text-white">
-            <div className="col-lg-12">
+          <div className="alert-information">
+            <div className="col-12">
+              <div className="d-flex justify-content-center">
+                <a
+                  className="text-white font-bold"
+                  href="https://shop.stdicompany.com/"
+                  target="_blank"
+                >
+                  STDI rocks, right? Tap here to get yours.
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-3 text-white">
+            <div className="col-12 col-sm-12">
               <div className="d-flex justify-content-center">
                 <a href="https://www.stdicompany.com/">
                   <img className="img-profile-logo" src={logoImage} />
@@ -654,6 +663,6 @@ export const UserName = ({ location }) => {
             </div>*/}
         </div>
       )}
-    </>
+    </div>
   );
 };

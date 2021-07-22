@@ -1,5 +1,5 @@
 import React from "react";
-import logoImage from "../../../../assets/images/logo-white.png";
+import logoImage from "../assets/images/logo-white.png";
 
 export const SpinnerLoading = () => {
   return (

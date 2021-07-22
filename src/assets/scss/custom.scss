@@ -6,6 +6,14 @@
   width: 100%;
 }
 
+.alert-information{
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 0px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 18px;
+}
+
 .font-bold {
   font-family: "Cairo Bold";
 }
@@ -29,7 +37,7 @@
 
 .overlay {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
   margin-top: -20px;
   margin-left: -25px;

@@ -170,7 +170,7 @@ export const Login = () => {
                       >
                         <div className="d-flex d-inline-block justify-content-center">
                           <span
-                            className="spinner-grow spinner-grow-sm mt-1 mr-2"
+                            className="spinner-border spinner-border-sm mt-1 mr-2"
                             role="status"
                             style={{
                               display:

@@ -15,6 +15,7 @@ const schema = Yup.object({
   fullName: Yup.string().required("Fullname is required."),
   userName: Yup.string()
     .required("Username is required.")
+    .min(8,"Username must have at least 8 digits.")
     .matches(/^\S*$/, "Username can't have spaces."),
   email: Yup.string()
     .required("Email is required.")
@@ -241,7 +242,7 @@ export const CreateYourProfile = () => {
                       >
                         <div className="d-flex d-inline-block justify-content-center">
                           <span
-                            className="spinner-grow spinner-grow-sm mt-1 mr-2"
+                            className="spinner-border spinner-border-sm mt-1 mr-2"
                             role="status"
                             style={{
                               display:

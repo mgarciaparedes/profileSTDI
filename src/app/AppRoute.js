@@ -22,9 +22,7 @@ import { UserName } from './views/UserName/index';
 const AppRoute = () => {
 
   return (
-    <div className="container mt-3">
-      <div className="row">
-        <div className="col-lg-12">
+    <>
         <AppProvider>
           <Switch>
             <Route exact path="/login" component={() => <Login /> } />
@@ -41,9 +39,7 @@ const AppRoute = () => {
 
           </Switch>
           </AppProvider>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 export default withRouter(AppRoute);
