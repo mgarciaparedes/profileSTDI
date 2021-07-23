@@ -26,6 +26,14 @@ const schema = Yup.object({
   password: Yup.string()
     .required("Password is required.")
     .matches(/^\S*$/, "Password can't have spaces."),
+  passwordConfirm: Yup.string()
+  .when("password", {
+    is: val => (val && val.length > 0 ? true : false),
+    then: Yup.string().oneOf(
+      [Yup.ref("password")],
+      "Both password need to be the same"
+    )
+  }),
 });
 
 export const CreateYourProfile = () => {
@@ -43,7 +51,7 @@ export const CreateYourProfile = () => {
       password: password
     };
 
-    axios.post(`/users/saveNewUser`, payload)
+    axios.post(`localhost:4000/api/users/saveNewUser`, payload)
     .then(res => {
       
       const {ok, msg} = res.data;
@@ -112,6 +120,7 @@ export const CreateYourProfile = () => {
                   email: "",
                   serialNumber: "",
                   password: "",
+                  passwordConfirm: ""
                 }}
               >
                 {({
@@ -230,6 +239,26 @@ export const CreateYourProfile = () => {
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.password}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+
+                    <InputGroup className="mb-2">
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>
+                          <Icon.KeyFill />
+                        </InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control
+                        type="password"
+                        placeholder="Confirm your password"
+                        name="passwordConfirm"
+                        value={values.passwordConfirm}
+                        onChange={handleChange}
+                        isValid={!!touched.passwordConfirm && !errors.passwordConfirm}
+                        isInvalid={!!errors.passwordConfirm && !!touched.passwordConfirm}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.passwordConfirm}
                       </Form.Control.Feedback>
                     </InputGroup>
 
