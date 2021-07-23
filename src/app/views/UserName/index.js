@@ -50,7 +50,7 @@ export const UserName = ({ location }) => {
   const username = pathname.replace("/", "");
 
   const payload = {
-    username: username,
+    username: username, /*Puede ser el usuario o el nro de serial*/
   };
 
   useEffect(() => {
