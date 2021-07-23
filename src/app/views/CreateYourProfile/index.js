@@ -51,7 +51,7 @@ export const CreateYourProfile = () => {
       password: password
     };
 
-    axios.post(`localhost:4000/api/users/saveNewUser`, payload)
+    axios.post(`/api/users/saveNewUser`, payload)
     .then(res => {
       
       const {ok, msg} = res.data;
