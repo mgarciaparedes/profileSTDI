@@ -75,6 +75,8 @@ function Row({
                 value={profile}
                 onChange={(e) => onChange("profile", e.target.value)}
                 //onClick={e => onChange("touchedField1", true)}
+                /*Acá validamos que sí la red social es "Email", forzamos las minúsculas*/
+                className={ (socialNetwork === "Email") ? "lowercase" : null}
                 placeholder={
                   socialNetwork === "Instagram"
                     ? "Instagram username"

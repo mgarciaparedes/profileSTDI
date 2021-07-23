@@ -119,6 +119,11 @@ $font-family-sans-serif: "Cairo Regular";
   box-shadow: none;
 }
 
+/*clase para colocar en un input lo que escriban en minúscula*/
+.lowercase {
+  text-transform: lowercase;
+}
+
 // Import Bootstrap and its default variables
 @import "./node_modules/bootstrap/scss/bootstrap";
 @import "./_fonts";

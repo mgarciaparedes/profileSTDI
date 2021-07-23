@@ -137,6 +137,7 @@ export const Login = () => {
                         onChange={handleChange}
                         isValid={!!touched.email && !errors.email}
                         isInvalid={!!errors.email && !!touched.email}
+                        className="lowercase"
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.email}
