@@ -109,7 +109,7 @@ export const ForgotPassword = () => {
                 // }}
                 onSubmit={onSubmit}
                 initialValues={{
-                  email: "johndoe@example.com",
+                  email: "",
                 }}
               >
                 {({

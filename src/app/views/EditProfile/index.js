@@ -76,7 +76,7 @@ function Row({
                 onChange={(e) => onChange("profile", e.target.value)}
                 //onClick={e => onChange("touchedField1", true)}
                 /*Acá validamos que sí la red social es "Email", forzamos las minúsculas*/
-                className={ (socialNetwork === "Email") ? "lowercase" : null}
+                className={socialNetwork === "Email" ? "lowercase" : null}
                 placeholder={
                   socialNetwork === "Instagram"
                     ? "Instagram username"
@@ -91,7 +91,7 @@ function Row({
                     : socialNetwork === "Soundcloud"
                     ? "Souncloud username"
                     : socialNetwork === "Linkedin"
-                    ? "Linkedin username"
+                    ? "Complete link"
                     : socialNetwork === "TikTok"
                     ? "Tiktok username"
                     : socialNetwork === "Twitter"
@@ -143,9 +143,9 @@ function Row({
                   : socialNetwork === "Facebook"
                   ? "https://www.facebook.com/" + profile
                   : socialNetwork === "Soundcloud"
-                  ? "https://www.soundcloud.com/" + profile
+                  ? "https://www.soundcloud.com/add/" + profile
                   : socialNetwork === "Linkedin"
-                  ? "https://www.linkedin.com/" + profile
+                  ? profile
                   : socialNetwork === "TikTok"
                   ? "https://www.tiktok.com/@" + profile
                   : socialNetwork === "Twitter"
@@ -442,9 +442,16 @@ export const EditProfile = () => {
     });
   };
 
+  const noBlankSpaces = () => {
+    return rows.some(function (el) {
+      return el.profile === "";
+    });
+  };
+
   const onSubmit = () => {
     setDisabledButton(true);
-    //console.log(rows);
+    console.log(rows);
+    const checkFields = noBlankSpaces();
 
     const payload = {
       profileFullName: nameState,
@@ -454,111 +461,120 @@ export const EditProfile = () => {
       socialMedia: rows,
     };
 
-    if (nameState === "") {
+    if (checkFields === true) {
       setDisabledButton(false);
+
       Swal.fire({
-        title: "Profile Fullname is required",
-        text: "We need at least this information to save your profile",
+        title: "Please check your fields",
+        text: "Can't save a social network without profile",
         icon: "info",
         confirmButtonText: "OK",
       });
     } else {
-      if (existentProfile === false) {
-        //Si existentProfile es false, quiere decir que no existe un perfil guardado para este usuario
-        //Eso quiere decir que le pega al servicio de saveProfileUserData
-        axios
-          .post("/users/saveProfileUserData", payload)
-          .then((res) => {
-            const { ok, msg } = res.data;
-
-            if (ok === true) {
-              setDisabledButton(false);
-              //Activar al usuario para que pueda modificar luego de la primera inserción en la BBDD
-              setExistentProfile(true);
-              Swal.fire({
-                title: "Great! This is your first profile.",
-                text: "Check your profile ;)",
-                icon: "success",
-                confirmButtonText: "Go to check profile",
-                showCancelButton: true,
-                cancelButtonText: "No, thats ok",
-              }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                  window
-                    .open(
-                      "https://profile.stdicompany.com/" + username,
-                      "_blank"
-                    )
-                    .focus();
-                }
-              });
-            } else {
-              setDisabledButton(false);
-              Swal.fire({
-                title: "Sorry. Try again please! 1",
-                text: msg,
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-          .catch((error) => {
-            setDisabledButton(false);
-            Swal.fire({
-              title: "Sorry. There was a crash",
-              text: "Please close this session and login again.",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          });
+      if (nameState === "") {
+        setDisabledButton(false);
+        Swal.fire({
+          title: "Profile Fullname is required",
+          text: "We need at least this information to save your profile",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
       } else {
-        //Si existentProfile es true, quiere decir que no existe un perfil guardado para este usuario
-        //Eso quiere decir que le pega al servicio de updateProfileUserData
-        axios
-          .post("/users/updateProfileUserData", payload)
-          .then((res) => {
-            const { ok, msg } = res.data;
+        if (existentProfile === false) {
+          //Si existentProfile es false, quiere decir que no existe un perfil guardado para este usuario
+          //Eso quiere decir que le pega al servicio de saveProfileUserData
+          axios
+            .post("/users/saveProfileUserData", payload)
+            .then((res) => {
+              const { ok, msg } = res.data;
 
-            if (ok === true) {
+              if (ok === true) {
+                setDisabledButton(false);
+                //Activar al usuario para que pueda modificar luego de la primera inserción en la BBDD
+                setExistentProfile(true);
+                Swal.fire({
+                  title: "Great! This is your first profile.",
+                  text: "Check your profile ;)",
+                  icon: "success",
+                  confirmButtonText: "Go to check profile",
+                  showCancelButton: true,
+                  cancelButtonText: "No, thats ok",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window
+                      .open(
+                        "https://profile.stdicompany.com/" + username,
+                        "_blank"
+                      )
+                      .focus();
+                  }
+                });
+              } else {
+                setDisabledButton(false);
+                Swal.fire({
+                  title: "Sorry. Try again please! 1",
+                  text: msg,
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
+            })
+            .catch((error) => {
               setDisabledButton(false);
               Swal.fire({
-                title: "Changes have been updated",
-                text: "Check your profile ;)",
-                icon: "success",
-                confirmButtonText: "Go to check profile",
-                showCancelButton: true,
-                cancelButtonText: "No, thats ok",
-              }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                  window
-                    .open(
-                      "https://profile.stdicompany.com/" + username,
-                      "_blank"
-                    )
-                    .focus();
-                }
-              });
-            } else {
-              setDisabledButton(false);
-              Swal.fire({
-                title: "Sorry. Try again please!",
-                text: msg,
+                title: "Sorry. There was a crash",
+                text: "Please close this session and login again.",
                 icon: "error",
                 confirmButtonText: "OK",
               });
-            }
-          })
-          .catch((error) => {
-            setDisabledButton(false);
-            Swal.fire({
-              title: "Sorry. There was a crash",
-              text: "Please close this session and login again.",
-              icon: "error",
-              confirmButtonText: "OK",
             });
-          });
+        } else {
+          //Si existentProfile es true, quiere decir que no existe un perfil guardado para este usuario
+          //Eso quiere decir que le pega al servicio de updateProfileUserData
+          axios
+            .post("/users/updateProfileUserData", payload)
+            .then((res) => {
+              const { ok, msg } = res.data;
+
+              if (ok === true) {
+                setDisabledButton(false);
+                Swal.fire({
+                  title: "Changes have been updated",
+                  text: "Check your profile ;)",
+                  icon: "success",
+                  confirmButtonText: "Go to check profile",
+                  showCancelButton: true,
+                  cancelButtonText: "No, thats ok",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window
+                      .open(
+                        "https://profile.stdicompany.com/" + username,
+                        "_blank"
+                      )
+                      .focus();
+                  }
+                });
+              } else {
+                setDisabledButton(false);
+                Swal.fire({
+                  title: "Sorry. Try again please!",
+                  text: msg,
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
+              }
+            })
+            .catch((error) => {
+              setDisabledButton(false);
+              Swal.fire({
+                title: "Sorry. There was a crash",
+                text: "Please close this session and login again.",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
+            });
+        }
       }
     }
   };

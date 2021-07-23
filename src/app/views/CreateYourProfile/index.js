@@ -21,8 +21,8 @@ const schema = Yup.object({
     .required("Email is required.")
     .email("Invalid email format."),
   serialNumber: Yup.string()
-    .required("Serial Number is required.")
-    .matches(/^[1-9]+[0-9]*$/, "Only numbers."),
+    .required("Serial Number is required."),
+    //.matches(/^[1-9]+[0-9]*$/, "Only numbers."),
   password: Yup.string()
     .required("Password is required.")
     .matches(/^\S*$/, "Password can't have spaces."),
@@ -41,6 +41,8 @@ export const CreateYourProfile = () => {
   const [disabledButton, setDisabledButton] = useState(false);
 
   const onSubmit = (event) => {
+    setDisabledButton(true);
+
     const { userName, fullName, email, serialNumber, password } = event;
 
     const payload = {
@@ -54,6 +56,7 @@ export const CreateYourProfile = () => {
     axios
       .post(`/users/saveNewUser`, payload)
       .then((res) => {
+        setDisabledButton(false);
         const { ok, msg } = res.data;
         if (ok && msg === "User created succesfully.") {
           Swal.fire({
@@ -87,6 +90,7 @@ export const CreateYourProfile = () => {
             icon: "error",
             confirmButtonText: "Try again",
           });
+          setDisabledButton(false);
         }
       });
   };

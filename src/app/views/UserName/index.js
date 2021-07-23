@@ -329,7 +329,7 @@ export const UserName = ({ location }) => {
                       <a
                         className="btn-no-style"
                         target="_blank"
-                        href={"https://www.snapchat.com/" + elemento.profile}
+                        href={"https://www.snapchat.com/add/" + elemento.profile}
                       >
                         <div className="pt-3 pb-3">
                           <div className="d-flex justify-content-center">
@@ -371,7 +371,7 @@ export const UserName = ({ location }) => {
                       <a
                         className="btn-no-style"
                         target="_blank"
-                        href={"https://www.linkedin.com/" + elemento.profile}
+                        href={elemento.profile}
                       >
                         <div className="pt-3 pb-3">
                           <div className="d-flex justify-content-center">
