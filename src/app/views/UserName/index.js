@@ -222,7 +222,7 @@ export const UserName = ({ location }) => {
                       <a
                         className="btn-no-style"
                         target="_blank"
-                        href={"https://www.wa.me/" + elemento.profile}
+                        href={"https://wa.me/" + elemento.profile}
                       >
                         <div className="pt-3 pb-3">
                           <div className="d-flex justify-content-center">
@@ -392,7 +392,7 @@ export const UserName = ({ location }) => {
                       <a
                         className="btn-no-style"
                         target="_blank"
-                        href={"www.tiktok.com/" + elemento.profile}
+                        href={"https://www.tiktok.com/@" + elemento.profile}
                       >
                         <div className="pt-3 pb-3">
                           <div className="d-flex justify-content-center">
@@ -413,7 +413,7 @@ export const UserName = ({ location }) => {
                       <a
                         className="btn-no-style"
                         target="_blank"
-                        href={"www.spotify.com/" + elemento.profile}
+                        href={"https://www.spotify.com/" + elemento.profile}
                       >
                         <div className="pt-3 pb-3">
                           <div className="d-flex justify-content-center">
@@ -434,7 +434,7 @@ export const UserName = ({ location }) => {
                       <a
                         className="btn-no-style"
                         target="_blank"
-                        href={"https://www.apple.com/" + elemento.profile}
+                        href={"https://music.apple.com/" + elemento.profile}
                       >
                         <div className="pt-3 pb-3">
                           <div className="d-flex justify-content-center">

@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import history from "../../../components/History";
 import LogoWhite from "../../../assets/images/logo-white.png";
 import * as Icon from "react-bootstrap-icons";
-import axios from 'axios';
+import axios from "axios";
 import helpers from "../../../components/Helpers";
 
 const { swalOffBackend } = helpers;
@@ -15,7 +15,7 @@ const schema = Yup.object({
   fullName: Yup.string().required("Fullname is required."),
   userName: Yup.string()
     .required("Username is required.")
-    .min(8,"Username must have at least 8 digits.")
+    .min(8, "Username must have at least 8 digits.")
     .matches(/^\S*$/, "Username can't have spaces."),
   email: Yup.string()
     .required("Email is required.")
@@ -27,73 +27,68 @@ const schema = Yup.object({
     .required("Password is required.")
     .matches(/^\S*$/, "Password can't have spaces."),
   passwordConfirm: Yup.string()
-  .required("Password is required.")
-  .when("password", {
-    is: val => (val && val.length > 0 ? true : false),
-    then: Yup.string().oneOf(
-      [Yup.ref("password")],
-      "Both password need to be the same"
-    )
-  }),
+    .required("Confirm password is required.")
+    .when("password", {
+      is: (val) => (val && val.length > 0 ? true : false),
+      then: Yup.string().oneOf(
+        [Yup.ref("password")],
+        "Both password need to be the same"
+      ),
+    }),
 });
 
 export const CreateYourProfile = () => {
   const [disabledButton, setDisabledButton] = useState(false);
 
   const onSubmit = (event) => {
-
-    const {userName, fullName, email, serialNumber, password} = event;
+    const { userName, fullName, email, serialNumber, password } = event;
 
     const payload = {
       name: fullName,
       username: userName,
       email: email,
       serialNumber: serialNumber,
-      password: password
+      password: password,
     };
 
-    axios.post(`/users/saveNewUser`, payload)
-    .then(res => {
-      
-      const {ok, msg} = res.data;
-      if(ok && msg === "User created succesfully."){
+    axios
+      .post(`/users/saveNewUser`, payload)
+      .then((res) => {
+        const { ok, msg } = res.data;
+        if (ok && msg === "User created succesfully.") {
+          Swal.fire({
+            title: "Success",
+            text: "Your profile account have been created.",
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              history.push("/login");
+            } else {
+              history.push("/login");
+            }
+          });
+        }
+      })
+      .catch((e) => {
+        /*Sí los servicios están OFF, retornamos este swal*/
+        if (e.response === undefined) {
+          swalOffBackend();
+          setDisabledButton(false);
+          return 1;
+        }
 
-        Swal.fire({
-          title: "Success",
-          text: "Your profile account have been created.",
-          icon: "success",
-          confirmButtonText: "Ok",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            history.push("/login");
-          } else {
-            history.push("/login");
-          }
-        });
-        
-      }
-    })
-    .catch(e => {
-
-      /*Sí los servicios están OFF, retornamos este swal*/
-      if(e.response === undefined){
-        swalOffBackend();
-        setDisabledButton(false);
-        return 1;
-      }
-
-      /*Si ocurre algo en el request, retoramos esto*/
-      const {msg, ok} = e.response.data;
-      if(!ok){
-        Swal.fire({
-          title: "Error",
-          text: msg,
-          icon: "error",
-          confirmButtonText: "Try again",
-        });
-      }
-    });
-
+        /*Si ocurre algo en el request, retoramos esto*/
+        const { msg, ok } = e.response.data;
+        if (!ok) {
+          Swal.fire({
+            title: "Error",
+            text: msg,
+            icon: "error",
+            confirmButtonText: "Try again",
+          });
+        }
+      });
   };
 
   return (
@@ -102,10 +97,7 @@ export const CreateYourProfile = () => {
         <div className="d-flex justify-content-center">
           <div className="card-sign-up">
             <div className="card-header">
-              <h3>Create your profile</h3>
-              <div className="d-flex justify-content-end social_icon">
-                <img className="logo-login" src={LogoWhite} alt="Logo" />
-              </div>
+              <h3 className="text-center">Create your profile</h3>
             </div>
             <div className="card-body">
               <Formik
@@ -121,7 +113,7 @@ export const CreateYourProfile = () => {
                   email: "",
                   serialNumber: "",
                   password: "",
-                  passwordConfirm: ""
+                  passwordConfirm: "",
                 }}
               >
                 {({
@@ -164,12 +156,12 @@ export const CreateYourProfile = () => {
                     <InputGroup className="mb-2">
                       <InputGroup.Prepend>
                         <InputGroup.Text>
-                          <Icon.BoxArrowUpRight />
+                          profile.stdicompany.com/
                         </InputGroup.Text>
                       </InputGroup.Prepend>
                       <Form.Control
                         type="text"
-                        placeholder="Type here your username (www.profile.stdicompany.com/username)"
+                        placeholder="username"
                         name="userName"
                         value={values.userName}
                         onChange={handleChange}
@@ -255,8 +247,12 @@ export const CreateYourProfile = () => {
                         name="passwordConfirm"
                         value={values.passwordConfirm}
                         onChange={handleChange}
-                        isValid={!!touched.passwordConfirm && !errors.passwordConfirm}
-                        isInvalid={!!errors.passwordConfirm && !!touched.passwordConfirm}
+                        isValid={
+                          !!touched.passwordConfirm && !errors.passwordConfirm
+                        }
+                        isInvalid={
+                          !!errors.passwordConfirm && !!touched.passwordConfirm
+                        }
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.passwordConfirm}

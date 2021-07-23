@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 import * as Icon from "react-bootstrap-icons";
 import userImage from "../../../assets/images/default-user-image.png";
 import IconX from "../../../assets/images/icon-eliminate.png";
-import BannerImage from "../../../assets/images/background.svg";
+import BannerImage from "../../../assets/images/no-banner.jpg";
 import { AppContext } from "../../../components/AppContext";
 import helpers from "../../../components/Helpers";
 import { SpinnerLoading } from "../../../components/SpinnerLoading";
@@ -66,25 +66,61 @@ function Row({
   return (
     <>
       {view === 1 ? (
-        <div className="row">
-          <div className="col-8 col-sm-10">
+        <div className="row mb-2">
+          <div className="col-12 col-sm-12">
             <label className="text-white">{socialNetwork}</label>
-            <Form.Control
-              name="profile"
-              value={profile}
-              onChange={(e) => onChange("profile", e.target.value)}
-              //onClick={e => onChange("touchedField1", true)}
-              placeholder="Type your profile name in this social network"
-              className="mb-2"
-            />
-          </div>
-
-          <div className="col-4 col-sm-2">
-            <label className="text-white">&nbsp;</label>
-            <br />
-            <button className="button-transparent" onClick={onRemove}>
-              <img src={IconX} className="icon-eliminate" />
-            </button>
+            <InputGroup>
+              <Form.Control
+                name="profile"
+                value={profile}
+                onChange={(e) => onChange("profile", e.target.value)}
+                //onClick={e => onChange("touchedField1", true)}
+                placeholder={
+                  socialNetwork === "Instagram"
+                    ? "Instagram username"
+                    : socialNetwork === "Snapchat"
+                    ? "Snapchat username"
+                    : socialNetwork === "Whatsapp"
+                    ? "Country code and phone number"
+                    : socialNetwork === "Youtube"
+                    ? "Complete link"
+                    : socialNetwork === "Facebook"
+                    ? "Facebook username"
+                    : socialNetwork === "Soundcloud"
+                    ? "Souncloud username"
+                    : socialNetwork === "Linkedin"
+                    ? "Linkedin username"
+                    : socialNetwork === "TikTok"
+                    ? "Tiktok username"
+                    : socialNetwork === "Twitter"
+                    ? "Twitter username"
+                    : socialNetwork === "Spotify"
+                    ? "Spotify username"
+                    : socialNetwork === "Apple Music"
+                    ? "Apple Music username"
+                    : socialNetwork === "Venmo"
+                    ? "Venmo username"
+                    : socialNetwork === "CashApp"
+                    ? "Cashapp username"
+                    : socialNetwork === "Address"
+                    ? "Complete Address"
+                    : socialNetwork === "Phone Number"
+                    ? "Country code and phone number"
+                    : socialNetwork === "Email"
+                    ? "Email"
+                    : socialNetwork === "SMS"
+                    ? "Country code and phone number"
+                    : socialNetwork === "Paypal"
+                    ? "Paypal username"
+                    : "Complete link"
+                }
+              />
+              <InputGroup.Append>
+                <Button variant="danger" onClick={onRemove}>
+                  <Icon.XCircleFill />
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
           </div>
         </div>
       ) : (
@@ -101,7 +137,7 @@ function Row({
                   : socialNetwork === "Whatsapp"
                   ? "https://wa.me/" + profile
                   : socialNetwork === "Youtube"
-                  ? "https://www.youtube.com/" + profile
+                  ? profile
                   : socialNetwork === "Facebook"
                   ? "https://www.facebook.com/" + profile
                   : socialNetwork === "Soundcloud"
@@ -109,17 +145,17 @@ function Row({
                   : socialNetwork === "Linkedin"
                   ? "https://www.linkedin.com/" + profile
                   : socialNetwork === "TikTok"
-                  ? "https://www.tiktok.com/" + profile
+                  ? "https://www.tiktok.com/@" + profile
                   : socialNetwork === "Twitter"
                   ? "https://www.twitter.com/" + profile
                   : socialNetwork === "Spotify"
                   ? "https://www.spotify.com/" + profile
                   : socialNetwork === "Apple Music"
-                  ? "https://www.apple.com/" + profile
+                  ? "https://music.apple.com/" + profile
                   : socialNetwork === "Venmo"
                   ? "https://www.venmo.com/" + profile
                   : socialNetwork === "CashApp"
-                  ? "https://www.cashapp.com/" + profile
+                  ? "https://cash.app/$" + profile
                   : socialNetwork === "Address"
                   ? "https://www.google.com/maps/search/" +
                     convertStringWithPlus(profile)
@@ -129,6 +165,8 @@ function Row({
                   ? "mailto:" + profile
                   : socialNetwork === "SMS"
                   ? "sms:" + profile
+                  : socialNetwork === "Paypal"
+                  ? "https://paypal.com/" + profile
                   : profile
               }
             >
@@ -241,13 +279,8 @@ function Row({
                       alt="Google Maps"
                     />
                   ) : socialNetwork === "SMS" ? (
-                    <img
-                      width="50"
-                      height="50"
-                      src={SmsIcon}
-                      alt="SMS"
-                    />
-                  ): socialNetwork === "Paypal" ? (
+                    <img width="50" height="50" src={SmsIcon} alt="SMS" />
+                  ) : socialNetwork === "Paypal" ? (
                     <img width="50" height="50" src={PaypalIcon} alt="Paypal" />
                   ) : (
                     profile
@@ -387,6 +420,26 @@ export const EditProfile = () => {
     setBase64ImgBanner(base64String2);
   };
 
+  const clearData = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "If you clear your profile it will be empty.",
+      icon: "info",
+      confirmButtonText: "Yes, wipe out",
+      showCancelButton: true,
+      cancelButtonText: "No, go back",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        setRows([]);
+        setNameState("");
+        setBioState("");
+        setBase64ImgProfile("");
+        setBase64ImgBanner("");
+      }
+    });
+  };
+
   const onSubmit = () => {
     setDisabledButton(true);
     //console.log(rows);
@@ -451,8 +504,8 @@ export const EditProfile = () => {
           .catch((error) => {
             setDisabledButton(false);
             Swal.fire({
-              title: "Sorry. Try again please! 2",
-              text: "",
+              title: "Sorry. There was a crash",
+              text: "Please close this session and login again.",
               icon: "error",
               confirmButtonText: "OK",
             });
@@ -498,8 +551,8 @@ export const EditProfile = () => {
           .catch((error) => {
             setDisabledButton(false);
             Swal.fire({
-              title: "Sorry. Try again please!",
-              text: "",
+              title: "Sorry. There was a crash",
+              text: "Please close this session and login again.",
               icon: "error",
               confirmButtonText: "OK",
             });
@@ -763,7 +816,7 @@ export const EditProfile = () => {
                           <Button
                             type="button"
                             variant="danger"
-                            onClick={() => setRows([])}
+                            onClick={() => clearData()}
                             block
                           >
                             <div className="d-flex d-inline-block justify-content-center">
