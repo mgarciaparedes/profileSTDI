@@ -27,6 +27,7 @@ const schema = Yup.object({
     .required("Password is required.")
     .matches(/^\S*$/, "Password can't have spaces."),
   passwordConfirm: Yup.string()
+  .required("Password is required.")
   .when("password", {
     is: val => (val && val.length > 0 ? true : false),
     then: Yup.string().oneOf(
@@ -51,7 +52,7 @@ export const CreateYourProfile = () => {
       password: password
     };
 
-    axios.post(`/api/users/saveNewUser`, payload)
+    axios.post(`/users/saveNewUser`, payload)
     .then(res => {
       
       const {ok, msg} = res.data;
