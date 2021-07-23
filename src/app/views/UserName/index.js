@@ -26,6 +26,8 @@ import VenmoIcon from "../../../assets/svg/venmo.svg";
 import PaypalIcon from "../../../assets/svg/paypal.svg";
 import MapPinIcon from "../../../assets/svg/locationmap.svg";
 import EmailIcon from "../../../assets/svg/mail.svg";
+import WhatsappIcon from "../../../assets/svg/whatsapp.svg";
+import SmsIcon from "../../../assets/svg/sms.svg";
 import PhoneIcon from "../../../assets/svg/phone.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
@@ -213,6 +215,27 @@ export const UserName = ({ location }) => {
 
                           <div className="d-flex justify-content-center">
                             <div className="d-none d-sm-block">Twitter</div>
+                          </div>
+                        </div>
+                      </a>
+                    ) : elemento.socialNetwork === "Whatsapp" ? (
+                      <a
+                        className="btn-no-style"
+                        target="_blank"
+                        href={"https://www.wa.me/" + elemento.profile}
+                      >
+                        <div className="pt-3 pb-3">
+                          <div className="d-flex justify-content-center">
+                            <img
+                              width="50"
+                              height="50"
+                              src={WhatsappIcon}
+                              alt="Whatsapp"
+                            />
+                          </div>
+
+                          <div className="d-flex justify-content-center">
+                            <div className="d-none d-sm-block">Whatsapp</div>
                           </div>
                         </div>
                       </a>
@@ -532,6 +555,27 @@ export const UserName = ({ location }) => {
 
                           <div className="d-flex justify-content-center">
                             <div className="d-none d-sm-block">Paypal</div>
+                          </div>
+                        </div>
+                      </a>
+                    ) : elemento.socialNetwork === "SMS" ? (
+                      <a
+                        className="btn-no-style"
+                        target="_blank"
+                        href={"sms:" + elemento.profile}
+                      >
+                        <div className="pt-3 pb-3">
+                          <div className="d-flex justify-content-center">
+                            <img
+                              width="50"
+                              height="50"
+                              src={SmsIcon}
+                              alt="Sms"
+                            />
+                          </div>
+
+                          <div className="d-flex justify-content-center">
+                            <div className="d-none d-sm-block">SMS</div>
                           </div>
                         </div>
                       </a>

@@ -36,3 +36,23 @@ position: absolute;
 right: 20px;
 top: -45px;
 }
+
+@media screen and (min-width: 0px) {
+    .card-login { width: 95%; }
+  }
+  @media screen and (min-width: 640px) {
+    .card-login { width: 400px; }
+  }
+  @media screen and (min-width: 1024px) {
+    .card-login { width: 400px; }
+  }
+
+@media screen and (min-width: 0px) {
+    .card-sign-up { width: 95%; }
+  }
+  @media screen and (min-width: 640px) {
+    .card-sign-up { width: 600px; }
+  }
+  @media screen and (min-width: 1024px) {
+    .card-sign-up { width: 600px; }
+  }

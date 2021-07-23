@@ -38,6 +38,8 @@ import PaypalIcon from "../../../assets/svg/paypal.svg";
 import MapPinIcon from "../../../assets/svg/locationmap.svg";
 import EmailIcon from "../../../assets/svg/mail.svg";
 import PhoneIcon from "../../../assets/svg/phone.svg";
+import WhatsappIcon from "../../../assets/svg/whatsapp.svg";
+import SmsIcon from "../../../assets/svg/sms.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
 
@@ -96,6 +98,8 @@ function Row({
                   ? "https://www.instagram.com/" + profile
                   : socialNetwork === "Snapchat"
                   ? "https://www.snapchat.com/" + profile
+                  : socialNetwork === "Whatsapp"
+                  ? "https://wa.me/" + profile
                   : socialNetwork === "Youtube"
                   ? "https://www.youtube.com/" + profile
                   : socialNetwork === "Facebook"
@@ -123,6 +127,8 @@ function Row({
                   ? "tel:" + profile
                   : socialNetwork === "Email"
                   ? "mailto:" + profile
+                  : socialNetwork === "SMS"
+                  ? "sms:" + profile
                   : profile
               }
             >
@@ -134,6 +140,13 @@ function Row({
                       height="50"
                       src={InstagramIcon}
                       alt="Instagram"
+                    />
+                  ) : socialNetwork === "Whatsapp" ? (
+                    <img
+                      width="50"
+                      height="50"
+                      src={WhatsappIcon}
+                      alt="Whatsapp"
                     />
                   ) : socialNetwork === "Snapchat" ? (
                     <img
@@ -227,7 +240,14 @@ function Row({
                       src={MapPinIcon}
                       alt="Google Maps"
                     />
-                  ) : socialNetwork === "Paypal" ? (
+                  ) : socialNetwork === "SMS" ? (
+                    <img
+                      width="50"
+                      height="50"
+                      src={SmsIcon}
+                      alt="SMS"
+                    />
+                  ): socialNetwork === "Paypal" ? (
                     <img width="50" height="50" src={PaypalIcon} alt="Paypal" />
                   ) : (
                     profile
@@ -681,6 +701,7 @@ export const EditProfile = () => {
                           >
                             <option value="">Choose your media...</option>
                             <option value="Instagram">Instagram</option>
+                            <option value="Whatsapp">Whatsapp</option>
                             <option value="Snapchat">Snapchat</option>
                             <option value="Youtube">Youtube</option>
                             <option value="Facebook">Facebook</option>
@@ -696,6 +717,7 @@ export const EditProfile = () => {
                             <option value="Paypal">Paypal</option>
                             <option value="Address">Address</option>
                             <option value="Email">Email</option>
+                            <option value="SMS">SMS</option>
                             <option value="Website">Website</option>
                             <option value="CustomURL">CustomURL</option>
                           </Form.Control>
@@ -901,7 +923,7 @@ export const EditProfile = () => {
                         />
                       </div>
                     </div>
-                    <div className="d-flex justify-content-center mt-3">
+                    <div className="d-flex justify-content-center mt-3 mb-3">
                       <a
                         target="_blank"
                         href={"https://profile.stdicompany.com/" + username}
