@@ -25,6 +25,7 @@ const schema = Yup.object({
     //.matches(/^[1-9]+[0-9]*$/, "Only numbers."),
   password: Yup.string()
     .required("Password is required.")
+    .min(8, "PAssword must have at least 8 digits.")
     .matches(/^\S*$/, "Password can't have spaces."),
   passwordConfirm: Yup.string()
     .required("Confirm password is required.")

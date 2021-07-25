@@ -19,6 +19,7 @@ import BannerImage from "../../../assets/images/no-banner.jpg";
 import { AppContext } from "../../../components/AppContext";
 import helpers from "../../../components/Helpers";
 import { SpinnerLoading } from "../../../components/SpinnerLoading";
+import ModalChangePassword from "./childrenComponents/ModalChangePassword";
 import axios from "axios";
 
 /*Iconos que no están en boostrap-icons.css*/
@@ -39,6 +40,7 @@ import MapPinIcon from "../../../assets/svg/locationmap.svg";
 import EmailIcon from "../../../assets/svg/mail.svg";
 import PhoneIcon from "../../../assets/svg/phone.svg";
 import WhatsappIcon from "../../../assets/svg/whatsapp.svg";
+import TelegramIcon from "../../../assets/svg/telegram.svg";
 import SmsIcon from "../../../assets/svg/sms.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
@@ -85,13 +87,13 @@ function Row({
                     : socialNetwork === "Whatsapp"
                     ? "Country code and phone number"
                     : socialNetwork === "Youtube"
-                    ? "Complete link"
+                    ? "Full link"
                     : socialNetwork === "Facebook"
-                    ? "Facebook username"
+                    ? "Full link"
                     : socialNetwork === "Soundcloud"
                     ? "Souncloud username"
                     : socialNetwork === "Linkedin"
-                    ? "Complete link"
+                    ? "Full link"
                     : socialNetwork === "TikTok"
                     ? "Tiktok username"
                     : socialNetwork === "Twitter"
@@ -105,16 +107,18 @@ function Row({
                     : socialNetwork === "CashApp"
                     ? "Cashapp username"
                     : socialNetwork === "Address"
-                    ? "Complete Address"
+                    ? "Complete address"
                     : socialNetwork === "Phone Number"
                     ? "Country code and phone number"
                     : socialNetwork === "Email"
-                    ? "Email"
+                    ? "Email address"
                     : socialNetwork === "SMS"
                     ? "Country code and phone number"
                     : socialNetwork === "Paypal"
                     ? "Paypal username"
-                    : "Complete link"
+                    : socialNetwork === "Telegram"
+                    ? "Telegram username"
+                    : "Full link"
                 }
               />
               <InputGroup.Append>
@@ -141,7 +145,7 @@ function Row({
                   : socialNetwork === "Youtube"
                   ? profile
                   : socialNetwork === "Facebook"
-                  ? "https://www.facebook.com/" + profile
+                  ? profile
                   : socialNetwork === "Soundcloud"
                   ? "https://www.soundcloud.com/add/" + profile
                   : socialNetwork === "Linkedin"
@@ -169,6 +173,8 @@ function Row({
                   ? "sms:" + profile
                   : socialNetwork === "Paypal"
                   ? "https://paypal.com/" + profile
+                  : socialNetwork === "Telegram"
+                  ? "https://t.me/" + profile
                   : profile
               }
             >
@@ -284,6 +290,13 @@ function Row({
                     <img width="50" height="50" src={SmsIcon} alt="SMS" />
                   ) : socialNetwork === "Paypal" ? (
                     <img width="50" height="50" src={PaypalIcon} alt="Paypal" />
+                  ) : socialNetwork === "Telegram" ? (
+                    <img
+                      width="50"
+                      height="50"
+                      src={TelegramIcon}
+                      alt="Telegram"
+                    />
                   ) : (
                     profile
                   )}
@@ -304,7 +317,6 @@ export const EditProfile = () => {
   const [existentProfile, setExistentProfile] = useState(true);
   const [nameState, setNameState] = useState("");
   const [bioState, setBioState] = useState("");
-  const [username, setUsername] = useState("");
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
   const [profileData, setProfileData] = useState([]); //Este de momento no se usa
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
@@ -312,6 +324,14 @@ export const EditProfile = () => {
   const [disabledButton, setDisabledButton] = useState(false);
   const [show, setShow] = useState(false);
   const target = useRef(null);
+
+  //para enviar al módulo de changePassword
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [serialNumber, setSerialNumber] = useState("");
+  const [email, setEmail] = useState("");
+
+
 
   const { objLogin, logoutContext } = useContext(AppContext);
 
@@ -333,6 +353,11 @@ export const EditProfile = () => {
           setBase64ImgBanner(res.data.data.base64BannerPhoto);
           setRows(res.data.data.socialMedia); //Aquí guardo si es que el profile tiene alguna red social
           setLoadingProfileData(false);
+
+          //para enviar al ChangePassword
+          setName(res.data.name);
+          setEmail(res.data.email);
+          setSerialNumber(res.data.serialNumber);
         }
       })
       .catch((error) => {
@@ -587,19 +612,28 @@ export const EditProfile = () => {
         <div className="container mt-3">
           <div className="row">
             <div className="col-sm-12 d-flex justify-content-end">
+
               <div className="text-white mt-2">
                 {objLogin.userName}&nbsp;&nbsp;
               </div>
+
+              <ModalChangePassword 
+              name={name}
+              username={username}
+              serialNumber={serialNumber}
+              email={email}
+              />
+
+              &nbsp;&nbsp;
+
               <Button
-                variant="primary"
+                variant="danger"
                 onClick={() => {
                   //history.push("/login");
                   logoutContext();
                 }}
               >
-                <div className="d-flex d-inline-block justify-content-center">
-                  Sign Out
-                </div>
+                <Icon.Power size={20} />
               </Button>
             </div>
           </div>
@@ -778,6 +812,7 @@ export const EditProfile = () => {
                             <option value="Facebook">Facebook</option>
                             <option value="Soundcloud">Soundcloud</option>
                             <option value="Linkedin">Linkedin</option>
+                            <option value="Telegram">Telegram</option>
                             <option value="TikTok">TikTok</option>
                             <option value="Twitter">Twitter</option>
                             <option value="Spotify">Spotify</option>
