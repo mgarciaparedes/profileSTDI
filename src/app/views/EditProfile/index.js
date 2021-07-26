@@ -76,9 +76,6 @@ function Row({
                 name="profile"
                 value={profile}
                 onChange={(e) => onChange("profile", e.target.value)}
-                //onClick={e => onChange("touchedField1", true)}
-                /*Acá validamos que sí la red social es "Email", forzamos las minúsculas*/
-                className={socialNetwork === "Email" ? "lowercase" : null}
                 placeholder={
                   socialNetwork === "Instagram"
                     ? "Instagram username"
@@ -331,8 +328,6 @@ export const EditProfile = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [email, setEmail] = useState("");
 
-
-
   const { objLogin, logoutContext } = useContext(AppContext);
 
   useEffect(() => {
@@ -343,6 +338,16 @@ export const EditProfile = () => {
         if (res.data.ok === false) {
           setExistentProfile(false); //Diferenciar si se le pega al servicio save
           setLoadingProfileData(false);
+          //Esto pasa en caso de que exista el usuario registrado pero no tenga ningún perfil asociado
+          //tiene que guardar el username para wue al momento de revisar su QR, copiar el link o al terminar
+          //de hacer su primer registro se pueda redirigir hacia su username
+          setUsername(res.data.username);
+          Swal.fire({
+            title: "Hi, welcome to STDI profiles",
+            text: "Save your data to see your profile ;)",
+            icon: "info",
+            confirmButtonText: "OK",
+          });
         } else {
           setExistentProfile(true); //Diferenciar si se le pega al servicio update
           setNameState(res.data.data.profileFullName);
@@ -363,12 +368,6 @@ export const EditProfile = () => {
       .catch((error) => {
         setExistentProfile(false);
         setLoadingProfileData(false);
-        Swal.fire({
-          title: "Hi, welcome to STDI profiles",
-          text: "Save your data to see your profile ;)",
-          icon: "info",
-          confirmButtonText: "OK",
-        });
       });
     console.log("Se ejecuta EditProfile");
   }, []);
@@ -612,20 +611,16 @@ export const EditProfile = () => {
         <div className="container mt-3">
           <div className="row">
             <div className="col-sm-12 d-flex justify-content-end">
-
               <div className="text-white mt-2">
                 {objLogin.userName}&nbsp;&nbsp;
               </div>
-
-              <ModalChangePassword 
-              name={name}
-              username={username}
-              serialNumber={serialNumber}
-              email={email}
+              <ModalChangePassword
+                name={name}
+                username={username}
+                serialNumber={serialNumber}
+                email={email}
               />
-
               &nbsp;&nbsp;
-
               <Button
                 variant="danger"
                 onClick={() => {
