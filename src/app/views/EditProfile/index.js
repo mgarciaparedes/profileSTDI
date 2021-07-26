@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 //import { SetChanges } from "./childComponent/SetChanges";
 import * as Icon from "react-bootstrap-icons";
 import userImage from "../../../assets/images/default-user-image.png";
-import IconX from "../../../assets/images/icon-eliminate.png";
+import history from "../../../components/History";
 import BannerImage from "../../../assets/images/no-banner.jpg";
 import { AppContext } from "../../../components/AppContext";
 import helpers from "../../../components/Helpers";
@@ -368,6 +368,19 @@ export const EditProfile = () => {
       .catch((error) => {
         setExistentProfile(false);
         setLoadingProfileData(false);
+        Swal.fire({
+          title: "This session is over :(",
+          text: "Please login again",
+          icon: "Error",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            history.push("/");
+          } else {
+            history.push("/");
+          }
+        });
       });
     console.log("Se ejecuta EditProfile");
   }, []);
