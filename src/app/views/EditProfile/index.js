@@ -128,6 +128,7 @@ function Row({
                 </InputGroup.Append>
               </InputGroup>
             ) : (
+              <>
               <InputGroup>
                 <FormControl
                   placeholder="Description"
@@ -135,7 +136,8 @@ function Row({
                   value={linkName}
                   onChange={(e) => onChange("linkName", e.target.value)}
                 />
-                <InputGroup.Text>|</InputGroup.Text>
+                </InputGroup>
+                <InputGroup>
                 <FormControl
                   placeholder="Type the full link"
                   name="profile"
@@ -148,10 +150,11 @@ function Row({
                   </Button>
                 </InputGroup.Append>
               </InputGroup>
+              </>
             )}
           </div>
         </div>
-      ) : (
+      ) : view === 2 && socialNetwork !== "CustomURL" ? (
         <>
           <div className="border border-link m-2 col-3">
             <a
@@ -294,13 +297,6 @@ function Row({
                       src={WebsiteIcon}
                       alt="Website"
                     />
-                  ) : socialNetwork === "CustomURL" ? (
-                    <img
-                      width="50"
-                      height="50"
-                      src={CustomURLIcon}
-                      alt="CustomURL"
-                    />
                   ) : socialNetwork === "Address" ? (
                     <img
                       width="50"
@@ -319,9 +315,7 @@ function Row({
                       src={TelegramIcon}
                       alt="Telegram"
                     />
-                  ) : (
-                    profile
-                  )}
+                  ) : null}
                 </div>
                 <div className="d-flex justify-content-center">
                   <div className="d-none d-sm-block">{socialNetwork}</div>
@@ -330,7 +324,7 @@ function Row({
             </a>
           </div>
         </>
-      )}
+      ) : null}
     </>
   );
 }
@@ -1035,6 +1029,36 @@ export const EditProfile = () => {
                     ))
                   )}
                 </div>
+                {rows.map((elemento, index) => (
+                  <>
+                    {elemento.socialNetwork === "CustomURL" ? (
+                      <div className="row d-flex justify-content-center h5 pb-3">
+                        <div
+                          key={index}
+                          className="border p-2 border-link col-10"
+                        >
+                          <a
+                            className="btn-no-style"
+                            target="_blank"
+                            href={elemento.profile}
+                          >
+                            <div className="d-flex col-lg-12 justify-content-center">
+                              <img
+                                className="mt-1"
+                                width="25"
+                                height="25"
+                                src={CustomURLIcon}
+                                alt="CustomURL"
+                              />
+                              &nbsp;
+                              {elemento.linkName}
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    ) : null}
+                  </>
+                ))}
                 <div className="row mt-1">
                   <div className="col-lg-12">
                     <div className="d-flex justify-content-center">
