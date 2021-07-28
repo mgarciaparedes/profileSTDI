@@ -9,6 +9,7 @@ import {
   Button,
   Overlay,
   Tooltip,
+  FormControl,
 } from "react-bootstrap";
 import Swal from "sweetalert2";
 //import { SetChanges } from "./childComponent/SetChanges";
@@ -61,6 +62,7 @@ function Row({
   view,
   profile,
   socialNetwork,
+  linkName,
   convertStringWithPlus,
   //socialNetworkIcon,
   //socialNetworkURL,
@@ -71,59 +73,82 @@ function Row({
         <div className="row mb-2">
           <div className="col-12 col-sm-12">
             <label className="text-white">{socialNetwork}</label>
-            <InputGroup>
-              <Form.Control
-                name="profile"
-                value={profile}
-                onChange={(e) => onChange("profile", e.target.value)}
-                placeholder={
-                  socialNetwork === "Instagram"
-                    ? "Instagram username"
-                    : socialNetwork === "Snapchat"
-                    ? "Snapchat username"
-                    : socialNetwork === "Whatsapp"
-                    ? "Country code and phone number"
-                    : socialNetwork === "Youtube"
-                    ? "Full link"
-                    : socialNetwork === "Facebook"
-                    ? "Full link"
-                    : socialNetwork === "Soundcloud"
-                    ? "Souncloud username"
-                    : socialNetwork === "Linkedin"
-                    ? "Full link"
-                    : socialNetwork === "TikTok"
-                    ? "Tiktok username"
-                    : socialNetwork === "Twitter"
-                    ? "Twitter username"
-                    : socialNetwork === "Spotify"
-                    ? "Spotify username"
-                    : socialNetwork === "Apple Music"
-                    ? "Apple Music username"
-                    : socialNetwork === "Venmo"
-                    ? "Venmo username"
-                    : socialNetwork === "CashApp"
-                    ? "Cashapp username"
-                    : socialNetwork === "Address"
-                    ? "Complete address"
-                    : socialNetwork === "Phone Number"
-                    ? "Country code and phone number"
-                    : socialNetwork === "Email"
-                    ? "Email address"
-                    : socialNetwork === "SMS"
-                    ? "Country code and phone number"
-                    : socialNetwork === "Paypal"
-                    ? "Paypal username"
-                    : socialNetwork === "Telegram"
-                    ? "Telegram username"
-                    : "Full link"
-                }
-              />
-              <InputGroup.Append>
-                <Button variant="danger" onClick={onRemove}>
-                  <Icon.XCircleFill />
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
+            {socialNetwork !== "CustomURL" ? (
+              <InputGroup>
+                <Form.Control
+                  name="profile"
+                  value={profile}
+                  onChange={(e) => onChange("profile", e.target.value)}
+                  placeholder={
+                    socialNetwork === "Instagram"
+                      ? "Instagram username"
+                      : socialNetwork === "Snapchat"
+                      ? "Snapchat username"
+                      : socialNetwork === "Whatsapp"
+                      ? "Country code and phone number"
+                      : socialNetwork === "Youtube"
+                      ? "Type the full link"
+                      : socialNetwork === "Facebook"
+                      ? "Type the full link"
+                      : socialNetwork === "Soundcloud"
+                      ? "Souncloud username"
+                      : socialNetwork === "Linkedin"
+                      ? "Type the full link"
+                      : socialNetwork === "TikTok"
+                      ? "Type the full link"
+                      : socialNetwork === "Twitter"
+                      ? "Twitter username"
+                      : socialNetwork === "Spotify"
+                      ? "Spotify username"
+                      : socialNetwork === "Apple Music"
+                      ? "Apple Music username"
+                      : socialNetwork === "Venmo"
+                      ? "Venmo username"
+                      : socialNetwork === "CashApp"
+                      ? "Cashapp username"
+                      : socialNetwork === "Address"
+                      ? "Type the full address"
+                      : socialNetwork === "Phone Number"
+                      ? "Country code and phone number"
+                      : socialNetwork === "Email"
+                      ? "Type the email address"
+                      : socialNetwork === "SMS"
+                      ? "Country code and phone number"
+                      : socialNetwork === "Paypal"
+                      ? "Paypal username"
+                      : socialNetwork === "Telegram"
+                      ? "Telegram username"
+                      : "Type the full link"
+                  }
+                />
+                <InputGroup.Append>
+                  <Button variant="danger" onClick={onRemove}>
+                    <Icon.XCircleFill />
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            ) : (
+              <InputGroup>
+                <FormControl
+                  placeholder="Description"
+                  name="linkName"
+                  value={linkName}
+                  onChange={(e) => onChange("linkName", e.target.value)}
+                />
+                <InputGroup.Text>|</InputGroup.Text>
+                <FormControl
+                  placeholder="Type the full link"
+                  name="profile"
+                  value={profile}
+                  onChange={(e) => onChange("profile", e.target.value)}
+                />
+                <InputGroup.Append>
+                  <Button variant="danger" onClick={onRemove}>
+                    <Icon.XCircleFill />
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            )}
           </div>
         </div>
       ) : (
@@ -148,7 +173,7 @@ function Row({
                   : socialNetwork === "Linkedin"
                   ? profile
                   : socialNetwork === "TikTok"
-                  ? "https://www.tiktok.com/@" + profile
+                  ? profile
                   : socialNetwork === "Twitter"
                   ? "https://www.twitter.com/" + profile
                   : socialNetwork === "Spotify"
@@ -299,7 +324,7 @@ function Row({
                   )}
                 </div>
                 <div className="d-flex justify-content-center">
-                  <h6>{socialNetwork}</h6>
+                  <div className="d-none d-sm-block">{socialNetwork}</div>
                 </div>
               </div>
             </a>
@@ -402,15 +427,24 @@ export const EditProfile = () => {
   const handleOnAdd = (e) => {
     //Aquí valido que si eligen choose your media no se agregue nada
     if (e.target.value !== "") {
-      setRows(
-        rows.concat({
-          socialNetwork: e.target.value,
-          profile: "",
-          //socialNetworkIcon: e.target.value === "Instagram" ? <Icon.Instagram /> : null,
-          //socialNetworkIcon: findIcon(e.target.value),
-          //socialNetworkURL: findURL(e.target.value),
-        })
-      );
+      //el campo CustomURL va a guardar otro dato -> el nombre del link
+      //Entonces dependiendo de la red social elegida digo si va a guardar ese dato extra o no
+      if (e.target.value === "CustomURL") {
+        setRows(
+          rows.concat({
+            socialNetwork: e.target.value,
+            profile: "",
+            linkName: "",
+          })
+        );
+      } else {
+        setRows(
+          rows.concat({
+            socialNetwork: e.target.value,
+            profile: "",
+          })
+        );
+      }
     }
   };
 
@@ -429,16 +463,17 @@ export const EditProfile = () => {
     setBioState(e.target.value);
   };
 
-  const [formEditProfile, setFormEditProfile] = useForm({
+  /*const [formEditProfile, setFormEditProfile] = useForm({
     button: null,
     bio: null,
     socialMedia: null,
+
   });
 
   const handleSocialMedia = (e) => {
     setFormEditProfile(e);
     console.log(formEditProfile);
-  };
+  };*/
 
   //Función que convierte imágenes a base64
   const reader = new FileReader();
@@ -807,8 +842,10 @@ export const EditProfile = () => {
                             name="socialMedia"
                             values={values.socialMedia}
                             onChange={(e) => {
+                              //if ((e.target.value = "CustomURL")) {
+                              //}
                               handleOnAdd(e);
-                              handleSocialMedia(e);
+                              //handleSocialMedia(e);
                             }}
                             className="mb-4"
                           >
