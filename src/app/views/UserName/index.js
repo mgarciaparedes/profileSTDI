@@ -124,11 +124,13 @@ export const UserName = ({ location }) => {
             //style={{ width: "100%" }}
           }
           <div
-            style={{
-              backgroundColor: "#424242",
-              height: "200px",
-              width: "100%",
-            }}
+            // style={{
+            //   backgroundColor: "#424242",
+            //   height: "200px",
+            //   width: "100%",
+            // }}
+            className="banner-with-no-image"
+            
           >
             <img
               src={
@@ -136,10 +138,7 @@ export const UserName = ({ location }) => {
                   ? noBanner
                   : `data:image/jpeg;base64,${base64ImgBanner}`
               }
-              style={{
-                height: "200px",
-              }}
-              className="w-100"
+              className="banner w-100"
               alt="backgroundImageProfile"
             />
           </div>

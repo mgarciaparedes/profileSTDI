@@ -126,6 +126,29 @@ $font-family-sans-serif: "Cairo Regular";
   text-transform: lowercase;
 }
 
+.banner-with-no-image{
+  height: 250px;
+  background-color: "#424242";
+  width: 100%
+}
+
+.banner{
+  height: 250px;
+}
+
+@media screen and (min-width: 0px) {
+  .banner { height: 200px; }
+  .banner-with-no-image { height: 200px; }
+}
+@media screen and (min-width: 640px) {
+  .banner { height: 250px; }
+  .banner-with-no-image { height: 250px; }
+}
+@media screen and (min-width: 1024px) {
+  .banner { height: 250px; }
+  .banner-with-no-image { height: 250px; }
+}
+
 // Import Bootstrap and its default variables
 @import "./node_modules/bootstrap/scss/bootstrap";
 @import "./_fonts";
