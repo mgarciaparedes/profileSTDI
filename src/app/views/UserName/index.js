@@ -126,7 +126,7 @@ export const UserName = ({ location }) => {
           <div
             style={{
               backgroundColor: "#424242",
-              height: "250px",
+              height: "200px",
               width: "100%",
             }}
           >
@@ -137,7 +137,7 @@ export const UserName = ({ location }) => {
                   : `data:image/jpeg;base64,${base64ImgBanner}`
               }
               style={{
-                height: "250px",
+                height: "200px",
               }}
               className="w-100"
               alt="backgroundImageProfile"
@@ -154,7 +154,7 @@ export const UserName = ({ location }) => {
                     ? userImage
                     : `data:image/jpeg;base64,${base64ImgProfile}`
                 }
-                className="rounded-circle img-profile"
+                className="img-profile"
                 alt="ProfilePhoto"
               />
             </div>

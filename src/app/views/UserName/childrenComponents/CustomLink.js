@@ -15,7 +15,7 @@ export const CustomLink = ({ socialMedia, CustomURLIcon }) => {
                 >
                   <div className="d-flex col-lg-12 justify-content-center">
                     <img
-                      className="mt-1"
+                      style={{ marginTop: '6px' }}
                       width="25"
                       height="25"
                       src={CustomURLIcon}
