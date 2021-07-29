@@ -52,7 +52,14 @@ function ModalChangePassword({ name, username, serialNumber, email }) {
     axios
       .post("/auth/changePassword", payload)
       .then((res) => {
-        if (res.data.ok === true) {
+        if (res.data.ok === false) {
+          Swal.fire({
+            title: "There's something wrong",
+            text: res.data.msg,
+            icon: "info",
+            confirmButtonText: "Ok",
+          });
+        } else {
           Swal.fire({
             title: "Changes saved succesfully",
             text: "",
@@ -61,13 +68,6 @@ function ModalChangePassword({ name, username, serialNumber, email }) {
           });
           handleClose();
           setDisabledButton(false);
-        } else {
-          Swal.fire({
-            title: "There's something wrong",
-            text: res.data.msg,
-            icon: "info",
-            confirmButtonText: "Ok",
-          });
         }
 
         setDisabledButton(false);
@@ -194,18 +194,31 @@ function ModalChangePassword({ name, username, serialNumber, email }) {
                 <Button variant="light" onClick={handleClose}>
                   Close
                 </Button>
-                <Button type="submit" disabled={disabledButton === true}>
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                    style={{
-                      display:
-                        disabledButton === true ? "inline-block" : "none",
-                    }}
-                    aria-hidden="true"
-                  ></span>
-                  &nbsp;&nbsp;
-                  {disabledButton === true ? "Updating..." : "Update"}
+                <Button
+                  type="submit"
+                  variant="primary"
+                  disabled={disabledButton === true}
+                >
+                  <div className="d-flex d-inline-block justify-content-center">
+                    <span
+                      className="spinner-border spinner-border-sm mt-1 mr-2"
+                      role="status"
+                      style={{
+                        display:
+                          disabledButton === true ? "inline-block" : "none",
+                      }}
+                      aria-hidden="true"
+                    ></span>
+                    {disabledButton === true ? (
+                      " Saving, please wait..."
+                    ) : (
+                      <>
+                        <Icon.Check2Square className="mt-1" />
+                        &nbsp;&nbsp;
+                        <span>Change Password</span>
+                      </>
+                    )}
+                  </div>
                 </Button>
               </Modal.Footer>
             </Form>

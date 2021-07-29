@@ -42,6 +42,11 @@ import EmailIcon from "../../../assets/svg/mail.svg";
 import PhoneIcon from "../../../assets/svg/phone.svg";
 import WhatsappIcon from "../../../assets/svg/whatsapp.svg";
 import TelegramIcon from "../../../assets/svg/telegram.svg";
+import GoFundMeIcon from "../../../assets/svg/gofundme.svg";
+import TwitchIcon from "../../../assets/svg/twitch.svg";
+import OnlyFansIcon from "../../../assets/svg/onlyfans.svg";
+import DiscordIcon from "../../../assets/svg/discord.svg";
+import HousePartyIcon from "../../../assets/svg/houseparty.svg";
 import SmsIcon from "../../../assets/svg/sms.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
@@ -116,8 +121,18 @@ function Row({
                       ? "Country code and phone number"
                       : socialNetwork === "Paypal"
                       ? "Paypal username"
+                      : socialNetwork === "OnlyFans"
+                      ? "OnlyFans username"
+                      : socialNetwork === "GoFundMe"
+                      ? "Type the full link"
                       : socialNetwork === "Telegram"
                       ? "Telegram username"
+                      : socialNetwork === "Twitch"
+                      ? "Twitch username"
+                      : socialNetwork === "Discord"
+                      ? "Type the full link"
+                      : socialNetwork === "HouseParty"
+                      ? "HouseParty username"
                       : "Type the full link"
                   }
                 />
@@ -129,27 +144,27 @@ function Row({
               </InputGroup>
             ) : (
               <>
-              <InputGroup>
-                <FormControl
-                  placeholder="Description"
-                  name="linkName"
-                  value={linkName}
-                  onChange={(e) => onChange("linkName", e.target.value)}
-                />
+                <InputGroup>
+                  <FormControl
+                    placeholder="Description"
+                    name="linkName"
+                    value={linkName}
+                    onChange={(e) => onChange("linkName", e.target.value)}
+                  />
                 </InputGroup>
                 <InputGroup>
-                <FormControl
-                  placeholder="Type the full link"
-                  name="profile"
-                  value={profile}
-                  onChange={(e) => onChange("profile", e.target.value)}
-                />
-                <InputGroup.Append>
-                  <Button variant="danger" onClick={onRemove}>
-                    <Icon.XCircleFill />
-                  </Button>
-                </InputGroup.Append>
-              </InputGroup>
+                  <FormControl
+                    placeholder="Type the full link"
+                    name="profile"
+                    value={profile}
+                    onChange={(e) => onChange("profile", e.target.value)}
+                  />
+                  <InputGroup.Append>
+                    <Button variant="danger" onClick={onRemove}>
+                      <Icon.XCircleFill />
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
               </>
             )}
           </div>
@@ -200,6 +215,16 @@ function Row({
                   ? "https://paypal.com/" + profile
                   : socialNetwork === "Telegram"
                   ? "https://t.me/" + profile
+                  : socialNetwork === "OnlyFans"
+                  ? "https://onlyfans.com/" + profile
+                  : socialNetwork === "GoFundMe"
+                  ? profile
+                  : socialNetwork === "Twitch"
+                  ? "https://twitch.tv/" + profile
+                  : socialNetwork === "Discord"
+                  ? profile
+                  : socialNetwork === "HouseParty"
+                  ? "https://houseparty.com/add/" + profile
                   : profile
               }
             >
@@ -315,6 +340,36 @@ function Row({
                       src={TelegramIcon}
                       alt="Telegram"
                     />
+                  ) : socialNetwork === "OnlyFans" ? (
+                    <img
+                      width="50"
+                      height="50"
+                      src={OnlyFansIcon}
+                      alt="OnlyFans"
+                    />
+                  ) : socialNetwork === "GoFundMe" ? (
+                    <img
+                      width="50"
+                      height="50"
+                      src={GoFundMeIcon}
+                      alt="GoFundMe"
+                    />
+                  ) : socialNetwork === "Twitch" ? (
+                    <img width="50" height="50" src={TwitchIcon} alt="Twitch" />
+                  ) : socialNetwork === "Discord" ? (
+                    <img
+                      width="50"
+                      height="50"
+                      src={DiscordIcon}
+                      alt="Discord"
+                    />
+                  ) : socialNetwork === "HouseParty" ? (
+                    <img
+                      width="50"
+                      height="50"
+                      src={HousePartyIcon}
+                      alt="HouseParty"
+                    />
                   ) : null}
                 </div>
                 <div className="d-flex justify-content-center">
@@ -388,9 +443,9 @@ export const EditProfile = () => {
         setExistentProfile(false);
         setLoadingProfileData(false);
         Swal.fire({
-          title: "This session is over :(",
+          title: "This session is over",
           text: "Please login again",
-          icon: "Error",
+          icon: "error",
           confirmButtonText: "OK",
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
@@ -860,6 +915,11 @@ export const EditProfile = () => {
                             <option value="CashApp">CashApp</option>
                             <option value="Phone Number">Phone Number</option>
                             <option value="Paypal">Paypal</option>
+                            <option value="GoFundMe">GoFundMe</option>
+                            <option value="Twitch">Twitch</option>
+                            <option value="Discord">Discord</option>
+                            <option value="HouseParty">HouseParty</option>
+                            <option value="OnlyFans">OnlyFans</option>
                             <option value="Address">Address</option>
                             <option value="Email">Email</option>
                             <option value="SMS">SMS</option>
@@ -895,7 +955,7 @@ export const EditProfile = () => {
                                 <>
                                   <Icon.PersonLinesFill className="mt-1" />
                                   &nbsp;&nbsp;
-                                  <span>Upload Changes</span>
+                                  <span>Save Changes</span>
                                 </>
                               )}
                             </div>

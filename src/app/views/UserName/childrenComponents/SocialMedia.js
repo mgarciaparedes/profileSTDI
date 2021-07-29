@@ -1,35 +1,40 @@
-import React from 'react'
+import React from "react";
 
-export const SocialMedia = ({socialMedia,
-    YoutubeIcon,
-    TwitterIcon,
-    WhatsappIcon,
-    InstagramIcon,
-    FacebookIcon,
-    EmailIcon,
-    PhoneIcon,
-    SnapchatIcon,
-    SoundcloudIcon,
-    LinkedinIcon,
-    TiktokIcon,
-    SpotifyIcon,
-    AppleMusicIcon,
-    VenmoIcon,
-    CashappIcon,
-    WebsiteIcon,
-    PaypalIcon,
-    TelegramIcon,
-    SmsIcon,
-    convertStringWithPlus,
-    MapPinIcon}) => {
-    return (
-        <div className="row d-flex justify-content-center h5">
-        {socialMedia.map((elemento,
-        index) => (
-
-          elemento.socialNetwork != "CustomURL" ? 
+export const SocialMedia = ({
+  socialMedia,
+  YoutubeIcon,
+  TwitterIcon,
+  WhatsappIcon,
+  InstagramIcon,
+  FacebookIcon,
+  EmailIcon,
+  PhoneIcon,
+  SnapchatIcon,
+  SoundcloudIcon,
+  LinkedinIcon,
+  TiktokIcon,
+  SpotifyIcon,
+  AppleMusicIcon,
+  VenmoIcon,
+  CashappIcon,
+  WebsiteIcon,
+  PaypalIcon,
+  TelegramIcon,
+  OnlyFansIcon,
+  GoFundMeIcon,
+  TwitchIcon,
+  DiscordIcon,
+  HousePartyIcon,
+  SmsIcon,
+  convertStringWithPlus,
+  MapPinIcon,
+}) => {
+  return (
+    <div className="row d-flex justify-content-center h5">
+      {socialMedia.map((elemento, index) =>
+        elemento.socialNetwork != "CustomURL" ? (
           <div key={index} className="border border-link m-2 col-3">
-          {
+            {
               /*Según la red que responde el servicio,
               condicionamos que red social mostrar*/
               elemento.socialNetwork === "Youtube" ? (
@@ -145,12 +150,7 @@ export const SocialMedia = ({socialMedia,
                 >
                   <div className="pt-3 pb-3">
                     <div className="d-flex justify-content-center">
-                      <img
-                        width="50"
-                        height="50"
-                        src={EmailIcon}
-                        alt="Email"
-                      />
+                      <img width="50" height="50" src={EmailIcon} alt="Email" />
                     </div>
 
                     <div className="d-flex justify-content-center">
@@ -166,18 +166,11 @@ export const SocialMedia = ({socialMedia,
                 >
                   <div className="pt-3 pb-3">
                     <div className="d-flex justify-content-center">
-                      <img
-                        width="50"
-                        height="50"
-                        src={PhoneIcon}
-                        alt="Phone"
-                      />
+                      <img width="50" height="50" src={PhoneIcon} alt="Phone" />
                     </div>
 
                     <div className="d-flex justify-content-center">
-                      <div className="d-none d-sm-block">
-                        Phone Number
-                      </div>
+                      <div className="d-none d-sm-block">Phone Number</div>
                     </div>
                   </div>
                 </a>
@@ -185,9 +178,7 @@ export const SocialMedia = ({socialMedia,
                 <a
                   className="btn-no-style"
                   target="_blank"
-                  href={
-                    "https://www.snapchat.com/add/" + elemento.profile
-                  }
+                  href={"https://www.snapchat.com/add/" + elemento.profile}
                 >
                   <div className="pt-3 pb-3">
                     <div className="d-flex justify-content-center">
@@ -250,7 +241,7 @@ export const SocialMedia = ({socialMedia,
                 <a
                   className="btn-no-style"
                   target="_blank"
-                  href={"https://www.tiktok.com/@" + elemento.profile}
+                  href={elemento.profile}
                 >
                   <div className="pt-3 pb-3">
                     <div className="d-flex justify-content-center">
@@ -317,12 +308,7 @@ export const SocialMedia = ({socialMedia,
                 >
                   <div className="pt-3 pb-3">
                     <div className="d-flex justify-content-center">
-                      <img
-                        width="50"
-                        height="50"
-                        src={VenmoIcon}
-                        alt="Venmo"
-                      />
+                      <img width="50" height="50" src={VenmoIcon} alt="Venmo" />
                     </div>
 
                     <div className="d-flex justify-content-center">
@@ -376,9 +362,7 @@ export const SocialMedia = ({socialMedia,
                 <a
                   className="btn-no-style"
                   target="_blank"
-                  href={
-                    "https://www.paypal.com/paypalme/" + elemento.profile
-                  }
+                  href={"https://www.paypal.com/paypalme/" + elemento.profile}
                 >
                   <div className="pt-3 pb-3">
                     <div className="d-flex justify-content-center">
@@ -395,13 +379,116 @@ export const SocialMedia = ({socialMedia,
                     </div>
                   </div>
                 </a>
+              ) : elemento.socialNetwork === "OnlyFans" ? (
+                <a
+                  className="btn-no-style"
+                  target="_blank"
+                  href={"https://onlyfans.com/" + elemento.profile}
+                >
+                  <div className="pt-3 pb-3">
+                    <div className="d-flex justify-content-center">
+                      <img
+                        width="50"
+                        height="50"
+                        src={OnlyFansIcon}
+                        alt="OnlyFans"
+                      />
+                    </div>
+
+                    <div className="d-flex justify-content-center">
+                      <div className="d-none d-sm-block">OnlyFans</div>
+                    </div>
+                  </div>
+                </a>
+              ) : elemento.socialNetwork === "GoFundMe" ? (
+                <a
+                  className="btn-no-style"
+                  target="_blank"
+                  href={elemento.profile}
+                >
+                  <div className="pt-3 pb-3">
+                    <div className="d-flex justify-content-center">
+                      <img
+                        width="50"
+                        height="50"
+                        src={GoFundMeIcon}
+                        alt="GoFundMe"
+                      />
+                    </div>
+
+                    <div className="d-flex justify-content-center">
+                      <div className="d-none d-sm-block">GoFundMe</div>
+                    </div>
+                  </div>
+                </a>
+              ) : elemento.socialNetwork === "Twitch" ? (
+                <a
+                  className="btn-no-style"
+                  target="_blank"
+                  href={"https://twitch.tv/" + elemento.profile}
+                >
+                  <div className="pt-3 pb-3">
+                    <div className="d-flex justify-content-center">
+                      <img
+                        width="50"
+                        height="50"
+                        src={TwitchIcon}
+                        alt="Twitch"
+                      />
+                    </div>
+
+                    <div className="d-flex justify-content-center">
+                      <div className="d-none d-sm-block">Twitch</div>
+                    </div>
+                  </div>
+                </a>
+              ) : elemento.socialNetwork === "Discord" ? (
+                <a
+                  className="btn-no-style"
+                  target="_blank"
+                  href={elemento.profile}
+                >
+                  <div className="pt-3 pb-3">
+                    <div className="d-flex justify-content-center">
+                      <img
+                        width="50"
+                        height="50"
+                        src={DiscordIcon}
+                        alt="Discord"
+                      />
+                    </div>
+
+                    <div className="d-flex justify-content-center">
+                      <div className="d-none d-sm-block">Discord</div>
+                    </div>
+                  </div>
+                </a>
+              ) : elemento.socialNetwork === "HouseParty" ? (
+                <a
+                  className="btn-no-style"
+                  target="_blank"
+                  href={"https://houseparty.com/add/" + elemento.profile}
+                >
+                  <div className="pt-3 pb-3">
+                    <div className="d-flex justify-content-center">
+                      <img
+                        width="50"
+                        height="50"
+                        src={HousePartyIcon}
+                        alt="HouseParty"
+                      />
+                    </div>
+
+                    <div className="d-flex justify-content-center">
+                      <div className="d-none d-sm-block">HouseParty</div>
+                    </div>
+                  </div>
+                </a>
               ) : elemento.socialNetwork === "Telegram" ? (
                 <a
                   className="btn-no-style"
                   target="_blank"
-                  href={
-                    "https://t.me/" + elemento.profile
-                  }
+                  href={"https://t.me/" + elemento.profile}
                 >
                   <div className="pt-3 pb-3">
                     <div className="d-flex justify-content-center">
@@ -426,12 +513,7 @@ export const SocialMedia = ({socialMedia,
                 >
                   <div className="pt-3 pb-3">
                     <div className="d-flex justify-content-center">
-                      <img
-                        width="50"
-                        height="50"
-                        src={SmsIcon}
-                        alt="Sms"
-                      />
+                      <img width="50" height="50" src={SmsIcon} alt="Sms" />
                     </div>
 
                     <div className="d-flex justify-content-center">
@@ -466,10 +548,10 @@ export const SocialMedia = ({socialMedia,
               ) : (
                 <></>
               )
-            }                  
+            }
           </div>
-          : null
-        ))}
-      </div>
-    )
-}
+        ) : null
+      )}
+    </div>
+  );
+};

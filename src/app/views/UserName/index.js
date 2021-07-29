@@ -28,10 +28,17 @@ import MapPinIcon from "../../../assets/svg/locationmap.svg";
 import EmailIcon from "../../../assets/svg/mail.svg";
 import WhatsappIcon from "../../../assets/svg/whatsapp.svg";
 import TelegramIcon from "../../../assets/svg/telegram.svg";
+import GoFundMeIcon from "../../../assets/svg/gofundme.svg";
+import TwitchIcon from "../../../assets/svg/twitch.svg";
+import OnlyFansIcon from "../../../assets/svg/onlyfans.svg";
+import DiscordIcon from "../../../assets/svg/discord.svg";
+import HousePartyIcon from "../../../assets/svg/houseparty.svg";
 import SmsIcon from "../../../assets/svg/sms.svg";
 import PhoneIcon from "../../../assets/svg/phone.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
+
+//Componentes hijos
 import { SocialMedia } from "./childrenComponents/SocialMedia";
 import { CustomLink } from "./childrenComponents/CustomLink";
 
@@ -130,7 +137,6 @@ export const UserName = ({ location }) => {
             //   width: "100%",
             // }}
             className="banner-with-no-image"
-            
           >
             <img
               src={
@@ -158,12 +164,16 @@ export const UserName = ({ location }) => {
               />
             </div>
 
-            <div className="row d-flex justify-content-center h5 mt-3">
-              <h3 className="font-bold">{profileName}</h3>
+            <div className="row h5 mt-3">
+              <div className="col-12 d-flex justify-content-center">
+                <h3 className="font-bold">{profileName}</h3>
+              </div>
             </div>
 
-            <div className="row d-flex justify-content-center h5">
-              <h5>{profileBio}</h5>
+            <div className="row text-center h5">
+              <div className="col-12 d-flex justify-content-center">
+                <h5>{profileBio}</h5>
+              </div>
             </div>
 
             {/*<div className="row">
@@ -173,17 +183,42 @@ export const UserName = ({ location }) => {
                     </div>
         </div>*/}
 
-          { /*Componente de redes sociales visualizadas en el perfil*/ }
-          <SocialMedia socialMedia={socialMedia} YoutubeIcon={YoutubeIcon} TwitterIcon={TwitterIcon}
-            WhatsappIcon={WhatsappIcon} InstagramIcon={InstagramIcon} FacebookIcon={FacebookIcon} EmailIcon={EmailIcon}
-            PhoneIcon={PhoneIcon} SnapchatIcon={SnapchatIcon} SoundcloudIcon={SoundcloudIcon} LinkedinIcon={LinkedinIcon}
-            TiktokIcon={TiktokIcon} SpotifyIcon={SpotifyIcon} AppleMusicIcon={AppleMusicIcon} VenmoIcon={VenmoIcon}
-            CashappIcon={CashappIcon} WebsiteIcon={WebsiteIcon} PaypalIcon={PaypalIcon} TelegramIcon={TelegramIcon}
-            SmsIcon={SmsIcon} convertStringWithPlus={convertStringWithPlus} MapPinIcon={MapPinIcon}
-          />
+            {/*Componente de redes sociales visualizadas en el perfil*/}
+            <SocialMedia
+              socialMedia={socialMedia}
+              YoutubeIcon={YoutubeIcon}
+              TwitterIcon={TwitterIcon}
+              WhatsappIcon={WhatsappIcon}
+              InstagramIcon={InstagramIcon}
+              FacebookIcon={FacebookIcon}
+              EmailIcon={EmailIcon}
+              PhoneIcon={PhoneIcon}
+              SnapchatIcon={SnapchatIcon}
+              SoundcloudIcon={SoundcloudIcon}
+              LinkedinIcon={LinkedinIcon}
+              TiktokIcon={TiktokIcon}
+              SpotifyIcon={SpotifyIcon}
+              AppleMusicIcon={AppleMusicIcon}
+              VenmoIcon={VenmoIcon}
+              CashappIcon={CashappIcon}
+              WebsiteIcon={WebsiteIcon}
+              PaypalIcon={PaypalIcon}
+              TelegramIcon={TelegramIcon}
+              OnlyFansIcon={OnlyFansIcon}
+              GoFundMeIcon={GoFundMeIcon}
+              TwitchIcon={TwitchIcon}
+              DiscordIcon={DiscordIcon}
+              HousePartyIcon={HousePartyIcon}
+              SmsIcon={SmsIcon}
+              convertStringWithPlus={convertStringWithPlus}
+              MapPinIcon={MapPinIcon}
+            />
 
-          { /*Componentes de links customizados al visualizar el perfil*/ }
-          <CustomLink socialMedia={socialMedia} CustomURLIcon={CustomURLIcon} />
+            {/*Componentes de links customizados al visualizar el perfil*/}
+            <CustomLink
+              socialMedia={socialMedia}
+              CustomURLIcon={CustomURLIcon}
+            />
 
             {/*Botón Copiar Link*/}
             <div className="row p-3">
