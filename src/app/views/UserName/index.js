@@ -153,6 +153,7 @@ export const UserName = ({ location }) => {
             style={{ backgroundColor: "white" }}
           >
             <div className="row justify-content-center">
+              <div className="box">
               <img
                 src={
                   base64ImgProfile === ""
@@ -162,6 +163,7 @@ export const UserName = ({ location }) => {
                 className="img-profile"
                 alt="ProfilePhoto"
               />
+              </div>
             </div>
 
             <div className="row h5 mt-3">

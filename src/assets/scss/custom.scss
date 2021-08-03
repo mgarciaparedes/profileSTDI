@@ -149,6 +149,13 @@ $font-family-sans-serif: "Cairo Regular";
   .banner-with-no-image { height: 250px; }
 }
 
+@supports(object-fit: cover){
+  img.img-profile{
+    object-fit: cover;
+    object-position: center center;
+  }
+}
+
 // Import Bootstrap and its default variables
 @import "./node_modules/bootstrap/scss/bootstrap";
 @import "./_fonts";
