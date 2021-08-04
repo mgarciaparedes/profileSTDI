@@ -173,7 +173,8 @@ export const EditProfile = () => {
 
     setBase64ImgBanner(base64String2);
   };
-
+  
+  //Función que borra todas las rrss del perfil
   const clearData = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -437,6 +438,30 @@ export const EditProfile = () => {
                   </div>
                   <div className="col-sm-12 d-flex justify-content-center">
                     <label className="pt-1 text-justify">{bioState}</label>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    {rows.map((elemento, index) => (
+                      <>
+                        {elemento.socialNetwork === "Embed Youtube Video" ? (
+                          <div
+                            key={index}
+                            className="p-3 w100 d-flex justify-content-center"
+                          >
+                            <iframe
+                              width="560"
+                              height="315"
+                              src={"https://www.youtube.com/embed/"+elemento.profile}
+                              title="YouTube video player"
+                              frameborder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowfullscreen
+                            ></iframe>
+                          </div>
+                        ) : null}
+                      </>
+                    ))}
                   </div>
                 </div>
                 <div className="row p-3 d-flex justify-content-around">

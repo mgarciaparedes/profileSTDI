@@ -106,6 +106,8 @@ function Row({
                       ? "Type the full link"
                       : socialNetwork === "HouseParty"
                       ? "HouseParty username"
+                      : socialNetwork === "Embed Youtube Video"
+                      ? "Type Embed Youtube ID"
                       : "Type the full link"
                   }
                 />
@@ -142,7 +144,7 @@ function Row({
             )}
           </div>
         </div>
-      ) : view === 2 && socialNetwork !== "CustomURL" ? (
+      ) : view === 2 && socialNetwork !== "CustomURL" && socialNetwork !== "Embed Youtube Video" ? (
         <>
           <div className="border border-link m-2 col-3">
             <a
