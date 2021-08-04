@@ -32,7 +32,7 @@ export const SocialMedia = ({
   return (
     <div className="row d-flex justify-content-center h5">
       {socialMedia.map((elemento, index) =>
-        elemento.socialNetwork != "CustomURL" ? (
+        (elemento.socialNetwork != "CustomURL" && elemento.socialNetwork != "Embed Youtube Video") ? (
           <div key={index} className="border border-link m-2 col-3">
             {
               /*Según la red que responde el servicio,
