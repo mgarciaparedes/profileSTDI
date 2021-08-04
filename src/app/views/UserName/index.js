@@ -41,6 +41,7 @@ import CustomURLIcon from "../../../assets/svg/customurl.svg";
 //Componentes hijos
 import { SocialMedia } from "./childrenComponents/SocialMedia";
 import { CustomLink } from "./childrenComponents/CustomLink";
+import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
 
 const { swalOffBackend, convertStringWithPlus, copyToClipboard } = helpers;
 const QRCode = require("qrcode.react");
@@ -184,6 +185,9 @@ export const UserName = ({ location }) => {
                         <a className="ml-2 btn btn-primary btn-sm center-block" style={{width: "100px"}}>Sign Out</a>
                     </div>
         </div>*/}
+
+            <YoutubeEmbedVideo socialMedia={socialMedia}
+            />
 
             {/*Componente de redes sociales visualizadas en el perfil*/}
             <SocialMedia
