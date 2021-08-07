@@ -35,6 +35,7 @@ export const EditProfile = () => {
   const [profileData, setProfileData] = useState([]); //Este de momento no se usa
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
+  const [sendNotifications, setSendNotifications] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
   const [show, setShow] = useState(false);
   const target = useRef(null);
@@ -75,6 +76,7 @@ export const EditProfile = () => {
           setBase64ImgBanner(res.data.data.base64BannerPhoto);
           setRows(res.data.data.socialMedia); //Aquí guardo si es que el profile tiene alguna red social
           setLoadingProfileData(false);
+          setSendNotifications(res.data.data.sendNotifications);
 
           //para enviar al ChangePassword
           setName(res.data.name);
@@ -173,7 +175,7 @@ export const EditProfile = () => {
 
     setBase64ImgBanner(base64String2);
   };
-  
+
   //Función que borra todas las rrss del perfil
   const clearData = () => {
     Swal.fire({
@@ -212,6 +214,7 @@ export const EditProfile = () => {
       base64BannerPhoto: base64ImgBanner,
       profileBio: bioState,
       socialMedia: rows,
+      sendNotifications: sendNotifications,
     };
 
     if (checkFields === true) {
@@ -371,6 +374,8 @@ export const EditProfile = () => {
               <NoDymanicForm
                 nameState={nameState}
                 bioState={bioState}
+                sendNotifications={sendNotifications}
+                setSendNotifications={setSendNotifications}
                 disabledButton={disabledButton}
                 reader={reader}
                 reader2={reader2}
@@ -443,24 +448,24 @@ export const EditProfile = () => {
                 <div className="row">
                   <div className="col-12">
                     {rows.map((elemento, index) => (
-                      <>
+                      <div key={index}>
                         {elemento.socialNetwork === "Embed Youtube Video" ? (
-                          <div
-                            key={index}
-                            className="p-3 w100 d-flex justify-content-center"
-                          >
+                          <div className="p-3 w100 d-flex justify-content-center">
                             <iframe
                               width="560"
                               height="315"
-                              src={"https://www.youtube.com/embed/"+elemento.profile}
+                              src={
+                                "https://www.youtube.com/embed/" +
+                                elemento.profile
+                              }
                               title="YouTube video player"
-                              frameborder="0"
+                              frameBorder="0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowfullscreen
+                              allowFullScreen
                             ></iframe>
                           </div>
                         ) : null}
-                      </>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -501,13 +506,10 @@ export const EditProfile = () => {
                   )}
                 </div>
                 {rows.map((elemento, index) => (
-                  <>
+                  <div key={index}>
                     {elemento.socialNetwork === "CustomURL" ? (
                       <div className="row d-flex justify-content-center h5 pb-3">
-                        <div
-                          key={index}
-                          className="border p-2 border-link col-10"
-                        >
+                        <div className="border p-2 border-link col-10">
                           <a
                             className="btn-no-style"
                             target="_blank"
@@ -528,7 +530,7 @@ export const EditProfile = () => {
                         </div>
                       </div>
                     ) : null}
-                  </>
+                  </div>
                 ))}
                 <div className="row mt-1">
                   <div className="col-lg-12">

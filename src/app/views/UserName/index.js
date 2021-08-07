@@ -54,6 +54,8 @@ export const UserName = ({ location }) => {
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
+  const [sendNotifications2, setSendNotifications2] = useState(false);
+  const [emailProfile, setEmailProfile] = useState("");
   const [show, setShow] = useState(false);
   const target = useRef(null);
 
@@ -68,21 +70,28 @@ export const UserName = ({ location }) => {
     axios
       .post("/users/usernameData", payload)
       .then((res) => {
-        const { ok, msg, data } = res.data;
+        const { ok, msg, data, email } = res.data;
 
         if (ok && msg === "Username Profile Data found.") {
+         
           const {
             profileFullName,
             profileBio,
             socialMedia,
             base64ProfilePhoto,
             base64BannerPhoto,
+            sendNotifications,
           } = data;
           setProfileName(profileFullName);
           setSocialMedia(socialMedia);
           setProfileBio(profileBio);
           setBase64ImgProfile(base64ProfilePhoto);
           setBase64ImgBanner(base64BannerPhoto);
+          //Guardamos esto en una variable (no se usa de momento)
+          setSendNotifications2(sendNotifications);
+          //Envío el valor a ver si se va a enviar correo o no
+          sendEmailNotifications(sendNotifications, email);
+
           setLoadingProfileData(false);
         }
       })
@@ -111,6 +120,35 @@ export const UserName = ({ location }) => {
         }
       });
   }, []);
+
+  const sendEmailNotifications = (value, email) => {
+    
+    if (value === true) {
+      //Si el valor que recibe es true entonces enviamos el correo
+      navigator.geolocation.getCurrentPosition(function (position) {
+        console.log("Latitude is :", position.coords.latitude);
+        console.log("Longitude is :", position.coords.longitude);
+
+        const payloadToSendNotifications = {
+          to: email,
+          latitude: position.coords.latitude,
+          longitude:  position.coords.longitude,
+        }
+
+        console.log(payloadToSendNotifications)
+
+        axios.post("email/sendNotification", payloadToSendNotifications).then((res) => {
+          if(res.data.ok === true){
+            console.log("Correo fue enviado");
+          }else{
+            console.log("Correo no fue enviado");
+          }
+        }).catch((error)=> {console.log("Ha ocurrido un error al enviar correo")});
+      });
+    } else {
+      console.log("Notifications disabled");
+    }
+  };
 
   const viewPrivateLinks = () => {
     Swal.fire({
@@ -155,15 +193,15 @@ export const UserName = ({ location }) => {
           >
             <div className="row justify-content-center">
               <div className="box">
-              <img
-                src={
-                  base64ImgProfile === ""
-                    ? userImage
-                    : `data:image/jpeg;base64,${base64ImgProfile}`
-                }
-                className="img-profile"
-                alt="ProfilePhoto"
-              />
+                <img
+                  src={
+                    base64ImgProfile === ""
+                      ? userImage
+                      : `data:image/jpeg;base64,${base64ImgProfile}`
+                  }
+                  className="img-profile"
+                  alt="ProfilePhoto"
+                />
               </div>
             </div>
 
@@ -186,8 +224,7 @@ export const UserName = ({ location }) => {
                     </div>
         </div>*/}
 
-            <YoutubeEmbedVideo socialMedia={socialMedia}
-            />
+            <YoutubeEmbedVideo socialMedia={socialMedia} />
 
             {/*Componente de redes sociales visualizadas en el perfil*/}
             <SocialMedia
@@ -273,6 +310,12 @@ export const UserName = ({ location }) => {
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="row p-3">
+              <div className="col-lg-12">
+                <div id="map"></div>
               </div>
             </div>
           </div>

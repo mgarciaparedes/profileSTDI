@@ -4,10 +4,10 @@ export const CustomLink = ({ socialMedia, CustomURLIcon }) => {
   return (
     <>
       {socialMedia.map((elemento, index) => (
-        <>
+        <div key={index}>
           {elemento.socialNetwork === "CustomURL" ? (
             <div className="row d-flex justify-content-center h5">
-              <div key={index} className="border p-2 border-link col-10">
+              <div className="border p-2 border-link col-10">
                 <a
                   className="btn-no-style"
                   target="_blank"
@@ -28,7 +28,7 @@ export const CustomLink = ({ socialMedia, CustomURLIcon }) => {
               </div>
             </div>
           ) : null}
-        </>
+        </div>
       ))}
     </>
   );

@@ -5,9 +5,14 @@ import * as Icon from "react-bootstrap-icons";
 import Swal from "sweetalert2";
 import { Form, InputGroup, Alert, Button } from "react-bootstrap";
 
+//Componente Hijo
+import SendNotifications from "./SendNotifications";
+
 function NoDymanicForm({
   nameState,
   bioState,
+  sendNotifications,
+  setSendNotifications,
   disabledButton,
   reader,
   reader2,
@@ -16,7 +21,7 @@ function NoDymanicForm({
   handleOnAdd,
   onSubmit,
   clearData,
-  setBase64ImgBanner
+  setBase64ImgBanner,
 }) {
   return (
     <Formik
@@ -131,7 +136,16 @@ function NoDymanicForm({
               </InputGroup>
               {/*Fin Campo Banner Photo*/}
               {/*Inicio Campo Profile Bio*/}
-              <Form.Label className="text-white form-label" htmlFor="basic-url">
+              <SendNotifications
+                setSendNotifications={setSendNotifications}
+                sendNotifications={sendNotifications}
+              />
+              {/*Fin Campo Banner Photo*/}
+              {/*Inicio Campo Profile Bio*/}
+              <Form.Label
+                className="text-white form-label mt-2"
+                htmlFor="basic-url"
+              >
                 Profile Bio:
               </Form.Label>
               <InputGroup className="mb-2">
@@ -194,7 +208,9 @@ function NoDymanicForm({
                   <option value="SMS">SMS</option>
                   <option value="Website">Website</option>
                   <option value="CustomURL">CustomURL</option>
-                  <option value="Embed Youtube Video">Embed Youtube Video</option>
+                  <option value="Embed Youtube Video">
+                    Embed Youtube Video
+                  </option>
                 </Form.Control>
               </InputGroup>
             </div>
