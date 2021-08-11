@@ -456,7 +456,7 @@ export const EditProfile = () => {
                               height="315"
                               src={
                                 "https://www.youtube.com/embed/" +
-                                elemento.profile
+                                elemento.profile.substr(17)
                               }
                               title="YouTube video player"
                               frameBorder="0"

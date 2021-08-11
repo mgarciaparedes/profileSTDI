@@ -161,6 +161,7 @@ function NoDymanicForm({
               </InputGroup>
               {/*Fin Campo Profile Bio*/}
               {/*Inicio Select Social Media Channels*/}
+
               <Form.Label className="text-white form-label" htmlFor="basic-url">
                 Social Media Channels:
               </Form.Label>
@@ -168,51 +169,51 @@ function NoDymanicForm({
                 <Icon.ListCheck size={25} />
                 &nbsp; Click from the drop down to add the social media link.
               </Alert>
-              <InputGroup>
-                <Form.Control
-                  as="select"
-                  name="socialMedia"
-                  values={values.socialMedia}
-                  onChange={(e) => {
-                    //if ((e.target.value = "CustomURL")) {
-                    //}
-                    handleOnAdd(e);
-                    //handleSocialMedia(e);
-                  }}
-                  className="mb-4"
-                >
-                  <option value="">Choose your media...</option>
-                  <option value="Instagram">Instagram</option>
-                  <option value="Whatsapp">Whatsapp</option>
-                  <option value="Snapchat">Snapchat</option>
-                  <option value="Youtube">Youtube</option>
-                  <option value="Facebook">Facebook</option>
-                  <option value="Soundcloud">Soundcloud</option>
-                  <option value="Linkedin">Linkedin</option>
-                  <option value="Telegram">Telegram</option>
-                  <option value="TikTok">TikTok</option>
-                  <option value="Twitter">Twitter</option>
-                  <option value="Spotify">Spotify</option>
-                  <option value="Apple Music">Apple Music</option>
-                  <option value="Venmo">Venmo</option>
-                  <option value="CashApp">CashApp</option>
-                  <option value="Phone Number">Phone Number</option>
-                  <option value="Paypal">Paypal</option>
-                  <option value="GoFundMe">GoFundMe</option>
-                  <option value="Twitch">Twitch</option>
-                  <option value="Discord">Discord</option>
-                  <option value="HouseParty">HouseParty</option>
-                  <option value="OnlyFans">OnlyFans</option>
-                  <option value="Address">Address</option>
-                  <option value="Email">Email</option>
-                  <option value="SMS">SMS</option>
-                  <option value="Website">Website</option>
-                  <option value="CustomURL">CustomURL</option>
-                  <option value="Embed Youtube Video">
-                    Embed Youtube Video
-                  </option>
-                </Form.Control>
-              </InputGroup>
+                  <InputGroup>
+                    <Form.Control
+                      as="select"
+                      name="socialMedia"
+                      values={values.socialMedia}
+                      onChange={(e) => {
+                        //if ((e.target.value = "CustomURL")) {
+                        //}
+                        handleOnAdd(e);
+                        //handleSocialMedia(e);
+                      }}
+                      className="mb-4"
+                    >
+                      <option value="">Choose your media...</option>
+                      <option value="Instagram">Instagram</option>
+                      <option value="Whatsapp">Whatsapp</option>
+                      <option value="Snapchat">Snapchat</option>
+                      <option value="Youtube">Youtube</option>
+                      <option value="Facebook">Facebook</option>
+                      <option value="Soundcloud">Soundcloud</option>
+                      <option value="Linkedin">Linkedin</option>
+                      <option value="Telegram">Telegram</option>
+                      <option value="TikTok">TikTok</option>
+                      <option value="Twitter">Twitter</option>
+                      <option value="Spotify">Spotify</option>
+                      <option value="Apple Music">Apple Music</option>
+                      <option value="Venmo">Venmo</option>
+                      <option value="CashApp">CashApp</option>
+                      <option value="Phone Number">Phone Number</option>
+                      <option value="Paypal">Paypal</option>
+                      <option value="GoFundMe">GoFundMe</option>
+                      <option value="Twitch">Twitch</option>
+                      <option value="Discord">Discord</option>
+                      <option value="HouseParty">HouseParty</option>
+                      <option value="OnlyFans">OnlyFans</option>
+                      <option value="Address">Address</option>
+                      <option value="Email">Email</option>
+                      <option value="SMS">SMS</option>
+                      <option value="Website">Website</option>
+                      <option value="CustomURL">CustomURL</option>
+                      <option value="Embed Youtube Video">
+                        Embed Youtube Video
+                      </option>
+                    </Form.Control>
+                  </InputGroup>
             </div>
 
             <div className="col-12 col-sm-12 col-md-6">
