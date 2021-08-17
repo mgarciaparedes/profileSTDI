@@ -52,8 +52,10 @@ export const UserName = ({ location }) => {
   const [profileBio, setProfileBio] = useState("");
   const [socialMedia, setSocialMedia] = useState([]);
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
+  
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
+
   const [sendNotifications2, setSendNotifications2] = useState(false);
   const [emailProfile, setEmailProfile] = useState("");
   const [show, setShow] = useState(false);
@@ -85,8 +87,23 @@ export const UserName = ({ location }) => {
           setProfileName(profileFullName);
           setSocialMedia(socialMedia);
           setProfileBio(profileBio);
-          setBase64ImgProfile(base64ProfilePhoto);
-          setBase64ImgBanner(base64BannerPhoto);
+
+          /*********PINTAMOS LA FOTO O EL BANNER***************/
+          /* Depende de lo que retorne el servicio, pintamos ya sea el icon del perfil gris o
+          * pintamos la ruta guardada como key en s3 de la imagen
+          */
+          if(base64ProfilePhoto === ""){
+            setBase64ImgProfile(userImage);
+          }else{
+            setBase64ImgProfile(`${process.env.REACT_APP_API_URL}/render/image/${base64ProfilePhoto}`);
+          }
+          if(base64BannerPhoto === ""){
+            setBase64ImgBanner(noBanner);
+          }else{
+             setBase64ImgBanner(`${process.env.REACT_APP_API_URL}/render/image/${base64BannerPhoto}`);
+          }
+          /***************************************************** */
+
           //Guardamos esto en una variable (no se usa de momento)
           setSendNotifications2(sendNotifications);
           //Envío el valor a ver si se va a enviar correo o no
@@ -178,11 +195,7 @@ export const UserName = ({ location }) => {
             className="banner-with-no-image"
           >
             <img
-              src={
-                base64ImgBanner === ""
-                  ? noBanner
-                  : `data:image/jpeg;base64,${base64ImgBanner}`
-              }
+              src={base64ImgBanner}
               className="banner w-100"
               alt="backgroundImageProfile"
             />
@@ -194,11 +207,7 @@ export const UserName = ({ location }) => {
             <div className="row justify-content-center">
               <div className="box">
                 <img
-                  src={
-                    base64ImgProfile === ""
-                      ? userImage
-                      : `data:image/jpeg;base64,${base64ImgProfile}`
-                  }
+                  src={base64ImgProfile}
                   className="img-profile"
                   alt="ProfilePhoto"
                 />
