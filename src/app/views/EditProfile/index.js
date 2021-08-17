@@ -23,6 +23,8 @@ import Row from "./childrenComponents/Row";
 //Ícono
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
 
+import FormData from "form-data";
+
 const QRCode = require("qrcode.react");
 
 const { swalOffBackend, convertStringWithPlus, copyToClipboard } = helpers;
@@ -33,8 +35,13 @@ export const EditProfile = () => {
   const [bioState, setBioState] = useState("");
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
   const [profileData, setProfileData] = useState([]); //Este de momento no se usa
+  
+  /*Con estos estados manejamos cuando adjuntamos una imagen la convertimos en base64 para pintarlas
+  *en la vista. También cuando el servicio(getProfileUserData) se encarga de mostrar 
+  *la ruta de la imagen*/
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
+
   const [sendNotifications, setSendNotifications] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
   const [show, setShow] = useState(false);
@@ -46,9 +53,16 @@ export const EditProfile = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [email, setEmail] = useState("");
 
+  /*Estas variables la usamos para manejar los estados de la foto y el perfil que vamos a subir.
+  No van en formato64. El mismo javascrip se encarga de mandarlos en binario para que sean leídas en
+  el backend.*/
+  const [imgProfileToUpload, setImgProfileToUpload] = useState("");
+  const [imgBannerToUpload, setImgBannerToUpload] = useState("");
+
   const { objLogin, logoutContext } = useContext(AppContext);
 
   useEffect(() => {
+
     axios
       .get("/users/getProfileUserData")
       .then((res) => {
@@ -72,8 +86,29 @@ export const EditProfile = () => {
           setBioState(res.data.data.profileBio);
           setUsername(res.data.username);
           setProfileData(res.data.data.socialMedia);
-          setBase64ImgProfile(res.data.data.base64ProfilePhoto);
-          setBase64ImgBanner(res.data.data.base64BannerPhoto);
+
+          /*De no estar guardada la ruta de la imagen, mostramos un icono en fondo gris*/
+          if(res.data.data.base64ProfilePhoto === ""){
+            setBase64ImgProfile(userImage);
+          }
+          /*Sí el registro viene con algo, lo pintamos con la key de s3 de amazon*/
+          else{
+            setBase64ImgProfile(
+              `${process.env.REACT_APP_API_URL}/render/image/${res.data.data.base64ProfilePhoto}`
+            );
+          } 
+
+          /*Aplicamos la misma validación, verificamos que haya sido guarda la ruta del banner en S3.*/
+          if(res.data.data.base64BannerPhoto === ""){
+            setBase64ImgBanner(BannerImage);
+          }
+          /*Sí ya hay una key, pintamos el banner adjuntado y guardado en DB*/
+          else{
+            setBase64ImgBanner(
+              `${process.env.REACT_APP_API_URL}/render/image/${res.data.data.base64BannerPhoto}`
+            )
+          }
+
           setRows(res.data.data.socialMedia); //Aquí guardo si es que el profile tiene alguna red social
           setLoadingProfileData(false);
           setSendNotifications(res.data.data.sendNotifications);
@@ -163,7 +198,7 @@ export const EditProfile = () => {
     // use a regex to remove data url part
     const base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
 
-    setBase64ImgProfile(base64String);
+    setBase64ImgProfile(`data:image/jpeg;base64,${base64String}`);
   };
 
   const reader2 = new FileReader();
@@ -173,7 +208,7 @@ export const EditProfile = () => {
       .replace("data:", "")
       .replace(/^.+,/, "");
 
-    setBase64ImgBanner(base64String2);
+    setBase64ImgBanner(`data:image/jpeg;base64,${base64String2}`);
   };
 
   //Función que borra todas las rrss del perfil
@@ -210,12 +245,24 @@ export const EditProfile = () => {
 
     const payload = {
       profileFullName: nameState,
-      base64ProfilePhoto: base64ImgProfile,
-      base64BannerPhoto: base64ImgBanner,
+      base64ProfilePhoto: "",
+      base64BannerPhoto: "",
       profileBio: bioState,
       socialMedia: rows,
       sendNotifications: sendNotifications,
     };
+
+    /*Debemos mandar el arreglo de objetos de redes sociales
+    * como un string y en el backend, lo convertimos a JSON con JSON.parse()*/
+    const rowsSocialMedia = JSON.stringify(rows);
+
+    let formData = new FormData();
+    formData.append("profileFullName", nameState);
+    formData.append("base64ProfilePhoto", imgProfileToUpload);
+    formData.append("base64BannerPhoto", imgBannerToUpload);
+    formData.append("profileBio", bioState);
+    formData.append("socialMedia", rowsSocialMedia);
+    formData.append("sendNotifications", sendNotifications);
 
     if (checkFields === true) {
       setDisabledButton(false);
@@ -288,7 +335,11 @@ export const EditProfile = () => {
           //Si existentProfile es true, quiere decir que no existe un perfil guardado para este usuario
           //Eso quiere decir que le pega al servicio de updateProfileUserData
           axios
-            .post("/users/updateProfileUserData", payload)
+            .post("/users/updateProfileUserData", formData, {
+              headers: {
+                  'content-type': 'multipart/form-data'
+              }
+          })
             .then((res) => {
               const { ok, msg } = res.data;
 
@@ -385,6 +436,8 @@ export const EditProfile = () => {
                 handleBioChange={handleBioChange}
                 setBase64ImgBanner={setBase64ImgBanner}
                 clearData={clearData}
+                setImgProfileToUpload={setImgProfileToUpload}
+                setImgBannerToUpload={setImgBannerToUpload}
               />
 
               {/*Comienzo de sección en donde se van mostrando los campos para escribir las rrss*/}
@@ -414,9 +467,7 @@ export const EditProfile = () => {
                   <div className="col-sm-12">
                     <img
                       src={
-                        base64ImgBanner === ""
-                          ? BannerImage
-                          : `data:image/jpeg;base64,${base64ImgBanner}`
+                        base64ImgBanner
                       }
                       style={{
                         height: "250px",
@@ -430,9 +481,7 @@ export const EditProfile = () => {
                   <div className="col-sm-12 d-flex justify-content-center">
                     <img
                       src={
-                        base64ImgProfile === ""
-                          ? userImage
-                          : `data:image/jpeg;base64,${base64ImgProfile}`
+                        base64ImgProfile
                       }
                       className="rounded-circle img-profile"
                       alt="ProfilePhoto"

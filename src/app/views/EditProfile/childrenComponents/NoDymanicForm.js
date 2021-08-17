@@ -22,6 +22,8 @@ function NoDymanicForm({
   onSubmit,
   clearData,
   setBase64ImgBanner,
+  setImgProfileToUpload,
+  setImgBannerToUpload
 }) {
   return (
     <Formik
@@ -85,6 +87,10 @@ function NoDymanicForm({
                           e.target.files[0].type === "image/png" ||
                           e.target.files[0].type === "image/gif"
                         ) {
+
+                          /*Acá seteamos el perfil para enviarlo por formData (no en base64) */
+                          setImgProfileToUpload(e.target.files[0]);
+
                           reader.readAsDataURL(e.target.files[0]);
                         } else {
                           Swal.fire({
@@ -110,6 +116,7 @@ function NoDymanicForm({
                   </Form.Label>
                   <Form.Control
                     type="file"
+                    accept=".jpg,.jpeg,.png"
                     onChange={(e) => {
                       if (e.target.files.length > 0) {
                         if (
@@ -118,6 +125,10 @@ function NoDymanicForm({
                           e.target.files[0].type === "image/png" ||
                           e.target.files[0].type === "image/gif"
                         ) {
+
+                          /*Acá guardamos el banner para enviarlo por formData (no formato base64)*/
+                          setImgBannerToUpload(e.target.files[0]);
+
                           reader2.readAsDataURL(e.target.files[0]);
                         } else {
                           Swal.fire({
