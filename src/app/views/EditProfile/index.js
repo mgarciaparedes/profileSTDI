@@ -80,6 +80,9 @@ export const EditProfile = () => {
             icon: "info",
             confirmButtonText: "OK",
           });
+
+          setBase64ImgProfile(userImage);
+          setBase64ImgBanner(BannerImage);
         } else {
           setExistentProfile(true); //Diferenciar si se le pega al servicio update
           setNameState(res.data.data.profileFullName);
@@ -287,7 +290,7 @@ export const EditProfile = () => {
           //Si existentProfile es false, quiere decir que no existe un perfil guardado para este usuario
           //Eso quiere decir que le pega al servicio de saveProfileUserData
           axios
-            .post("/users/saveProfileUserData", payload)
+            .post("/users/saveProfileUserData", formData)
             .then((res) => {
               const { ok, msg } = res.data;
 
@@ -323,10 +326,12 @@ export const EditProfile = () => {
               }
             })
             .catch((error) => {
+
+              const { msg } = error.response.data;
               setDisabledButton(false);
               Swal.fire({
                 title: "Sorry. There was a crash",
-                text: "Please close this session and login again.",
+                text: msg ? msg : "Please close this session and login again.",
                 icon: "error",
                 confirmButtonText: "OK",
               });
