@@ -27,7 +27,6 @@ const helpers = {
     inputc.parentNode.removeChild(inputc);
   },
 
-  
 };
 
 export default helpers;
