@@ -1,5 +1,6 @@
 import React from 'react';
 import '../assets/scss/custom.scss';
+import '../../node_modules/react-responsive-carousel/lib/styles/carousel.css'
 import {
   Switch,
   Route,

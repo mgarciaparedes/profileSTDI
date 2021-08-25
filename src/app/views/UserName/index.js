@@ -43,6 +43,8 @@ import { SocialMedia } from "./childrenComponents/SocialMedia";
 import { CustomLink } from "./childrenComponents/CustomLink";
 import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
 
+import { Carousel  } from "react-responsive-carousel";
+
 const { swalOffBackend, convertStringWithPlus, copyToClipboard } = helpers;
 const QRCode = require("qrcode.react");
 
@@ -225,6 +227,18 @@ export const UserName = ({ location }) => {
                 <h5>{profileBio}</h5>
               </div>
             </div>
+
+            <Carousel showArrows={true}>
+                <div>
+                    <img src="http://react-responsive-carousel.js.org/assets/5.jpeg" />
+                </div>
+                <div>
+                    <img src="http://react-responsive-carousel.js.org/assets/1.jpeg" />
+                </div>
+                <div>
+                    <img src="http://react-responsive-carousel.js.org/assets/2.jpeg" />
+                </div>
+            </Carousel>
 
             {/*<div className="row">
                     <div className="col-sm-12 text-center">
