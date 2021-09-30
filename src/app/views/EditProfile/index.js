@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { useForm } from "react-hooks-helper";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { Button, Overlay, Tooltip } from "react-bootstrap";
+import { Button, Overlay, Tooltip} from "react-bootstrap";
 import Swal from "sweetalert2";
 import * as Icon from "react-bootstrap-icons";
 import userImage from "../../../assets/images/default-user-image.png";
@@ -24,10 +21,11 @@ import Row from "./childrenComponents/Row";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
 
 import FormData from "form-data";
+import SubmitAndClearDataButtons from "./childrenComponents/SubmitAndClearDataButtons";
 
 const QRCode = require("qrcode.react");
 
-const { swalOffBackend, convertStringWithPlus, copyToClipboard } = helpers;
+const { convertStringWithPlus, copyToClipboard } = helpers;
 
 export const EditProfile = () => {
   const [existentProfile, setExistentProfile] = useState(true);
@@ -35,10 +33,12 @@ export const EditProfile = () => {
   const [bioState, setBioState] = useState("");
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
   const [profileData, setProfileData] = useState([]); //Este de momento no se usa
-  
+  const [isLinked, setIsLinked] = useState(false);
+  const [usernameLinked, setUsernameLinked] = useState("");
+
   /*Con estos estados manejamos cuando adjuntamos una imagen la convertimos en base64 para pintarlas
-  *en la vista. También cuando el servicio(getProfileUserData) se encarga de mostrar 
-  *la ruta de la imagen*/
+   *en la vista. También cuando el servicio(getProfileUserData) se encarga de mostrar
+   *la ruta de la imagen*/
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
 
@@ -62,7 +62,6 @@ export const EditProfile = () => {
   const { objLogin, logoutContext } = useContext(AppContext);
 
   useEffect(() => {
-
     axios
       .get("/users/getProfileUserData")
       .then((res) => {
@@ -89,27 +88,27 @@ export const EditProfile = () => {
           setBioState(res.data.data.profileBio);
           setUsername(res.data.username);
           setProfileData(res.data.data.socialMedia);
+          setIsLinked(res.data.data.isLinked);
+          setUsernameLinked(res.data.data.usernameLinked);
 
           /*De no estar guardada la ruta de la imagen, mostramos un icono en fondo gris*/
-          if(res.data.data.base64ProfilePhoto === ""){
+          if (res.data.data.base64ProfilePhoto === "") {
             setBase64ImgProfile(userImage);
-          }
-          /*Sí el registro viene con algo, lo pintamos con la key de s3 de amazon*/
-          else{
+          } else {
+            /*Sí el registro viene con algo, lo pintamos con la key de s3 de amazon*/
             setBase64ImgProfile(
               `${process.env.REACT_APP_API_URL}/render/image/${res.data.data.base64ProfilePhoto}`
             );
-          } 
+          }
 
           /*Aplicamos la misma validación, verificamos que haya sido guarda la ruta del banner en S3.*/
-          if(res.data.data.base64BannerPhoto === ""){
+          if (res.data.data.base64BannerPhoto === "") {
             setBase64ImgBanner(BannerImage);
-          }
-          /*Sí ya hay una key, pintamos el banner adjuntado y guardado en DB*/
-          else{
+          } else {
+            /*Sí ya hay una key, pintamos el banner adjuntado y guardado en DB*/
             setBase64ImgBanner(
               `${process.env.REACT_APP_API_URL}/render/image/${res.data.data.base64BannerPhoto}`
-            )
+            );
           }
 
           setRows(res.data.data.socialMedia); //Aquí guardo si es que el profile tiene alguna red social
@@ -229,8 +228,8 @@ export const EditProfile = () => {
         setRows([]);
         setNameState("");
         setBioState("");
-        setBase64ImgProfile("");
-        setBase64ImgBanner("");
+        setBase64ImgProfile(userImage);
+        setBase64ImgBanner(BannerImage);
       }
     });
   };
@@ -246,17 +245,19 @@ export const EditProfile = () => {
     console.log(rows);
     const checkFields = noBlankSpaces();
 
-    const payload = {
+    /*const payload = {
       profileFullName: nameState,
       base64ProfilePhoto: "",
       base64BannerPhoto: "",
       profileBio: bioState,
       socialMedia: rows,
       sendNotifications: sendNotifications,
-    };
+      isLinked: isLinked,
+      usernameLinked: usernameLinked,
+    };*/
 
     /*Debemos mandar el arreglo de objetos de redes sociales
-    * como un string y en el backend, lo convertimos a JSON con JSON.parse()*/
+     * como un string y en el backend, lo convertimos a JSON con JSON.parse()*/
     const rowsSocialMedia = JSON.stringify(rows);
 
     let formData = new FormData();
@@ -266,6 +267,8 @@ export const EditProfile = () => {
     formData.append("profileBio", bioState);
     formData.append("socialMedia", rowsSocialMedia);
     formData.append("sendNotifications", sendNotifications);
+    formData.append("isLinked", isLinked);
+    formData.append("usernameLinked", usernameLinked);
 
     if (checkFields === true) {
       setDisabledButton(false);
@@ -326,7 +329,6 @@ export const EditProfile = () => {
               }
             })
             .catch((error) => {
-
               const { msg } = error.response.data;
               setDisabledButton(false);
               Swal.fire({
@@ -342,9 +344,9 @@ export const EditProfile = () => {
           axios
             .post("/users/updateProfileUserData", formData, {
               headers: {
-                  'content-type': 'multipart/form-data'
-              }
-          })
+                "content-type": "multipart/form-data",
+              },
+            })
             .then((res) => {
               const { ok, msg } = res.data;
 
@@ -432,6 +434,10 @@ export const EditProfile = () => {
                 bioState={bioState}
                 sendNotifications={sendNotifications}
                 setSendNotifications={setSendNotifications}
+                username={username}
+                isLinked={isLinked}
+                setIsLinked={setIsLinked}
+                usernameLinked={usernameLinked}
                 disabledButton={disabledButton}
                 reader={reader}
                 reader2={reader2}
@@ -460,6 +466,12 @@ export const EditProfile = () => {
                   />
                 ))}
               </div>
+
+              <SubmitAndClearDataButtons
+                disabledButton={disabledButton}
+                clearData={clearData}
+                onSubmit={onSubmit}
+              />
             </div>
 
             {/*Columna en donde se van mostrando los cambios*/}
@@ -471,9 +483,7 @@ export const EditProfile = () => {
                 <div className="row">
                   <div className="col-sm-12">
                     <img
-                      src={
-                        base64ImgBanner
-                      }
+                      src={base64ImgBanner}
                       style={{
                         height: "250px",
                       }}
@@ -485,9 +495,7 @@ export const EditProfile = () => {
                 <div className="row">
                   <div className="col-sm-12 d-flex justify-content-center">
                     <img
-                      src={
-                        base64ImgProfile
-                      }
+                      src={base64ImgProfile}
                       className="rounded-circle img-profile"
                       alt="ProfilePhoto"
                     />
@@ -616,7 +624,7 @@ export const EditProfile = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-12 mt-3">
+                  <div className="col-lg-12 mt-3 mb-5">
                     <div className="d-flex justify-content-center">
                       <div className="border p-3 border-link">
                         <h5 className="font-bold pb-3 text-center">QR Code</h5>
@@ -625,14 +633,14 @@ export const EditProfile = () => {
                         />
                       </div>
                     </div>
-                    <div className="d-flex justify-content-center mt-3 mb-3">
+                    {/*<div className="d-flex justify-content-center mt-3 mb-3">
                       <a
                         target="_blank"
                         href={"https://profile.stdicompany.com/" + username}
                       >
                         Tap here to see your profile
                       </a>
-                    </div>
+                    </div>*/}
                   </div>
                 </div>
               </div>

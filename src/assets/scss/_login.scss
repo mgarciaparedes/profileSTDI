@@ -1,6 +1,8 @@
 .container-login{
     //height: 100%;
     align-content: center;
+    padding-bottom: 50px;
+  
 }
 
 .card-login{
@@ -16,11 +18,8 @@
 .card-sign-up{
     width: 600px;
     background-color: rgba(0,0,0,0.5) !important; 
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    margin-top:100px;
     /* bring your own prefixes */
-    transform: translate(-50%, -50%);
 }
 
 .card-header h3{

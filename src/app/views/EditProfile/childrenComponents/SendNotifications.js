@@ -7,12 +7,12 @@ function ActivateNotifications({ sendNotifications, setSendNotifications }) {
     setSendNotifications(e.target.checked);
   };
   return (
-    <>
+    <div className="mb-3">
       <Form.Label
         className="text-white form-label pb-0 mb-0"
         htmlFor="basic-url"
       >
-        Activate Notifications:
+        Activate GPS Notifications:
       </Form.Label>
       <InputGroup>
         <Form.Check
@@ -32,7 +32,7 @@ function ActivateNotifications({ sendNotifications, setSendNotifications }) {
           }}
         />
       </InputGroup>
-    </>
+    </div>
   );
 }
 

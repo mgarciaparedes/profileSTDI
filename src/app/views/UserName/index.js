@@ -56,6 +56,9 @@ export const UserName = ({ location }) => {
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
 
+  const [isLinked, setIsLinked] = useState(false);
+  const [usernameLinked, setUsernameLinked] = useState("");
+
   const [sendNotifications2, setSendNotifications2] = useState(false);
   const [emailProfile, setEmailProfile] = useState("");
   const [show, setShow] = useState(false);
@@ -273,7 +276,7 @@ export const UserName = ({ location }) => {
             />
 
             {/*Botón Copiar Link*/}
-            <div className="row p-3">
+            <div className="row p-2">
               <div className="col-lg-12">
                 <div className="d-flex justify-content-center">
                   <div className="border p-3 border-link">
@@ -306,7 +309,7 @@ export const UserName = ({ location }) => {
             </div>
 
             {/*Botón Copiar Link*/}
-            <div className="row p-3">
+            <div className="row p-2">
               <div className="col-lg-12">
                 <div className="d-flex justify-content-center">
                   <div className="border p-3 border-link">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as Icon from "react-bootstrap-icons";
@@ -7,12 +7,17 @@ import { Form, InputGroup, Alert, Button } from "react-bootstrap";
 
 //Componente Hijo
 import SendNotifications from "./SendNotifications";
+import LinkToAnotherProfile from "./LinkToAnotherProfile";
 
 function NoDymanicForm({
   nameState,
   bioState,
   sendNotifications,
   setSendNotifications,
+  username,
+  isLinked,
+  setIsLinked,
+  usernameLinked,
   disabledButton,
   reader,
   reader2,
@@ -23,8 +28,9 @@ function NoDymanicForm({
   clearData,
   setBase64ImgBanner,
   setImgProfileToUpload,
-  setImgBannerToUpload
+  setImgBannerToUpload,
 }) {
+  const [socialMediaState, setSocialMediaState] = useState("");
   return (
     <Formik
       onSubmit={(values, { resetForm }) => {
@@ -87,7 +93,6 @@ function NoDymanicForm({
                           e.target.files[0].type === "image/png" ||
                           e.target.files[0].type === "image/gif"
                         ) {
-
                           /*Acá seteamos el perfil para enviarlo por formData (no en base64) */
                           setImgProfileToUpload(e.target.files[0]);
 
@@ -125,7 +130,6 @@ function NoDymanicForm({
                           e.target.files[0].type === "image/png" ||
                           e.target.files[0].type === "image/gif"
                         ) {
-
                           /*Acá guardamos el banner para enviarlo por formData (no formato base64)*/
                           setImgBannerToUpload(e.target.files[0]);
 
@@ -146,12 +150,20 @@ function NoDymanicForm({
                 </Form.Group>
               </InputGroup>
               {/*Fin Campo Banner Photo*/}
-              {/*Inicio Campo Profile Bio*/}
+              {/*Inicio Campo Activar Notificaciones*/}
               <SendNotifications
                 setSendNotifications={setSendNotifications}
                 sendNotifications={sendNotifications}
               />
-              {/*Fin Campo Banner Photo*/}
+              {/*Fin Campo Activar Notificaciones*/}
+              {/*Inicio Campo Linkear a otro perfil*/}
+              <LinkToAnotherProfile
+                isLinked={isLinked}
+                usernameLinked={usernameLinked}
+                username={username}
+                setIsLinked={setIsLinked}
+              />
+              {/*Fin Campo Linkear a otro perfil*/}
               {/*Inicio Campo Profile Bio*/}
               <Form.Label
                 className="text-white form-label mt-2"
@@ -180,54 +192,63 @@ function NoDymanicForm({
                 <Icon.ListCheck size={25} />
                 &nbsp; Click from the drop down to add the social media link.
               </Alert>
-                  <InputGroup>
-                    <Form.Control
-                      as="select"
-                      name="socialMedia"
-                      values={values.socialMedia}
-                      onChange={(e) => {
-                        //if ((e.target.value = "CustomURL")) {
-                        //}
-                        handleOnAdd(e);
-                        //handleSocialMedia(e);
-                      }}
-                      className="mb-4"
-                    >
-                      <option value="">Choose your media...</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Whatsapp">Whatsapp</option>
-                      <option value="Snapchat">Snapchat</option>
-                      <option value="Youtube">Youtube</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Soundcloud">Soundcloud</option>
-                      <option value="Linkedin">Linkedin</option>
-                      <option value="Telegram">Telegram</option>
-                      <option value="TikTok">TikTok</option>
-                      <option value="Twitter">Twitter</option>
-                      <option value="Spotify">Spotify</option>
-                      <option value="Apple Music">Apple Music</option>
-                      <option value="Venmo">Venmo</option>
-                      <option value="CashApp">CashApp</option>
-                      <option value="Phone Number">Phone Number</option>
-                      <option value="Paypal">Paypal</option>
-                      <option value="GoFundMe">GoFundMe</option>
-                      <option value="Twitch">Twitch</option>
-                      <option value="Discord">Discord</option>
-                      <option value="HouseParty">HouseParty</option>
-                      <option value="OnlyFans">OnlyFans</option>
-                      <option value="Address">Address</option>
-                      <option value="Email">Email</option>
-                      <option value="SMS">SMS</option>
-                      <option value="Website">Website</option>
-                      <option value="CustomURL">CustomURL</option>
-                      <option value="Embed Youtube Video">
-                        Embed Youtube Video
-                      </option>
-                    </Form.Control>
-                  </InputGroup>
+              <InputGroup className="mb-2">
+                <Form.Control
+                  as="select"
+                  name="socialMedia"
+                  values={values.socialMedia}
+                  onChange={(e) => {
+                    //if ((e.target.value = "CustomURL")) {
+                    //}
+                    //handleOnAdd(e);
+                    //handleSocialMedia(e);
+                    setSocialMediaState(e);
+                  }}
+                >
+                  <option value="">Choose your media...</option>
+                  <option value="Instagram">Instagram</option>
+                  <option value="Whatsapp">Whatsapp</option>
+                  <option value="Snapchat">Snapchat</option>
+                  <option value="Youtube">Youtube</option>
+                  <option value="Facebook">Facebook</option>
+                  <option value="Soundcloud">Soundcloud</option>
+                  <option value="Linkedin">Linkedin</option>
+                  <option value="Telegram">Telegram</option>
+                  <option value="TikTok">TikTok</option>
+                  <option value="Twitter">Twitter</option>
+                  <option value="Spotify">Spotify</option>
+                  <option value="Apple Music">Apple Music</option>
+                  <option value="Venmo">Venmo</option>
+                  <option value="CashApp">CashApp</option>
+                  <option value="Phone Number">Phone Number</option>
+                  <option value="Paypal">Paypal</option>
+                  <option value="GoFundMe">GoFundMe</option>
+                  <option value="Twitch">Twitch</option>
+                  <option value="Discord">Discord</option>
+                  <option value="HouseParty">HouseParty</option>
+                  <option value="OnlyFans">OnlyFans</option>
+                  <option value="Address">Address</option>
+                  <option value="Email">Email</option>
+                  <option value="SMS">SMS</option>
+                  <option value="Website">Website</option>
+                  <option value="CustomURL">CustomURL</option>
+                  <option value="Embed Youtube Video">
+                    Embed Youtube Video
+                  </option>
+                </Form.Control>
+                <InputGroup.Append>
+                  <Button
+                    
+                    onClick={() => handleOnAdd(socialMediaState)}
+                  >
+                    <Icon.PlusCircle size={20} className="pb-1" />
+                    &nbsp;&nbsp;Add
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
             </div>
 
-            <div className="col-12 col-sm-12 col-md-6">
+            {/*<div className="col-12 col-sm-12 col-md-6">
               <InputGroup className="mb-2">
                 <Button
                   type="submit"
@@ -275,6 +296,7 @@ function NoDymanicForm({
                 </Button>
               </InputGroup>
             </div>
+                    */}
           </div>
         </Form>
       )}

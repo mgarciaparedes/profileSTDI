@@ -12,7 +12,7 @@ export const SpinnerLoading = () => {
           <span
             className="spinner-border"
             role="status"
-            style={{ "inline-block": "none" }}
+            style={{ "inlineBlock": "none" }}
             aria-hidden="true"
           ></span>
         </div>
