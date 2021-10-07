@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { Button, Overlay, Tooltip} from "react-bootstrap";
+import { Button, Overlay, Tooltip } from "react-bootstrap";
 import Swal from "sweetalert2";
 import * as Icon from "react-bootstrap-icons";
 import userImage from "../../../assets/images/default-user-image.png";
@@ -11,6 +11,7 @@ import axios from "axios";
 
 //Componentes Reusables
 import { SpinnerLoading } from "../../../components/SpinnerLoading";
+import { SideNavigation } from "../../../components/SideNavigation";
 
 //Componentes Hijos
 import ModalChangePassword from "./childrenComponents/ModalChangePassword";
@@ -404,13 +405,25 @@ export const EditProfile = () => {
               <div className="text-white mt-2">
                 {objLogin.userName}&nbsp;&nbsp;
               </div>
-              <ModalChangePassword
+              {/*<ModalChangePassword
                 name={name}
                 username={username}
                 serialNumber={serialNumber}
                 email={email}
               />
-              &nbsp;&nbsp;
+              &nbsp;&nbsp;*/}
+              <SideNavigation
+                name={name}
+                username={username}
+                serialNumber={serialNumber}
+                email={email}
+                setSendNotifications={setSendNotifications}
+                sendNotifications={sendNotifications}
+                isLinked={isLinked}
+                usernameLinked={usernameLinked}
+                setIsLinked={setIsLinked}
+              />
+              {/*&nbsp;&nbsp;
               <Button
                 variant="danger"
                 onClick={() => {
@@ -419,7 +432,7 @@ export const EditProfile = () => {
                 }}
               >
                 <Icon.Power size={20} />
-              </Button>
+              </Button>*/}
             </div>
           </div>
 

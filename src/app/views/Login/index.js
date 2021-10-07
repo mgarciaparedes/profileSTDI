@@ -102,8 +102,8 @@ export const Login = () => {
                 initialValues={{
                   //email: "miguelgarciaparedes22@gmail.com",
                   //password: "12345678",
-                  email: "",
-                  password: "",
+                email: "",
+                  password: ""
                 }}
               >
                 {({

@@ -151,18 +151,18 @@ function NoDymanicForm({
               </InputGroup>
               {/*Fin Campo Banner Photo*/}
               {/*Inicio Campo Activar Notificaciones*/}
-              <SendNotifications
+              {/*<SendNotifications
                 setSendNotifications={setSendNotifications}
                 sendNotifications={sendNotifications}
-              />
+              />*/}
               {/*Fin Campo Activar Notificaciones*/}
               {/*Inicio Campo Linkear a otro perfil*/}
-              <LinkToAnotherProfile
+              {/*<LinkToAnotherProfile
                 isLinked={isLinked}
                 usernameLinked={usernameLinked}
                 username={username}
                 setIsLinked={setIsLinked}
-              />
+              />*7}
               {/*Fin Campo Linkear a otro perfil*/}
               {/*Inicio Campo Profile Bio*/}
               <Form.Label
