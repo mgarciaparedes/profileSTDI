@@ -40,21 +40,35 @@ export const Login = () => {
       .post(`/auth/login`, payload)
       .then((res) => {
         const { ok, msg, token, name, userid } = res.data;
+        //Capturamos el token y lo dejamos en la cabecera
+        axios.defaults.headers.common["x-token"] = res.data.token;
 
         /*Sí el login es ok, loguea*/
         if (ok && msg === "login") {
-          setDisabledButton(false);
+          axios.get(`/users/getProfileUserData`).then((res2) => {
+            const { ok, msg, serialNumber, username, email, data } = res2.data;
+            /*Sí el login es ok, loguea*/
+            if (ok && msg === "User data found.") {
+              setDisabledButton(false);
 
-          const json = {
-            authenticated: true,
-            userName: name,
-            token: token,
-          };
+              const json = {
+                authenticated: true,
+                user: name,
+                token: token,
+                email: email,
+                serialNumber: serialNumber,
+                username: username,
+                profileData: data,
+                sendNotifications: data.sendNotifications,
+                isLinked: data.isLinked,
+                usernameLinked: data.usernameLinked,
+              };
 
-          loginContext(json);
-          axios.defaults.headers.common["x-token"] = res.data.token;
-          //axios.defaults.headers.common["x-token"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpsemQxOTk0QGdtYWlsLmNvbSIsInVzZXJpZCI6IjYwZWUyZTk0NTMyZWJkMjRkYzFkNWNmNCIsImlhdCI6MTYyNjU3ODYxOCwiZXhwIjoxNjI2NTg1ODE4fQ.QxQllK-jAbBwRrmSuT_G1IxCeuK9wtmr0xMmfmxpgLU"
-          history.push("/edit-profile");
+              loginContext(json);
+
+              history.push("/dashboard");
+            }
+          });
         }
       })
       .catch((e) => {
@@ -102,8 +116,8 @@ export const Login = () => {
                 initialValues={{
                   //email: "miguelgarciaparedes22@gmail.com",
                   //password: "12345678",
-                email: "",
-                  password: ""
+                  email: "",
+                  password: "",
                 }}
               >
                 {({

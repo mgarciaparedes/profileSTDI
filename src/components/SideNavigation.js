@@ -5,21 +5,10 @@ import { AppContext } from "./AppContext";
 import history from "./History";
 
 import ModalChangePassword from "./ModalChangePassword";
-import SendNotifications from "./SendNotifications";
-import LinkToAnotherProfile from "./LinkToAnotherProfile";
 
-export const SideNavigation = ({
-  name,
-  username,
-  serialNumber,
-  email,
-  setSendNotifications,
-  sendNotifications,
-  isLinked,
-  usernameLinked,
-  setIsLinked,
-}) => {
-  const { logoutContext } = useContext(AppContext);
+export const SideNavigation = () => {
+  const { logoutContext, objLogin } = useContext(AppContext);
+  console.log(objLogin.profileData);
   const openNav = () => {
     document.getElementById("mySidenav").style.width = "300px";
   };
@@ -40,50 +29,58 @@ export const SideNavigation = ({
         </a>
 
         {/****** Opción HOME ******/}
-        <a href="/dashboard">
-          <Icon.House size={22} className="mb-1" /> Home
+        <a href="/dashboard" className="mb-3">
+          <Icon.House size={22} className="mb-1 mr-2" /> Home
         </a>
 
         {/****** Opción HOME ******/}
-        <a href="javascript:void(0)" onClick={() => history.push("/edit-profile")}>
-          <Icon.PencilSquare size={22} className="mb-1" /> Set Up Profile
+        <a href="javascript:void(0)" className="mb-3" onClick={() => history.push("/edit-profile")}>
+          <Icon.PencilSquare size={22} className="mb-1 mr-2" /> Set Up Profile
         </a>
 
         {/****** Opción GPS NOTIFICATIONS ******/}
-        <a href="javascript:void(0)">
+        {/* <a href="javascript:void(0)">
           <SendNotifications
             setSendNotifications={setSendNotifications}
             sendNotifications={sendNotifications}
           />
-        </a>
+        </a> */}
 
         {/****** Opción CONECTAR A OTRO PERFIL ******/}
-        <a href="javascript:void(0)">
+        {/* <a href="javascript:void(0)">
           <LinkToAnotherProfile
             isLinked={isLinked}
             usernameLinked={usernameLinked}
             username={username}
             setIsLinked={setIsLinked}
           />
+        </a> */}
+
+         {/****** Opción Advanced Tools ******/}
+         <a href="javascript:void(0)" className="mb-3" onClick={() => history.push("/advanced-tools")}>
+          <Icon.Tools size={22} className="mb-1 mr-2" /> Advanced Tools
         </a>
 
         {/****** Opción Cambiar Password ******/}
         <ModalChangePassword
-          name={name}
-          username={username}
-          serialNumber={serialNumber}
-          email={email}
+          name={objLogin.user}
+          username={objLogin.username}
+          serialNumber={objLogin.serialNumber}
+          email={objLogin.email}
         />
+
+       
 
         {/****** Opción Terminar Sesión ******/}
         <a
           href="javascript:void(0)"
+          className="mb-3"
           onClick={() => {
             //history.push("/login");
             logoutContext();
           }}
         >
-          <Icon.Power size={22} className="mb-1" /> Log out
+          <Icon.Power size={22} className="mb-1 mr-2" /> Log out
         </a>
       </div>
 

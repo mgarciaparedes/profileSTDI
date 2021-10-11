@@ -10,6 +10,7 @@ import AppProvider from "../components/AppContext";
 import { CreateYourProfile } from "./views/CreateYourProfile/index";
 import { Login } from "./views/Login/index";
 import { Dashboard } from "./views/Dashboard/index";
+import { AdvancedTools } from "./views/AdvancedTools/index";
 import { EditProfile } from "./views/EditProfile/index";
 import { ForgotPassword } from "./views/ForgotPassword/index";
 import { UserName } from "./views/UserName/index";
@@ -32,6 +33,7 @@ const AppRoute = () => {
             path="/forgot-password"
             component={() => <ForgotPassword />}
           />
+          <Route exact path="/advanced-tools" component={() => <AdvancedTools />} />
           <Route exact path="/dashboard" component={() => <Dashboard />} />
 
           {/*Con esto obtenemos el user del stdcompany/username y redireccionamos al login porque es una "/"" sola*/}

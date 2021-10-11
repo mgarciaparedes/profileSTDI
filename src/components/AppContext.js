@@ -8,8 +8,15 @@ export const AppContext = createContext();
 const AppProvider = ({ children }) => {
   const [objLogin, setObjLogin] = useState({
     authenticated: false,
-    userName: "",
+    user: "",
     token: "",
+    email: "",
+    serialNumber: "",
+    username: "",
+    profileData: [],
+    sendNotifications: false,
+    isLinked: false,
+    usernameLinked: "",
   });
 
   useEffect(() => {
@@ -21,8 +28,15 @@ const AppProvider = ({ children }) => {
           if (JSON.parse(objStorage.authenticated) !== false) {
             const json = {
               authenticated: objStorage.authenticated,
-              userName: objStorage.userName,
+              user: objStorage.user,
               token: objStorage.token,
+              email: objStorage.email,
+              serialNumber: objStorage.serialNumber,
+              username: objStorage.username,
+              profileData: objStorage.profileData,
+              sendNotifications: objStorage.sendNotifications,
+              isLinked: objStorage.isLinked,
+              usernameLinked: objStorage.usernameLinked,
             };
             setObjLogin(json);
             //axios.defaults.headers.common["Authorization"] = objStorage.token;
@@ -45,10 +59,9 @@ const AppProvider = ({ children }) => {
 
   const loginContext = (obj) => {
     setObjLogin(obj);
-   // setAcceptPolicies(false);
+    // setAcceptPolicies(false);
     //sessionTimeContext(obj.timeOutSession);
   };
-
 
   const logoutContext = () => {
     Swal.fire({
@@ -66,7 +79,6 @@ const AppProvider = ({ children }) => {
           authenticated: false,
           userName: "",
           token: "",
-
         };
         setObjLogin(json);
         AsyncStorage.clear();
@@ -79,6 +91,62 @@ const AppProvider = ({ children }) => {
     });
   };
 
+  const setGPSNotificationsSelectedContext = (
+    isChecked
+  ) => {
+    (async () => {
+      await AsyncStorage.getItem("APP::DATA").then((value) => {
+        if (value === null) {
+        } else {
+          let objStorage = JSON.parse(value);
+          if (JSON.parse(objStorage.authenticated) === true) {
+            const json = {
+              authenticated: objStorage.authenticated,
+              user: objStorage.user,
+              token: objStorage.token,
+              email: objStorage.email,
+              serialNumber: objStorage.serialNumber,
+              username: objStorage.username,
+              profileData: objStorage.profileData,
+              sendNotifications: isChecked,
+              isLinked: objStorage.isLinked,
+              usernameLinked: objStorage.usernameLinked,
+            };
+            setObjLogin(json);
+          }
+        }
+      });
+    })();
+  };
+
+  const setLinkToExistentProfileContext = (
+    isLinkedStatus,
+    usernameLinkedStatus,
+  ) => {
+    (async () => {
+      await AsyncStorage.getItem("APP::DATA").then((value) => {
+        if (value === null) {
+        } else {
+          let objStorage = JSON.parse(value);
+          if (JSON.parse(objStorage.authenticated) === true) {
+            const json = {
+              authenticated: objStorage.authenticated,
+              user: objStorage.user,
+              token: objStorage.token,
+              email: objStorage.email,
+              serialNumber: objStorage.serialNumber,
+              username: objStorage.username,
+              profileData: objStorage.profileData,
+              sendNotifications: objStorage.sendNotifications,
+              isLinked: isLinkedStatus,
+              usernameLinked: usernameLinkedStatus,
+            };
+            setObjLogin(json);
+          }
+        }
+      });
+    })();
+  };
 
   return (
     <AppContext.Provider
@@ -86,6 +154,8 @@ const AppProvider = ({ children }) => {
         loginContext,
         logoutContext,
         objLogin,
+        setGPSNotificationsSelectedContext,
+        setLinkToExistentProfileContext
       }}
     >
       {children}

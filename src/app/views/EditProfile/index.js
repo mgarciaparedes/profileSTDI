@@ -33,6 +33,7 @@ export const EditProfile = () => {
   const [nameState, setNameState] = useState("");
   const [bioState, setBioState] = useState("");
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
+  const [sessionOver, setSessionOver] = useState(false);
   const [profileData, setProfileData] = useState([]); //Este de momento no se usa
   const [isLinked, setIsLinked] = useState(false);
   const [usernameLinked, setUsernameLinked] = useState("");
@@ -43,7 +44,7 @@ export const EditProfile = () => {
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
 
-  const [sendNotifications, setSendNotifications] = useState(false);
+  // const [sendNotifications, setSendNotifications] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
   const [show, setShow] = useState(false);
   const target = useRef(null);
@@ -114,7 +115,7 @@ export const EditProfile = () => {
 
           setRows(res.data.data.socialMedia); //Aquí guardo si es que el profile tiene alguna red social
           setLoadingProfileData(false);
-          setSendNotifications(res.data.data.sendNotifications);
+          //setSendNotifications(res.data.data.sendNotifications);
 
           //para enviar al ChangePassword
           setName(res.data.name);
@@ -125,6 +126,7 @@ export const EditProfile = () => {
       .catch((error) => {
         setExistentProfile(false);
         setLoadingProfileData(false);
+        setSessionOver(true);
         Swal.fire({
           title: "This session is over",
           text: "Please login again",
@@ -267,9 +269,9 @@ export const EditProfile = () => {
     formData.append("base64BannerPhoto", imgBannerToUpload);
     formData.append("profileBio", bioState);
     formData.append("socialMedia", rowsSocialMedia);
-    formData.append("sendNotifications", sendNotifications);
-    formData.append("isLinked", isLinked);
-    formData.append("usernameLinked", usernameLinked);
+    formData.append("sendNotifications", objLogin.sendNotifications);
+    formData.append("isLinked", objLogin.isLinked);
+    formData.append("usernameLinked", objLogin.usernameLinked);
 
     if (checkFields === true) {
       setDisabledButton(false);
@@ -396,14 +398,14 @@ export const EditProfile = () => {
 
   return (
     <>
-      {loadingProfileData === true ? (
+      {loadingProfileData || sessionOver ? (
         <SpinnerLoading />
       ) : (
         <div className="container mt-3">
           <div className="row">
             <div className="col-sm-12 d-flex justify-content-end">
               <div className="text-white mt-2">
-                {objLogin.userName}&nbsp;&nbsp;
+                {objLogin.username}&nbsp;&nbsp;
               </div>
               {/*<ModalChangePassword
                 name={name}
@@ -413,15 +415,11 @@ export const EditProfile = () => {
               />
               &nbsp;&nbsp;*/}
               <SideNavigation
-                name={name}
-                username={username}
-                serialNumber={serialNumber}
-                email={email}
-                setSendNotifications={setSendNotifications}
-                sendNotifications={sendNotifications}
-                isLinked={isLinked}
-                usernameLinked={usernameLinked}
-                setIsLinked={setIsLinked}
+                // setSendNotifications={setSendNotifications}
+                // sendNotifications={sendNotifications}
+                // isLinked={isLinked}
+                // usernameLinked={usernameLinked}
+                // setIsLinked={setIsLinked}
               />
               {/*&nbsp;&nbsp;
               <Button
@@ -445,12 +443,12 @@ export const EditProfile = () => {
               <NoDymanicForm
                 nameState={nameState}
                 bioState={bioState}
-                sendNotifications={sendNotifications}
-                setSendNotifications={setSendNotifications}
+                // sendNotifications={sendNotifications}
+                // setSendNotifications={setSendNotifications}
                 username={username}
-                isLinked={isLinked}
-                setIsLinked={setIsLinked}
-                usernameLinked={usernameLinked}
+                // isLinked={isLinked}
+                // setIsLinked={setIsLinked}
+                // usernameLinked={usernameLinked}
                 disabledButton={disabledButton}
                 reader={reader}
                 reader2={reader2}
@@ -516,7 +514,7 @@ export const EditProfile = () => {
                   <div className="col-sm-12 d-flex justify-content-center">
                     <label className="form-label mt-3">{nameState}</label>
                   </div>
-                  <div className="col-sm-12 d-flex justify-content-center">
+                  <div className="col-sm-12 d-flex justify-content-center pre-wrap">
                     <label className="pt-1 text-justify">{bioState}</label>
                   </div>
                 </div>
@@ -615,7 +613,7 @@ export const EditProfile = () => {
                           ref={target}
                           onClick={() => {
                             setShow(!show);
-                            copyToClipboard(username);
+                            copyToClipboard(objLogin.username);
                           }}
                         >
                           <span>

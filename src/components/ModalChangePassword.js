@@ -88,9 +88,10 @@ function ModalChangePassword({ name, username, serialNumber, email }) {
 
       <a 
       onClick={handleShow}
+      className="mb-3"
       href="javascript:void(0)"
         >
-          <Icon.ShieldExclamation size={22} className="mb-1" /> Change Password
+          <Icon.ShieldExclamation size={22} className="mb-1 mr-2" /> Change Password
         </a>
 
       <Modal show={show} onHide={handleClose}>

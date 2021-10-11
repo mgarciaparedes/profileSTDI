@@ -50,14 +50,15 @@ const QRCode = require("qrcode.react");
 export const UserName = ({ location }) => {
   const [profileName, setProfileName] = useState("");
   const [profileBio, setProfileBio] = useState("");
+  const [profileUsername, setProfileUsername] = useState("");
   const [socialMedia, setSocialMedia] = useState([]);
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
   
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
 
-  const [isLinked, setIsLinked] = useState(false);
-  const [usernameLinked, setUsernameLinked] = useState("");
+  // const [isLinked, setIsLinked] = useState(false);
+  // const [usernameLinked, setUsernameLinked] = useState("");
 
   const [sendNotifications2, setSendNotifications2] = useState(false);
   const [emailProfile, setEmailProfile] = useState("");
@@ -75,7 +76,7 @@ export const UserName = ({ location }) => {
     axios
       .post("/users/usernameData", payload)
       .then((res) => {
-        const { ok, msg, data, email } = res.data;
+        const { ok, msg, data, email} = res.data;
 
         if (ok && msg === "Username Profile Data found.") {
          
@@ -90,6 +91,7 @@ export const UserName = ({ location }) => {
           setProfileName(profileFullName);
           setSocialMedia(socialMedia);
           setProfileBio(profileBio);
+          setProfileUsername(res.data.username);
 
           /*********PINTAMOS LA FOTO O EL BANNER***************/
           /* Depende de lo que retorne el servicio, pintamos ya sea el icon del perfil gris o
@@ -224,7 +226,7 @@ export const UserName = ({ location }) => {
             </div>
 
             <div className="row text-center h5">
-              <div className="col-12 d-flex justify-content-center">
+              <div className="col-12 d-flex justify-content-center pre-wrap">
                 <h5>{profileBio}</h5>
               </div>
             </div>
@@ -284,7 +286,7 @@ export const UserName = ({ location }) => {
                       ref={target}
                       onClick={() => {
                         setShow(!show);
-                        copyToClipboard(username);
+                        copyToClipboard(profileUsername);
                       }}
                     >
                       <span>
