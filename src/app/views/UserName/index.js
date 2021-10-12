@@ -42,6 +42,7 @@ import CustomURLIcon from "../../../assets/svg/customurl.svg";
 import { SocialMedia } from "./childrenComponents/SocialMedia";
 import { CustomLink } from "./childrenComponents/CustomLink";
 import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
+import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 
 const { swalOffBackend, convertStringWithPlus, copyToClipboard } = helpers;
 const QRCode = require("qrcode.react");
@@ -52,8 +53,9 @@ export const UserName = ({ location }) => {
   const [profileBio, setProfileBio] = useState("");
   const [profileUsername, setProfileUsername] = useState("");
   const [socialMedia, setSocialMedia] = useState([]);
+  const [gallery, setGallery] = useState([]);
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
-  
+
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
 
@@ -76,10 +78,9 @@ export const UserName = ({ location }) => {
     axios
       .post("/users/usernameData", payload)
       .then((res) => {
-        const { ok, msg, data, email} = res.data;
+        const { ok, msg, data, email, gallery } = res.data;
 
         if (ok && msg === "Username Profile Data found.") {
-         
           const {
             profileFullName,
             profileBio,
@@ -92,20 +93,25 @@ export const UserName = ({ location }) => {
           setSocialMedia(socialMedia);
           setProfileBio(profileBio);
           setProfileUsername(res.data.username);
+          setGallery(gallery);
 
           /*********PINTAMOS LA FOTO O EL BANNER***************/
           /* Depende de lo que retorne el servicio, pintamos ya sea el icon del perfil gris o
-          * pintamos la ruta guardada como key en s3 de la imagen
-          */
-          if(base64ProfilePhoto === ""){
+           * pintamos la ruta guardada como key en s3 de la imagen
+           */
+          if (base64ProfilePhoto === "") {
             setBase64ImgProfile(userImage);
-          }else{
-            setBase64ImgProfile(`${process.env.REACT_APP_API_URL}/render/image/${base64ProfilePhoto}`);
+          } else {
+            setBase64ImgProfile(
+              `${process.env.REACT_APP_API_URL}/render/image/${base64ProfilePhoto}`
+            );
           }
-          if(base64BannerPhoto === ""){
+          if (base64BannerPhoto === "") {
             setBase64ImgBanner(noBanner);
-          }else{
-             setBase64ImgBanner(`${process.env.REACT_APP_API_URL}/render/image/${base64BannerPhoto}`);
+          } else {
+            setBase64ImgBanner(
+              `${process.env.REACT_APP_API_URL}/render/image/${base64BannerPhoto}`
+            );
           }
           /***************************************************** */
 
@@ -144,7 +150,6 @@ export const UserName = ({ location }) => {
   }, []);
 
   const sendEmailNotifications = (value, email) => {
-    
     if (value === true) {
       //Si el valor que recibe es true entonces enviamos el correo
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -154,18 +159,23 @@ export const UserName = ({ location }) => {
         const payloadToSendNotifications = {
           to: email,
           latitude: position.coords.latitude,
-          longitude:  position.coords.longitude,
-        }
+          longitude: position.coords.longitude,
+        };
 
-        console.log(payloadToSendNotifications)
+        console.log(payloadToSendNotifications);
 
-        axios.post("email/sendNotification", payloadToSendNotifications).then((res) => {
-          if(res.data.ok === true){
-            console.log("Correo fue enviado");
-          }else{
-            console.log("Correo no fue enviado");
-          }
-        }).catch((error)=> {console.log("Ha ocurrido un error al enviar correo")});
+        axios
+          .post("email/sendNotification", payloadToSendNotifications)
+          .then((res) => {
+            if (res.data.ok === true) {
+              console.log("Correo fue enviado");
+            } else {
+              console.log("Correo no fue enviado");
+            }
+          })
+          .catch((error) => {
+            console.log("Ha ocurrido un error al enviar correo");
+          });
       });
     } else {
       console.log("Notifications disabled");
@@ -276,6 +286,9 @@ export const UserName = ({ location }) => {
               socialMedia={socialMedia}
               CustomURLIcon={CustomURLIcon}
             />
+
+            {/*Carrusel Imágenes*/}
+            <ProfileCarousel gallery={gallery} />
 
             {/*Botón Copiar Link*/}
             <div className="row p-2">

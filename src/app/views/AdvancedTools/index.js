@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Form } from "react-bootstrap";
 import { SideNavigation } from "../../../components/SideNavigation";
 import { AppContext } from "../../../components/AppContext";
 import logoImage from "../../../assets/images/logo-white.png";
@@ -7,6 +7,7 @@ import logoImage from "../../../assets/images/logo-white.png";
 //Componentes Hijos
 import SendNotifications from "./childrenComponents/SendNotifications";
 import LinkToAnotherProfile from "./childrenComponents/LinkToAnotherProfile";
+import GallerySetup from "./childrenComponents/GallerySetup";
 
 export const AdvancedTools = () => {
   const { objLogin } = useContext(AppContext);
@@ -23,13 +24,18 @@ export const AdvancedTools = () => {
           </div>
         </div>
       </div>
+
       <div className="mt-2">
         <div className="container text-white">
           <div className="row">
             <div className="col-12">
               <label className="font-bold">Advanced Tools:</label>
+
               <SendNotifications />
+
               <LinkToAnotherProfile />
+
+              <GallerySetup />
             </div>
           </div>
         </div>
