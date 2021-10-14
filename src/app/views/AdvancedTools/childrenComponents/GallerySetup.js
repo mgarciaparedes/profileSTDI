@@ -2,16 +2,18 @@ import React, { useState, useEffect, useContext } from "react";
 import { Modal, Form, InputGroup, Button, Alert } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 // import { Formik } from "formik";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 // import * as Yup from "yup";
 import axios from "axios";
 import { AppContext } from "../../../../components/AppContext";
-//import { SpinnerLoading } from "../../../../components/SpinnerLoading";
+import { SpinnerLoading } from "../../../../components/SpinnerLoading";
 import FormData from "form-data";
 
 function GallerySetup() {
   const { objLogin, setGalleryActiveContext } = useContext(AppContext);
   const [gallery, setGallery] = useState([]);
+  const [saveGalleryButton, setSaveGalleryButton] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [galleryActive, setGalleryActive] = useState(objLogin.galleryActive);
 
   //Variables para modal con info (primero)
@@ -19,37 +21,89 @@ function GallerySetup() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const activateGallery = (e) => {;
+  const activateGallery = (e) => {
     setGalleryActive(e.target.checked);
     setGalleryActiveContext(e.target.checked);
-    // changeGPSNotificationsStatus(e.target.checked);
+    setGalleryActivateOnDataBase(e.target.checked);
+  };
+
+  const setGalleryActivateOnDataBase = (value) => {
+    setLoading(true);
+    const payload = {
+      galleryImages: objLogin.galleryImages,
+      galleryActive: value,
+    };
+
+    axios
+      .post("/users/activateGallery", payload)
+      .then((res) => {
+        console.log(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
 
   const saveGallery = () => {
-    if(gallery !== null){
+    setSaveGalleryButton(true);
+    //aquí comparo si el usuario ya tiene una galería previamente registrada
+    //si gallery viene como null, quiere decir que no hay registros y se porcerá a usar el servicio saveNewGallery
+    //por el contrario, si tiene ya registros, solo se deberá modificar el registro que ya tiene guardado.
+    if (gallery !== null) {
       alert("El usuario tiene galería");
-    }else{
-      alert("El usuario no tiene galería");
-    }
-    // let formData = new FormData();
-    // formData.append("galleryActive", true);
-    // for (var x = 0; x < gallery.length; x++) {
-    //   formData.append("galleryImages", gallery[x]);
-    // }
+      setSaveGalleryButton(false);
+    } else {
+      let formData = new FormData();
+      formData.append("galleryActive", true);
+      for (var x = 0; x < gallery.length; x++) {
+        formData.append("galleryImages", gallery[x]);
+      }
 
-    // axios
-    //   .post("/users/saveNewGallery", formData, {
-    //     headers: {
-    //       "content-type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //   });
+      axios
+        .post("/users/saveNewGallery", formData, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          setSaveGalleryButton(false);
+
+          const { ok, msg } = res.data;
+
+          if (ok && msg === "Gallery created succesfully.") {
+            Swal.fire({
+              title: "Process succesfully",
+              text: msg,
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
+            handleClose();
+            setGalleryActive(true);
+            setGalleryActiveContext(true);
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: msg,
+              icon: "error",
+              confirmButtonText: "Try again",
+            });
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error",
+            text: "we are sorry, an error occurred.",
+            icon: "error",
+            confirmButtonText: "Try again",
+          });
+        });
+    }
   };
 
   return (
     <div className="mt-3">
+      {loading ? <SpinnerLoading /> : null}
       <label className="font-weight-bold">Set up your gallery:</label>
       <InputGroup>
         <Form.Check
@@ -127,13 +181,26 @@ function GallerySetup() {
             Close
           </Button>
           <Button
+            type="button"
             variant="primary"
+            disabled={saveGalleryButton === true}
             onClick={() => {
-              handleClose();
               saveGallery();
             }}
           >
-            Save Gallery
+            <div className="d-flex d-inline-block justify-content-center">
+              <span
+                className="spinner-border spinner-border-sm mt-1 mr-2"
+                role="status"
+                style={{
+                  display: saveGalleryButton === true ? "inline-block" : "none",
+                }}
+                aria-hidden="true"
+              ></span>
+              {saveGalleryButton === true
+                ? " Loading, please wait..."
+                : "Save Gallery"}
+            </div>
           </Button>
         </Modal.Footer>
       </Modal>
