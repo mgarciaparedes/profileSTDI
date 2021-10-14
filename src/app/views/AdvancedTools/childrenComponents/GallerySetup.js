@@ -13,6 +13,8 @@ function GallerySetup() {
   const { objLogin } = useContext(AppContext);
   const [gallery, setGallery] = useState([]);
 
+  console.log(objLogin.gallery);
+
   //Variables para modal con info (primero)
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -20,9 +22,9 @@ function GallerySetup() {
 
   const saveGallery = () => {
     let formData = new FormData();
-
+    formData.append("galleryActive", true);
     for (var x = 0; x < gallery.length; x++) {
-      formData.append("gallery", gallery[x]);
+      formData.append("galleryImages", gallery[x]);
     }
 
     axios

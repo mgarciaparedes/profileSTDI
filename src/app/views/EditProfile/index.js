@@ -14,9 +14,10 @@ import { SpinnerLoading } from "../../../components/SpinnerLoading";
 import { SideNavigation } from "../../../components/SideNavigation";
 
 //Componentes Hijos
-import ModalChangePassword from "./childrenComponents/ModalChangePassword";
+//import ModalChangePassword from "./childrenComponents/ModalChangePassword";
 import NoDymanicForm from "./childrenComponents/NoDymanicForm";
 import Row from "./childrenComponents/Row";
+import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 
 //Ícono
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
@@ -93,7 +94,7 @@ export const EditProfile = () => {
           setProfileData(res.data.data.socialMedia);
           setIsLinked(res.data.data.isLinked);
           setUsernameLinked(res.data.data.usernameLinked);
-          setGallery(res.data.data.gallery);
+          setGallery(res.data.gallery);
 
           /*De no estar guardada la ruta de la imagen, mostramos un icono en fondo gris*/
           if (res.data.data.base64ProfilePhoto === "") {
@@ -607,6 +608,10 @@ export const EditProfile = () => {
                     ) : null}
                   </div>
                 ))}
+
+                {/*Se muestra el gallery si está activo*/}
+                <ProfileCarousel gallery={gallery} />     
+
                 <div className="row mt-1">
                   <div className="col-lg-12">
                     <div className="d-flex justify-content-center">
