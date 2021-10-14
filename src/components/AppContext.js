@@ -13,6 +13,7 @@ const AppProvider = ({ children }) => {
     email: "",
     serialNumber: "",
     username: "",
+    gallery: [],
     profileData: [],
     sendNotifications: false,
     isLinked: false,
@@ -34,6 +35,7 @@ const AppProvider = ({ children }) => {
               serialNumber: objStorage.serialNumber,
               username: objStorage.username,
               profileData: objStorage.profileData,
+              gallery: objStorage.gallery,
               sendNotifications: objStorage.sendNotifications,
               isLinked: objStorage.isLinked,
               usernameLinked: objStorage.usernameLinked,
@@ -108,6 +110,7 @@ const AppProvider = ({ children }) => {
               serialNumber: objStorage.serialNumber,
               username: objStorage.username,
               profileData: objStorage.profileData,
+              gallery: objStorage.gallery,
               sendNotifications: isChecked,
               isLinked: objStorage.isLinked,
               usernameLinked: objStorage.usernameLinked,
@@ -136,6 +139,7 @@ const AppProvider = ({ children }) => {
               email: objStorage.email,
               serialNumber: objStorage.serialNumber,
               username: objStorage.username,
+              gallery: objStorage.gallery,
               profileData: objStorage.profileData,
               sendNotifications: objStorage.sendNotifications,
               isLinked: isLinkedStatus,
@@ -147,6 +151,35 @@ const AppProvider = ({ children }) => {
       });
     })();
   };
+
+  // const setGalleryContext = (
+  //   isLinkedStatus,
+  //   usernameLinkedStatus,
+  // ) => {
+  //   (async () => {
+  //     await AsyncStorage.getItem("APP::DATA").then((value) => {
+  //       if (value === null) {
+  //       } else {
+  //         let objStorage = JSON.parse(value);
+  //         if (JSON.parse(objStorage.authenticated) === true) {
+  //           const json = {
+  //             authenticated: objStorage.authenticated,
+  //             user: objStorage.user,
+  //             token: objStorage.token,
+  //             email: objStorage.email,
+  //             serialNumber: objStorage.serialNumber,
+  //             username: objStorage.username,
+  //             profileData: objStorage.profileData,
+  //             sendNotifications: objStorage.sendNotifications,
+  //             isLinked: isLinkedStatus,
+  //             usernameLinked: usernameLinkedStatus,
+  //           };
+  //           setObjLogin(json);
+  //         }
+  //       }
+  //     });
+  //   })();
+  // };
 
   return (
     <AppContext.Provider

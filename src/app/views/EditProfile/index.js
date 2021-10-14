@@ -43,6 +43,7 @@ export const EditProfile = () => {
    *la ruta de la imagen*/
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
   const [base64ImgBanner, setBase64ImgBanner] = useState("");
+  const [gallery, setGallery] = useState("");
 
   // const [sendNotifications, setSendNotifications] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
@@ -92,6 +93,7 @@ export const EditProfile = () => {
           setProfileData(res.data.data.socialMedia);
           setIsLinked(res.data.data.isLinked);
           setUsernameLinked(res.data.data.usernameLinked);
+          setGallery(res.data.data.gallery);
 
           /*De no estar guardada la ruta de la imagen, mostramos un icono en fondo gris*/
           if (res.data.data.base64ProfilePhoto === "") {

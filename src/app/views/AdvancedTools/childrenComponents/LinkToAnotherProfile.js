@@ -152,7 +152,7 @@ function LinkToAnotherProfile() {
       >
         <Modal.Header>
           <Modal.Title>
-            <Icon.Diagram2Fill /> Connecting to existent profile
+            <Icon.Diagram2Fill className="mb-1" /> Connecting to existent profile
           </Modal.Title>
         </Modal.Header>
 
@@ -161,7 +161,7 @@ function LinkToAnotherProfile() {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
                 <Alert variant="info">
-                  <Icon.InfoCircleFill className="mb-1" /> &nbsp; Please read
+                  <Icon.InfoCircleFill className="mb-1" size={20} /> &nbsp; Please read
                   the following info where we explain what does this mean.
                 </Alert>
                 <p>

@@ -5,9 +5,9 @@ import * as Icon from "react-bootstrap-icons";
 import Swal from "sweetalert2";
 import { Form, InputGroup, Alert, Button } from "react-bootstrap";
 
-//Componente Hijo
-import SendNotifications from "./SendNotifications";
-import LinkToAnotherProfile from "./LinkToAnotherProfile";
+// //Componente Hijo
+// import SendNotifications from "./SendNotifications";
+// import LinkToAnotherProfile from "./LinkToAnotherProfile";
 
 function NoDymanicForm({
   nameState,
