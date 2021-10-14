@@ -10,39 +10,66 @@ import { AppContext } from "../../../../components/AppContext";
 import FormData from "form-data";
 
 function GallerySetup() {
-  const { objLogin } = useContext(AppContext);
+  const { objLogin, setGalleryActiveContext } = useContext(AppContext);
   const [gallery, setGallery] = useState([]);
-
-  console.log(objLogin.gallery);
+  const [galleryActive, setGalleryActive] = useState(objLogin.galleryActive);
 
   //Variables para modal con info (primero)
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const saveGallery = () => {
-    let formData = new FormData();
-    formData.append("galleryActive", true);
-    for (var x = 0; x < gallery.length; x++) {
-      formData.append("galleryImages", gallery[x]);
-    }
+  const activateGallery = (e) => {;
+    setGalleryActive(e.target.checked);
+    setGalleryActiveContext(e.target.checked);
+    // changeGPSNotificationsStatus(e.target.checked);
+  };
 
-    axios
-      .post("/users/saveNewGallery", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-      });
+  const saveGallery = () => {
+    if(gallery !== null){
+      alert("El usuario tiene galería");
+    }else{
+      alert("El usuario no tiene galería");
+    }
+    // let formData = new FormData();
+    // formData.append("galleryActive", true);
+    // for (var x = 0; x < gallery.length; x++) {
+    //   formData.append("galleryImages", gallery[x]);
+    // }
+
+    // axios
+    //   .post("/users/saveNewGallery", formData, {
+    //     headers: {
+    //       "content-type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //   });
   };
 
   return (
     <div className="mt-3">
       <label className="font-weight-bold">Set up your gallery:</label>
-      <br />
-      <Button variant="light" onClick={handleShow}>
+      <InputGroup>
+        <Form.Check
+          type="switch"
+          name="galleryActive"
+          id="custom-switch-gallery-active"
+          label={
+            galleryActive ? (
+              <b className="text-success"> Enabled </b>
+            ) : (
+              <b className="text-warning"> Disabled </b>
+            )
+          }
+          checked={galleryActive === true ? true : false}
+          onChange={(e) => {
+            activateGallery(e);
+          }}
+        />
+      </InputGroup>
+      <Button variant="light" className="mt-1" onClick={handleShow}>
         Click here to begin the steps
       </Button>
 

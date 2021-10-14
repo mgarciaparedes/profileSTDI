@@ -13,7 +13,8 @@ const AppProvider = ({ children }) => {
     email: "",
     serialNumber: "",
     username: "",
-    gallery: [],
+    galleryImages: [],
+    galleryActive: false,
     profileData: [],
     sendNotifications: false,
     isLinked: false,
@@ -35,7 +36,8 @@ const AppProvider = ({ children }) => {
               serialNumber: objStorage.serialNumber,
               username: objStorage.username,
               profileData: objStorage.profileData,
-              gallery: objStorage.gallery,
+              galleryImages: objStorage.galleryImages,
+              galleryActive: objStorage.galleryActive,
               sendNotifications: objStorage.sendNotifications,
               isLinked: objStorage.isLinked,
               usernameLinked: objStorage.usernameLinked,
@@ -110,7 +112,8 @@ const AppProvider = ({ children }) => {
               serialNumber: objStorage.serialNumber,
               username: objStorage.username,
               profileData: objStorage.profileData,
-              gallery: objStorage.gallery,
+              galleryImages: objStorage.galleryImages,
+              galleryActive: objStorage.galleryActive,
               sendNotifications: isChecked,
               isLinked: objStorage.isLinked,
               usernameLinked: objStorage.usernameLinked,
@@ -139,11 +142,12 @@ const AppProvider = ({ children }) => {
               email: objStorage.email,
               serialNumber: objStorage.serialNumber,
               username: objStorage.username,
-              gallery: objStorage.gallery,
+              galleryImages: objStorage.galleryImages,
+              galleryActive: objStorage.galleryActive,
               profileData: objStorage.profileData,
               sendNotifications: objStorage.sendNotifications,
-              isLinked: isLinkedStatus,
-              usernameLinked: usernameLinkedStatus,
+              isLinked: objStorage.isLinked,
+              usernameLinked: objStorage.usernameLinked,
             };
             setObjLogin(json);
           }
@@ -152,34 +156,35 @@ const AppProvider = ({ children }) => {
     })();
   };
 
-  // const setGalleryContext = (
-  //   isLinkedStatus,
-  //   usernameLinkedStatus,
-  // ) => {
-  //   (async () => {
-  //     await AsyncStorage.getItem("APP::DATA").then((value) => {
-  //       if (value === null) {
-  //       } else {
-  //         let objStorage = JSON.parse(value);
-  //         if (JSON.parse(objStorage.authenticated) === true) {
-  //           const json = {
-  //             authenticated: objStorage.authenticated,
-  //             user: objStorage.user,
-  //             token: objStorage.token,
-  //             email: objStorage.email,
-  //             serialNumber: objStorage.serialNumber,
-  //             username: objStorage.username,
-  //             profileData: objStorage.profileData,
-  //             sendNotifications: objStorage.sendNotifications,
-  //             isLinked: isLinkedStatus,
-  //             usernameLinked: usernameLinkedStatus,
-  //           };
-  //           setObjLogin(json);
-  //         }
-  //       }
-  //     });
-  //   })();
-  // };
+  const setGalleryActiveContext = (
+    galleryActiveStatus,
+  ) => {
+    (async () => {
+      await AsyncStorage.getItem("APP::DATA").then((value) => {
+        if (value === null) {
+        } else {
+          let objStorage = JSON.parse(value);
+          if (JSON.parse(objStorage.authenticated) === true) {
+            const json = {
+              authenticated: objStorage.authenticated,
+              user: objStorage.user,
+              token: objStorage.token,
+              email: objStorage.email,
+              serialNumber: objStorage.serialNumber,
+              username: objStorage.username,
+              profileData: objStorage.profileData,
+              galleryImages: objStorage.galleryImages,
+              galleryActive: galleryActiveStatus,
+              sendNotifications: objStorage.sendNotifications,
+              isLinked: objStorage.isLinked,
+              usernameLinked: objStorage.usernameLinked,
+            };
+            setObjLogin(json);
+          }
+        }
+      });
+    })();
+  };
 
   return (
     <AppContext.Provider
@@ -188,7 +193,8 @@ const AppProvider = ({ children }) => {
         logoutContext,
         objLogin,
         setGPSNotificationsSelectedContext,
-        setLinkToExistentProfileContext
+        setLinkToExistentProfileContext,
+        setGalleryActiveContext
       }}
     >
       {children}
