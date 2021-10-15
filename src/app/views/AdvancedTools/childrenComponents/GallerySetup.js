@@ -12,6 +12,7 @@ import FormData from "form-data";
 function GallerySetup() {
   const { objLogin, setGalleryActiveContext } = useContext(AppContext);
   const [gallery, setGallery] = useState([]);
+  const galleryImages = objLogin.galleryImages;
   const [saveGalleryButton, setSaveGalleryButton] = useState(false);
   const [filesLength, setFilesLength] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -50,7 +51,6 @@ function GallerySetup() {
   const setGalleryActivateOnDataBase = (value) => {
     setLoading(true);
     const payload = {
-      galleryImages: objLogin.galleryImages,
       galleryActive: value,
     };
 
@@ -80,7 +80,7 @@ function GallerySetup() {
       //aquí comparo si el usuario ya tiene una galería previamente registrada
       //si gallery viene como null, quiere decir que no hay registros y se porcerá a usar el servicio saveNewGallery
       //por el contrario, si tiene ya registros, solo se deberá modificar el registro que ya tiene guardado.
-      if (gallery !== null) {
+      if (galleryImages !== null) {
         let formData2 = new FormData();
         formData2.append("galleryActive", objLogin.galleryActive);
         for (var x = 0; x < gallery.length; x++) {
