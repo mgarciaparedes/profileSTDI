@@ -11,7 +11,7 @@ export const ProfileCarousel = ({gallery}) => {
   };
   return (
     <>
-    {gallery ? gallery.galleryActive && gallery.galleryImages.length > 0 ? (
+    {gallery ? gallery.galleryActive && gallery.galleryImages !== null ? (
       <div className="row p-2 mb-2">
         <div className="col-lg-12">
           <div className="d-flex justify-content-center">
