@@ -39,29 +39,6 @@ function GallerySetup() {
 
   const schema = Yup.object().shape({
     attachedDocument: Yup.mixed().required("At least one file is required"),
-    // .test(
-    //   "fileSize",
-    //   "Tamaño del archivo debe ser máximo de 1 MB",
-    //   (value) => {
-    //     return fileSize <= 1000000;
-    //   }
-    // )
-    // .test(
-    //   "fileType",
-    //   "Formatos de archivo soportados PDF, JPG, JPEG, PNG, DOC, DOCX, DOCM, RTF",
-    //   (value) => {
-    //     return (
-    //       fileType === "application/pdf" ||
-    //       fileType === "image/jpg" ||
-    //       fileType === "image/jpeg" ||
-    //       fileType === "image/png" ||
-    //       fileType === "application/msword" || //DOC y RTF
-    //       fileType ===
-    //         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || //DOCX
-    //       fileType === "application/vnd.ms-word.document.macroEnabled.12"
-    //     ); //DOCM
-    //   }
-    // ),
   });
 
   const activateGallery = (e) => {

@@ -10,7 +10,11 @@ export const SideNavigation = () => {
   const { logoutContext, objLogin } = useContext(AppContext);
   console.log(objLogin.profileData);
   const openNav = () => {
-    document.getElementById("mySidenav").style.width = "300px";
+    if (window.screen.width < 400) {
+      document.getElementById("mySidenav").style.width = "100%";
+    } else {
+      document.getElementById("mySidenav").style.width = "300px";
+    }
   };
 
   /* Set the width of the side navigation to 0 */
@@ -34,7 +38,11 @@ export const SideNavigation = () => {
         </a>
 
         {/****** Opción HOME ******/}
-        <a href="javascript:void(0)" className="mb-3" onClick={() => history.push("/edit-profile")}>
+        <a
+          href="javascript:void(0)"
+          className="mb-3"
+          onClick={() => history.push("/edit-profile")}
+        >
           <Icon.PencilSquare size={22} className="mb-1 mr-2" /> Set Up Profile
         </a>
 
@@ -56,8 +64,12 @@ export const SideNavigation = () => {
           />
         </a> */}
 
-         {/****** Opción Advanced Tools ******/}
-         <a href="javascript:void(0)" className="mb-3" onClick={() => history.push("/advanced-tools")}>
+        {/****** Opción Advanced Tools ******/}
+        <a
+          href="javascript:void(0)"
+          className="mb-3"
+          onClick={() => history.push("/advanced-tools")}
+        >
           <Icon.Tools size={22} className="mb-1 mr-2" /> Advanced Tools
         </a>
 
@@ -68,8 +80,6 @@ export const SideNavigation = () => {
           serialNumber={objLogin.serialNumber}
           email={objLogin.email}
         />
-
-       
 
         {/****** Opción Terminar Sesión ******/}
         <a
