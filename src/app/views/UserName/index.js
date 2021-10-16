@@ -44,7 +44,7 @@ import { CustomLink } from "./childrenComponents/CustomLink";
 import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
 import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 
-const { swalOffBackend, convertStringWithPlus, copyToClipboard } = helpers;
+const { swalOffBackend, convertStringWithPlus, copyToClipboard, shareLink } = helpers;
 const QRCode = require("qrcode.react");
 
 /*Componente para manejar nombre del usuario*/
@@ -291,50 +291,72 @@ export const UserName = ({ location }) => {
             <ProfileCarousel gallery={gallery} />
 
             {/*Botón Copiar Link*/}
-            <div className="row p-2">
-              <div className="col-lg-12">
+            <div className="row pt-2">
+              <div className="col-6">
                 <div className="d-flex justify-content-center">
-                  <div className="border p-3 border-link">
-                    <Button
-                      ref={target}
-                      onClick={() => {
-                        setShow(!show);
-                        copyToClipboard(profileUsername);
-                      }}
-                    >
-                      <span>
-                        <i className="bi bi-clipboard" />
-                      </span>
-                      &nbsp; Copy Link
-                    </Button>
-                    <Overlay
-                      target={target.current}
-                      show={show}
-                      placement="top"
-                    >
-                      {(props) => (
-                        <Tooltip id="overlay-example" {...props}>
-                          Profile copied to clipboard!
-                        </Tooltip>
-                      )}
-                    </Overlay>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/*Botón Copiar Link*/}
-            <div className="row p-2">
-              <div className="col-lg-12">
-                <div className="d-flex justify-content-center">
-                  <div className="border p-3 border-link">
+                  <div className="border border-link">
                     <div className="d-flex justify-content-center">
-                      <h5 className="font-bold pb-3">QR Code</h5>
+                      <h5 className="font-bold pb-1 pt-2">QR Code</h5>
                     </div>
                     <QRCode
                       id="QR"
                       value={"https://profile.stdicompany.com/" + username}
+                      className="m-1 p-2"
                     />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-6">
+                <div className="row">
+                  <div className="col-12">
+                    <div className="d-flex justify-content-center">
+                      <div className="border p-2 mr-1 border-link">
+                        {/*Inicio Botón Copy Link */}
+                        <div className="d-flex justify-content-center">
+                        <Button
+                          ref={target}
+                          onClick={() => {
+                            setShow(!show);
+                            copyToClipboard(profileUsername);
+                          }}
+                        >
+                          <span>
+                            <i className="bi bi-clipboard" />
+                          </span>
+                          &nbsp; Copy Link
+                        </Button>
+                        </div>
+
+                        <Overlay
+                          target={target.current}
+                          show={show}
+                          placement="top"
+                        >
+                          {(props) => (
+                            <Tooltip id="overlay-example" {...props}>
+                              Profile copied to clipboard!
+                            </Tooltip>
+                          )}
+                        </Overlay>
+                        {/*Final Botón Copy Link */}
+
+                        {/*Inicio Botón Share Link */}
+                        <Button
+                          variant="success"
+                          ref={target}
+                          onClick={() => {
+                            shareLink(profileUsername);
+                          }}
+                          className="mt-3"
+                        >
+                          <span>
+                            <i className="bi bi-share" />
+                          </span>
+                          &nbsp; Share Link
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

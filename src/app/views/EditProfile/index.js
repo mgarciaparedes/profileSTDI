@@ -27,7 +27,7 @@ import SubmitAndClearDataButtons from "./childrenComponents/SubmitAndClearDataBu
 
 const QRCode = require("qrcode.react");
 
-const { convertStringWithPlus, copyToClipboard } = helpers;
+const { convertStringWithPlus, copyToClipboard, shareLink } = helpers;
 
 export const EditProfile = () => {
   const [existentProfile, setExistentProfile] = useState(true);
@@ -612,22 +612,44 @@ export const EditProfile = () => {
                 {/*Se muestra el gallery si está activo*/}
                 <ProfileCarousel gallery={gallery} />     
 
-                <div className="row mt-1">
-                  <div className="col-lg-12">
+                <div className="row mt-1 pb-3">
+                <div className="col-6">
+                <div className="d-flex justify-content-center">
+                  <div className="border border-link">
                     <div className="d-flex justify-content-center">
-                      <div className="border p-3 border-link">
+                      <h5 className="font-bold pb-1 pt-2">QR Code</h5>
+                    </div>
+                    <QRCode
+                      id="QR"
+                      value={"https://profile.stdicompany.com/" + username}
+                      className="m-1 p-2"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-6">
+                <div className="row">
+                  <div className="col-12">
+                    <div className="d-flex justify-content-center">
+                      <div className="border p-2 mr-1 border-link">
+                        {/*Inicio Botón Copy Link */}
+                        <div className="d-flex justify-content-center">
                         <Button
                           ref={target}
                           onClick={() => {
                             setShow(!show);
-                            copyToClipboard(objLogin.username);
+                            copyToClipboard(username);
                           }}
                         >
+                          
                           <span>
                             <i className="bi bi-clipboard" />
                           </span>
                           &nbsp; Copy Link
                         </Button>
+                        </div>
+
                         <Overlay
                           target={target.current}
                           show={show}
@@ -639,27 +661,27 @@ export const EditProfile = () => {
                             </Tooltip>
                           )}
                         </Overlay>
+                        {/*Final Botón Copy Link */}
+
+                        {/*Inicio Botón Share Link */}
+                        <Button
+                          variant="success"
+                          ref={target}
+                          onClick={() => {
+                            shareLink(username);
+                          }}
+                          className="mt-3"
+                        >
+                          <span>
+                            <i className="bi bi-share" />
+                          </span>
+                          &nbsp; Share Link
+                        </Button>
                       </div>
                     </div>
                   </div>
-                  <div className="col-lg-12 mt-3 mb-5">
-                    <div className="d-flex justify-content-center">
-                      <div className="border p-3 border-link">
-                        <h5 className="font-bold pb-3 text-center">QR Code</h5>
-                        <QRCode
-                          value={"https://profile.stdicompany.com/" + username}
-                        />
-                      </div>
-                    </div>
-                    {/*<div className="d-flex justify-content-center mt-3 mb-3">
-                      <a
-                        target="_blank"
-                        href={"https://profile.stdicompany.com/" + username}
-                      >
-                        Tap here to see your profile
-                      </a>
-                    </div>*/}
-                  </div>
+                </div>
+              </div>
                 </div>
               </div>
             </div>
