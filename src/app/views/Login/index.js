@@ -46,7 +46,16 @@ export const Login = () => {
         /*Sí el login es ok, loguea*/
         if (ok && msg === "login") {
           axios.get(`/users/getProfileUserData`).then((res2) => {
-            const { ok, msg, serialNumber, username, email, data, gallery } = res2.data;
+            const {
+              ok,
+              msg,
+              serialNumber,
+              username,
+              email,
+              data,
+              gallery,
+              customImage,
+            } = res2.data;
             /*Sí el login es ok, loguea*/
             if (ok && msg === "User data found.") {
               setDisabledButton(false);
@@ -59,8 +68,15 @@ export const Login = () => {
                 serialNumber: serialNumber,
                 username: username,
                 profileData: data,
-                galleryImages: (gallery && gallery.galleryImages) ? gallery.galleryImages : null,
-                galleryActive: (gallery && gallery.galleryActive) ? gallery.galleryActive : null,
+                galleryImages:
+                  gallery && gallery.galleryImages
+                    ? gallery.galleryImages
+                    : null,
+                galleryActive:
+                  gallery && gallery.galleryActive
+                    ? gallery.galleryActive
+                    : null,
+                customImage: customImage ? customImage : null,
                 sendNotifications: data.sendNotifications,
                 isLinked: data.isLinked,
                 usernameLinked: data.usernameLinked,
