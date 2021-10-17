@@ -10,7 +10,7 @@ import { SpinnerLoading } from "../../../../components/SpinnerLoading";
 import FormData from "form-data";
 
 function GallerySetup() {
-  const { objLogin, setGalleryActiveContext } = useContext(AppContext);
+  const { objLogin, setGalleryActiveContext, setGalleryImageContext } = useContext(AppContext);
   const [gallery, setGallery] = useState([]);
   const galleryImages = objLogin.galleryImages;
   const [saveGalleryButton, setSaveGalleryButton] = useState(false);
@@ -106,6 +106,8 @@ function GallerySetup() {
                 confirmButtonText: "Ok",
               });
               handleClose();
+              document.getElementById("attachedDocument").value = "";
+              setFilesLength(0);
             } else {
               Swal.fire({
                 title: "Error",
@@ -140,7 +142,7 @@ function GallerySetup() {
           .then((res) => {
             setSaveGalleryButton(false);
 
-            const { ok, msg } = res.data;
+            const { ok, msg, event } = res.data;
 
             if (ok && msg === "Gallery created succesfully.") {
               Swal.fire({
@@ -149,9 +151,15 @@ function GallerySetup() {
                 icon: "success",
                 confirmButtonText: "Ok",
               });
+
+              const { galleryImages } = event;
+
               handleClose();
               setGalleryActive(true);
               setGalleryActiveContext(true);
+              setGalleryImageContext(galleryImages);
+              document.getElementById("attachedDocument").value = "";
+              setFilesLength(0);
             } else {
               Swal.fire({
                 title: "Error",

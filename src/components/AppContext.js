@@ -186,6 +186,36 @@ const AppProvider = ({ children }) => {
     })();
   };
 
+  const setGalleryImageContext = (
+    galleryImages,
+  ) => {
+    (async () => {
+      await AsyncStorage.getItem("APP::DATA").then((value) => {
+        if (value === null) {
+        } else {
+          let objStorage = JSON.parse(value);
+          if (JSON.parse(objStorage.authenticated) === true) {
+            const json = {
+              authenticated: objStorage.authenticated,
+              user: objStorage.user,
+              token: objStorage.token,
+              email: objStorage.email,
+              serialNumber: objStorage.serialNumber,
+              username: objStorage.username,
+              profileData: objStorage.profileData,
+              galleryImages: galleryImages,
+              galleryActive: objStorage.galleryActive,
+              sendNotifications: objStorage.sendNotifications,
+              isLinked: objStorage.isLinked,
+              usernameLinked: objStorage.usernameLinked,
+            };
+            setObjLogin(json);
+          }
+        }
+      });
+    })();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -194,7 +224,8 @@ const AppProvider = ({ children }) => {
         objLogin,
         setGPSNotificationsSelectedContext,
         setLinkToExistentProfileContext,
-        setGalleryActiveContext
+        setGalleryActiveContext,
+        setGalleryImageContext
       }}
     >
       {children}
