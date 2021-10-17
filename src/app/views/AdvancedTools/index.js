@@ -9,6 +9,7 @@ import * as Icon from "react-bootstrap-icons";
 import SendNotifications from "./childrenComponents/SendNotifications";
 import LinkToAnotherProfile from "./childrenComponents/LinkToAnotherProfile";
 import GallerySetup from "./childrenComponents/GallerySetup";
+import CustomImageSetup from "./childrenComponents/CustomImageSetup";
 
 export const AdvancedTools = () => {
   const { objLogin } = useContext(AppContext);;
@@ -48,8 +49,11 @@ export const AdvancedTools = () => {
               {/*Opción Linkear a otro perfil */}
               <LinkToAnotherProfile />
 
-              {/*Opción Linkear a otro perfil */}
+              {/*Opción configurar galería de imágenes */}
               <GallerySetup />
+
+              {/*Opción configurar custom Image Button */}
+              <CustomImageSetup />
             </div>
           </div>
         </div>
