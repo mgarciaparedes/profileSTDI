@@ -37,10 +37,12 @@ import SmsIcon from "../../../assets/svg/sms.svg";
 import PhoneIcon from "../../../assets/svg/phone.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
+import CustomImageIcon from "../../../assets/svg/galleryimage.svg"
 
 //Componentes hijos
 import { SocialMedia } from "./childrenComponents/SocialMedia";
 import { CustomLink } from "./childrenComponents/CustomLink";
+import { CustomImage } from "./childrenComponents/CustomImage"
 import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
 import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 
@@ -54,6 +56,7 @@ export const UserName = ({ location }) => {
   const [profileUsername, setProfileUsername] = useState("");
   const [socialMedia, setSocialMedia] = useState([]);
   const [gallery, setGallery] = useState([]);
+  const [customImage, setCustomImage] = useState([]);
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
 
   const [base64ImgProfile, setBase64ImgProfile] = useState("");
@@ -78,7 +81,7 @@ export const UserName = ({ location }) => {
     axios
       .post("/users/usernameData", payload)
       .then((res) => {
-        const { ok, msg, data, email, gallery } = res.data;
+        const { ok, msg, data, email, gallery, customImage } = res.data;
 
         if (ok && msg === "Username Profile Data found.") {
           const {
@@ -94,6 +97,7 @@ export const UserName = ({ location }) => {
           setProfileBio(profileBio);
           setProfileUsername(res.data.username);
           setGallery(gallery);
+          setCustomImage(customImage);
 
           /*********PINTAMOS LA FOTO O EL BANNER***************/
           /* Depende de lo que retorne el servicio, pintamos ya sea el icon del perfil gris o
@@ -279,6 +283,15 @@ export const UserName = ({ location }) => {
               SmsIcon={SmsIcon}
               convertStringWithPlus={convertStringWithPlus}
               MapPinIcon={MapPinIcon}
+            /> 
+
+            {/*Carrusel Imágenes*/}
+            <ProfileCarousel gallery={gallery} />
+
+            {/*Componentes de links customizados al visualizar el perfil*/}
+            <CustomImage
+              customImage={customImage}
+              CustomImageIcon={CustomImageIcon}
             />
 
             {/*Componentes de links customizados al visualizar el perfil*/}
@@ -286,9 +299,6 @@ export const UserName = ({ location }) => {
               socialMedia={socialMedia}
               CustomURLIcon={CustomURLIcon}
             />
-
-            {/*Carrusel Imágenes*/}
-            <ProfileCarousel gallery={gallery} />
 
             {/*Botón Copiar Link*/}
             <div className="row pt-2">

@@ -1,17 +1,6 @@
 import React from "react";
-import Swal from "sweetalert2";
 
 export const CustomLink = ({ socialMedia, CustomURLIcon }) => {
-  const showModal = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "If you clear your profile it will be empty.",
-      icon: "info",
-      confirmButtonText: "Yes, wipe out",
-      showCancelButton: true,
-      cancelButtonText: "No, go back",
-    })
-  }
   return (
     <>
       {socialMedia.map((elemento, index) => (
