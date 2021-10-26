@@ -23,6 +23,11 @@ export const ProfileCarousel = ({gallery}) => {
                   className="d-block w-100"
                   src={`${process.env.REACT_APP_API_URL}/render/image/${elemento.image}`}
                   alt="First slide"
+                  onClick={
+                    () => {
+                      window.open("https://google.com/")
+                    }
+                  }
                 />
                 <Carousel.Caption>
                   {/* <h3>First slide label</h3> */}

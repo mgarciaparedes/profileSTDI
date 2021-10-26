@@ -10,11 +10,11 @@ export const SideNavigation = () => {
   const { logoutContext, objLogin } = useContext(AppContext);
   console.log(objLogin.profileData);
   const openNav = () => {
-    if (window.screen.width < 400) {
-      document.getElementById("mySidenav").style.width = "100%";
-    } else {
-      document.getElementById("mySidenav").style.width = "300px";
-    }
+    // if (window.screen.width < 400) {
+    //   document.getElementById("mySidenav").style.width = "100%";
+    // } else {
+      document.getElementById("mySidenav").style.width = "250px";
+    // }
   };
 
   /* Set the width of the side navigation to 0 */
