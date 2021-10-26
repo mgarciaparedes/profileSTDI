@@ -10,7 +10,8 @@ import { SpinnerLoading } from "../../../../components/SpinnerLoading";
 import FormData from "form-data";
 
 function GallerySetup() {
-  const { objLogin, setGalleryActiveContext, setGalleryImageContext } = useContext(AppContext);
+  const { objLogin, setGalleryActiveContext, setGalleryImageContext } =
+    useContext(AppContext);
   const [gallery, setGallery] = useState([]);
   const galleryImages = objLogin.galleryImages;
   const [saveGalleryButton, setSaveGalleryButton] = useState(false);
@@ -26,6 +27,7 @@ function GallerySetup() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleCloseModalAmountInputs = () => setShowModalAmountInputs(false);
 
   useEffect(() => {
     for (var i = 0; i < gallery.length; i++) {
@@ -40,6 +42,10 @@ function GallerySetup() {
       }
     }
   }, [gallery]);
+
+  const schemaModalAmount = Yup.object({
+    imagesNumber: Yup.string().required("Number of images are required"),
+  });
 
   const schema = Yup.object().shape({
     attachedDocument: Yup.mixed().required("At least one file is required"),
@@ -186,30 +192,51 @@ function GallerySetup() {
 
   const showConfirmDialog = () => setShowModalAmountInputs(true);
 
-  const RenderInputsGallery = () => {
+  const RenderInputsGallery = (event) => {
+    // if (
+    //   !document.getElementById("AmountImagesGallery").value ||
+    //   document.getElementById("AmountImagesGallery").value === ""
+    // )
+    //   return Swal.fire({
+    //     title: "Error",
+    //     text: "You must enter a numeric value",
+    //     icon: "error",
+    //     confirmButtonText: "Try again",
+    //   });
 
-    if(!document.getElementById("AmountImagesGallery").value ||
-    document.getElementById("AmountImagesGallery").value === "")
-    return Swal.fire({
-      title: "Error",
-      text: "You must enter a numeric value",
-      icon: "error",
-      confirmButtonText: "Try again",
-    });
+    // const amount = parseInt(
+    //   document.getElementById("AmountImagesGallery").value
+    // );
 
-    const amount = parseInt(document.getElementById("AmountImagesGallery").value);
+    // if (amount > 0) {
+    //   setAmountInputsGallery(amount);
 
-    if(amount > 0)
-    {
-      setAmountInputsGallery(amount);
+    //   let inputs = [];
+    //   for (let i = 0; i < amount; i++) {
+    //     inputs.push(1);
+    //   }
+    //   setArrayToMapInputs(inputs);
+    // }
 
-      let inputs = [];
-      for(let i = 0; i< amount; i++){
+    //Primero, cerramos el modal que está a la vista
+    handleCloseModalAmountInputs();
+
+    //Segundo, calculamos el valor del arreglo según el primer select
+    const amount = event.imagesNumber;
+  
+      if (amount > 0) {
+        setAmountInputsGallery(amount);
+  
+        let inputs = [];
+        for (let i = 0; i < amount; i++) {
           inputs.push(1);
+        }
+        setArrayToMapInputs(inputs);
       }
-      setArrayToMapInputs(inputs);
-    }
-  }
+
+    //Luego mostramos el segundo modal con la cantidad de inputs
+    handleShow();
+  };
 
   return (
     <div className="mt-3">
@@ -237,6 +264,78 @@ function GallerySetup() {
         Click here to begin the steps
       </Button>
 
+      {/* Modal que muestra la cantidad de input files a subir */}
+      <Modal
+        show={showModalAmountInputs}
+        onHide={handleCloseModalAmountInputs}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Formik
+          validationSchema={schemaModalAmount}
+          onSubmit={RenderInputsGallery}
+          initialValues={{
+            imagesNumber: "",
+          }}
+        >
+          {({
+            handleSubmit,
+            handleChange,
+            setFieldValue,
+            values,
+            touched,
+            isValid,
+            errors,
+          }) => (
+            <Form
+              onSubmit={handleSubmit}
+              noValidate
+              autoComplete="off"
+              name="ModalAmount"
+              id="ModalAmount"
+            >
+              <Modal.Header>
+                <Modal.Title><Icon.Images className="mb-1" /> Set up your gallery</Modal.Title>
+              </Modal.Header>
+
+              <Modal.Body>
+                <Alert variant="info">
+                  <Icon.InfoCircleFill className="mb-1" /> &nbsp; Please enter
+                  the number of images in your gallery
+                </Alert>
+                <Form.Control
+                  as="select"
+                  name="imagesNumber"
+                  value={values.imagesNumber}
+                  onChange={handleChange}
+                >
+                  <option value="">Choose the number of images...</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </Form.Control>
+              </Modal.Body>
+              <Modal.Footer className="col-lg-12">
+                <Button
+                  variant="light"
+                  onClick={() => {
+                    handleCloseModalAmountInputs();
+                  }}
+                >
+                  Close
+                </Button>
+                <Button type="submit" variant="primary">
+                  Next step
+                </Button>
+              </Modal.Footer>
+            </Form>
+          )}
+        </Formik>
+      </Modal>
+
+      {/* Modal que muestra la cantidad de input files a subir */}
       <Modal
         show={show}
         onHide={handleClose}
@@ -343,6 +442,17 @@ function GallerySetup() {
                   </div>
                 </div>
               </Modal.Body>
+              <Modal.Body className={amountInputsGallery ? "" : "d-none"}>
+                <div className="container">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
+                      {arrayToMapInputs.map((elemento, index) => (
+                        <input type="file" className="mb-2" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Modal.Body>
               <Modal.Footer className="col-lg-12">
                 <Button
                   variant="light"
@@ -379,68 +489,6 @@ function GallerySetup() {
             </Form>
           )}
         </Formik>
-      </Modal>
-
-      <Modal
-        show={showModalAmountInputs}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header>
-          <Modal.Title>
-            Set up your gallery
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
-              Please enter the number of images in your gallery<br/><br/>
-              <input
-                  type="number"
-                  placeholder="Amount"
-                  name="amount"
-                  className="form-control"
-                  id="AmountImagesGallery"
-              />
-            </div>
-          </div>
-        </div>
-        </Modal.Body>
-        <Modal.Footer className="col-lg-12">
-                <Button
-                  variant="light"
-                  onClick={() => {
-                    handleClose();
-                  }}
-                >
-                  Close
-                </Button>
-                <Button
-                  onClick={() => {
-                    RenderInputsGallery();
-                  }}
-                  type="button"
-                  variant="primary">
-                    Enter
-                </Button>
-        </Modal.Footer>
-
-        <Modal.Body className={amountInputsGallery ? "" : "d-none"}>
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
-              {
-                  arrayToMapInputs.map((elemento, index) => (
-                    <input type="file" className="mb-2" />
-                  ))
-              }
-            </div>
-          </div>
-        </div>
-        </Modal.Body>
       </Modal>
     </div>
   );

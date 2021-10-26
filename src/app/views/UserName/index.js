@@ -285,9 +285,6 @@ export const UserName = ({ location }) => {
               MapPinIcon={MapPinIcon}
             /> 
 
-            {/*Carrusel Imágenes*/}
-            <ProfileCarousel gallery={gallery} />
-
             {/*Componentes de links customizados al visualizar el perfil*/}
             <CustomImage
               customImage={customImage}
@@ -299,6 +296,9 @@ export const UserName = ({ location }) => {
               socialMedia={socialMedia}
               CustomURLIcon={CustomURLIcon}
             />
+
+            {/*Carrusel Imágenes*/}
+            <ProfileCarousel gallery={gallery} />
 
             {/*Botón Copiar Link*/}
             <div className="row pt-2">
