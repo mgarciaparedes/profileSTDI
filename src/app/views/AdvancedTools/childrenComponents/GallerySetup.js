@@ -18,6 +18,9 @@ function GallerySetup() {
   const [loading, setLoading] = useState(false);
   const [galleryActive, setGalleryActive] = useState(objLogin.galleryActive);
   const [isValidFile, setIsValidFile] = useState(false);
+  const [showModalAmountInputs, setShowModalAmountInputs] = useState(false);
+  const [amountInputsGallery, setAmountInputsGallery] = useState(0);
+  const [arrayToMapInputs, setArrayToMapInputs] = useState([]);
 
   //Variables para modal con info (primero)
   const [show, setShow] = useState(false);
@@ -181,6 +184,33 @@ function GallerySetup() {
     }
   };
 
+  const showConfirmDialog = () => setShowModalAmountInputs(true);
+
+  const RenderInputsGallery = () => {
+
+    if(!document.getElementById("AmountImagesGallery").value ||
+    document.getElementById("AmountImagesGallery").value === "")
+    return Swal.fire({
+      title: "Error",
+      text: "You must enter a numeric value",
+      icon: "error",
+      confirmButtonText: "Try again",
+    });
+
+    const amount = parseInt(document.getElementById("AmountImagesGallery").value);
+
+    if(amount > 0)
+    {
+      setAmountInputsGallery(amount);
+
+      let inputs = [];
+      for(let i = 0; i< amount; i++){
+          inputs.push(1);
+      }
+      setArrayToMapInputs(inputs);
+    }
+  }
+
   return (
     <div className="mt-3">
       {loading ? <SpinnerLoading /> : null}
@@ -203,7 +233,7 @@ function GallerySetup() {
           }}
         />
       </InputGroup>
-      <Button variant="light" className="mt-1" onClick={handleShow}>
+      <Button variant="light" className="mt-1" onClick={showConfirmDialog}>
         Click here to begin the steps
       </Button>
 
@@ -349,6 +379,68 @@ function GallerySetup() {
             </Form>
           )}
         </Formik>
+      </Modal>
+
+      <Modal
+        show={showModalAmountInputs}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
+          <Modal.Title>
+            Set up your gallery
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
+              Please enter the number of images in your gallery<br/><br/>
+              <input
+                  type="number"
+                  placeholder="Amount"
+                  name="amount"
+                  className="form-control"
+                  id="AmountImagesGallery"
+              />
+            </div>
+          </div>
+        </div>
+        </Modal.Body>
+        <Modal.Footer className="col-lg-12">
+                <Button
+                  variant="light"
+                  onClick={() => {
+                    handleClose();
+                  }}
+                >
+                  Close
+                </Button>
+                <Button
+                  onClick={() => {
+                    RenderInputsGallery();
+                  }}
+                  type="button"
+                  variant="primary">
+                    Enter
+                </Button>
+        </Modal.Footer>
+
+        <Modal.Body className={amountInputsGallery ? "" : "d-none"}>
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
+              {
+                  arrayToMapInputs.map((elemento, index) => (
+                    <input type="file" className="mb-2" />
+                  ))
+              }
+            </div>
+          </div>
+        </div>
+        </Modal.Body>
       </Modal>
     </div>
   );
