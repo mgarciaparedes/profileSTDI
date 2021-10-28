@@ -15,33 +15,18 @@ function GallerySetup() {
   const [gallery, setGallery] = useState([]);
   const galleryImages = objLogin.galleryImages;
   const [saveGalleryButton, setSaveGalleryButton] = useState(false);
-  const [filesLength, setFilesLength] = useState(0);
   const [loading, setLoading] = useState(false);
   const [galleryActive, setGalleryActive] = useState(objLogin.galleryActive);
-  const [isValidFile, setIsValidFile] = useState(false);
   const [showModalAmountInputs, setShowModalAmountInputs] = useState(false);
   const [amountInputsGallery, setAmountInputsGallery] = useState(0);
   const [arrayToMapInputs, setArrayToMapInputs] = useState([]);
+  const [arrayInputsValues, setArrayInputsValues] = useState([]);
 
   //Variables para modal con info (primero)
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleCloseModalAmountInputs = () => setShowModalAmountInputs(false);
-
-  useEffect(() => {
-    for (var i = 0; i < gallery.length; i++) {
-      if (
-        gallery[i].type === "image/jpeg" ||
-        gallery[i].type === "image/jpg" ||
-        gallery[i].type === "image/png"
-      ) {
-        setIsValidFile(true);
-      } else {
-        setIsValidFile(false);
-      }
-    }
-  }, [gallery]);
 
   const schemaModalAmount = Yup.object({
     imagesNumber: Yup.string().required("Number of images are required"),
@@ -74,18 +59,53 @@ function GallerySetup() {
       });
   };
 
+  const checkFilesFormat = (arrayInputsValues) => {
+    //Esta función recorre el arreglo de imágenes buscando
+    //archivos adjuntados que tengan formato de imágenes
+    //así validamos que los archivos subidos sean solo imágenes
+    for (var i = 0; i < arrayInputsValues.length; i++) {
+      if (
+        arrayInputsValues[i].type === "image/jpeg" ||
+        arrayInputsValues[i].type === "image/jpg" ||
+        arrayInputsValues[i].type === "image/png"
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   const saveGallery = () => {
     setSaveGalleryButton(true);
 
-    if (!isValidFile) {
+    //Primero voy a validar si los formatos de los archivos están correctos 
+    //enviándole el arreglo de Files seleecionados a esta función
+    const checkAttachedFiles = checkFilesFormat(arrayInputsValues);
+
+    //Aquí valido que hayan sido seleccionado todos los archivos
+    if (
+      arrayInputsValues.some(
+        (elem) => elem.length === 0 || elem.name === "filename" 
+      )
+    ) {
       setSaveGalleryButton(false);
       Swal.fire({
-        title: "Error",
-        text: "Format files must be .jpg, .jpeg or .png",
+        title: "An error occurred!",
+        text: "Some files to upload are missing, please tap in every button to upload all the files.",
         icon: "error",
-        confirmButtonText: "Try again",
+        confirmButtonText: "Ok",
       });
-    } else {
+    //Aquí valido que la funciión que revisa los formatos de los files hayan sido todos formato imagen
+    } else if(!checkAttachedFiles) {
+      setSaveGalleryButton(false);
+      Swal.fire({
+        title: "An error occurred!",
+        text: "Files format must be .jpg, .jpeg y .png",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    } else{
       //aquí comparo si el usuario ya tiene una galería previamente registrada
       //si gallery viene como null, quiere decir que no hay registros y se porcerá a usar el servicio saveNewGallery
       //por el contrario, si tiene ya registros, solo se deberá modificar el registro que ya tiene guardado.
@@ -105,7 +125,8 @@ function GallerySetup() {
           .then((res) => {
             setSaveGalleryButton(false);
 
-            const { ok, msg } = res.data;
+            const { ok, msg, newData } = res.data;
+            const { galleryImages} = newData;
 
             if (ok && msg === "Gallery updated succesfully.") {
               Swal.fire({
@@ -114,9 +135,14 @@ function GallerySetup() {
                 icon: "success",
                 confirmButtonText: "Ok",
               });
+              const { galleryImage } = newData;
+
+              setGalleryActive(true);
+              setGalleryActiveContext(true);
+              setGalleryImageContext(galleryImages);
               handleClose();
-              document.getElementById("attachedDocument").value = "";
-              setFilesLength(0);
+              // document.getElementById("attachedDocument").value = "";
+              // setFilesLength(0);
             } else {
               Swal.fire({
                 title: "Error",
@@ -138,8 +164,8 @@ function GallerySetup() {
       } else {
         let formData = new FormData();
         formData.append("galleryActive", true);
-        for (var x = 0; x < gallery.length; x++) {
-          formData.append("galleryImages", gallery[x]);
+        for (var x = 0; x < arrayInputsValues.length; x++) {
+          formData.append("galleryImages", arrayInputsValues[x]);
         }
 
         axios
@@ -167,8 +193,8 @@ function GallerySetup() {
               setGalleryActive(true);
               setGalleryActiveContext(true);
               setGalleryImageContext(galleryImages);
-              document.getElementById("attachedDocument").value = "";
-              setFilesLength(0);
+              // document.getElementById("attachedDocument").value = "";
+              // setFilesLength(0);
             } else {
               Swal.fire({
                 title: "Error",
@@ -188,51 +214,31 @@ function GallerySetup() {
           });
       }
     }
+   
   };
 
   const showConfirmDialog = () => setShowModalAmountInputs(true);
 
   const RenderInputsGallery = (event) => {
-    // if (
-    //   !document.getElementById("AmountImagesGallery").value ||
-    //   document.getElementById("AmountImagesGallery").value === ""
-    // )
-    //   return Swal.fire({
-    //     title: "Error",
-    //     text: "You must enter a numeric value",
-    //     icon: "error",
-    //     confirmButtonText: "Try again",
-    //   });
-
-    // const amount = parseInt(
-    //   document.getElementById("AmountImagesGallery").value
-    // );
-
-    // if (amount > 0) {
-    //   setAmountInputsGallery(amount);
-
-    //   let inputs = [];
-    //   for (let i = 0; i < amount; i++) {
-    //     inputs.push(1);
-    //   }
-    //   setArrayToMapInputs(inputs);
-    // }
-
     //Primero, cerramos el modal que está a la vista
     handleCloseModalAmountInputs();
 
     //Segundo, calculamos el valor del arreglo según el primer select
     const amount = event.imagesNumber;
-  
-      if (amount > 0) {
-        setAmountInputsGallery(amount);
-  
-        let inputs = [];
-        for (let i = 0; i < amount; i++) {
-          inputs.push(1);
-        }
-        setArrayToMapInputs(inputs);
+
+    if (amount > 0) {
+      setAmountInputsGallery(amount);
+
+      let inputs = [];
+      let inputsValues = [];
+      for (let i = 0; i < amount; i++) {
+        inputs.push(1);
+        inputsValues.push(new File([""], "filename"));
       }
+      setArrayToMapInputs(inputs);
+      setArrayInputsValues(inputsValues);
+      setGallery(inputsValues);
+    }
 
     //Luego mostramos el segundo modal con la cantidad de inputs
     handleShow();
@@ -295,7 +301,10 @@ function GallerySetup() {
               id="ModalAmount"
             >
               <Modal.Header>
-                <Modal.Title><Icon.Images className="mb-1" /> Set up your gallery</Modal.Title>
+                <Modal.Title>
+                  <Icon.Images className="mb-1" />
+                  Set up your gallery
+                </Modal.Title>
               </Modal.Header>
 
               <Modal.Body>
@@ -342,11 +351,13 @@ function GallerySetup() {
         backdrop="static"
         keyboard={false}
       >
-        <Formik
+        {/* <Formik
           validationSchema={schema}
           onSubmit={saveGallery}
           initialValues={{
-            attachedDocument: "",
+            arrayToMapInputs.map((elemento, index) => (
+              attachedDocument+elemento:
+            ))
           }}
         >
           {({
@@ -364,23 +375,19 @@ function GallerySetup() {
               autoComplete="off"
               name="addServiceData"
               id="addServiceData"
-            >
-              <Modal.Header>
-                <Modal.Title>
-                  <Icon.Images className="mb-1" /> Set up your gallery
-                </Modal.Title>
-              </Modal.Header>
+            > */}
+        <Modal.Header>
+          <Modal.Title>
+            <Icon.Images className="mb-1" /> Set up your gallery
+          </Modal.Title>
+        </Modal.Header>
 
-              <Modal.Body>
-                <div className="container">
-                  <div className="row">
-                    <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
-                      <Alert variant="info">
-                        <Icon.InfoCircleFill className="mb-1" /> &nbsp; You need
-                        to choose at once the pictures you might set into your
-                        gallery.
-                      </Alert>
-                      {/*<p>
+        <Modal.Body>
+          <Alert variant="info">
+            <Icon.InfoCircleFill className="mb-1" /> &nbsp; You need to choose
+            at once the pictures you might set into your gallery.
+          </Alert>
+          {/*<p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -391,8 +398,8 @@ function GallerySetup() {
                   mollit anim id est laborum.
                 </p> */}
 
-                      <Form.Group controlId="formFileMultiple">
-                        {/* <Form.Label>Set up your gallery:</Form.Label>
+          <Form.Group controlId="formFileMultiple">
+            {/* <Form.Label>Set up your gallery:</Form.Label>
                         <Form.Control
                           type="file"
                           multiple
@@ -401,7 +408,7 @@ function GallerySetup() {
                           }}
                         /> */}
 
-                        <Form.File custom>
+            {/* <Form.File custom>
                           <Form.File.Input
                             multiple
                             id="attachedDocument"
@@ -436,59 +443,68 @@ function GallerySetup() {
                           <Form.Control.Feedback type="invalid">
                             {errors.attachedDocument}
                           </Form.Control.Feedback>
-                        </Form.File>
-                      </Form.Group>
-                    </div>
-                  </div>
-                </div>
-              </Modal.Body>
-              <Modal.Body className={amountInputsGallery ? "" : "d-none"}>
-                <div className="container">
-                  <div className="row">
-                    <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
-                      {arrayToMapInputs.map((elemento, index) => (
-                        <input type="file" className="mb-2" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </Modal.Body>
-              <Modal.Footer className="col-lg-12">
-                <Button
-                  variant="light"
-                  onClick={() => {
-                    handleClose();
-                  }}
-                >
-                  Close
-                </Button>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={saveGalleryButton === true}
-                  // onClick={() => {
-                  //   saveGallery();
-                  // }}
-                >
-                  <div className="d-flex d-inline-block justify-content-center">
-                    <span
-                      className="spinner-border spinner-border-sm mt-1 mr-2"
-                      role="status"
-                      style={{
-                        display:
-                          saveGalleryButton === true ? "inline-block" : "none",
-                      }}
-                      aria-hidden="true"
-                    ></span>
-                    {saveGalleryButton === true
-                      ? " Loading, please wait..."
-                      : "Save Gallery"}
-                  </div>
-                </Button>
-              </Modal.Footer>
-            </Form>
+                        </Form.File> */}
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Body className={amountInputsGallery ? "" : "d-none"}>
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
+                {arrayToMapInputs.map((elemento, index) => (
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      //console.log(e.target.files);
+                      arrayInputsValues[index] = e.target.files[0];
+                      if(e.target.files.length > 0){
+                        arrayInputsValues[index] = e.target.files[0];
+                      }else{
+                        arrayInputsValues[index] = new File([""], "filename");
+                      }
+                    }}
+                    name={"attachedDocument" + elemento}
+                    className="mb-2"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="col-lg-12">
+          <Button
+            variant="light"
+            onClick={() => {
+              handleClose();
+            }}
+          >
+            Close
+          </Button>
+          <Button
+            type="button"
+            variant="primary"
+            disabled={saveGalleryButton === true}
+            onClick={() => {
+              saveGallery();
+            }}
+          >
+            <div className="d-flex d-inline-block justify-content-center">
+              <span
+                className="spinner-border spinner-border-sm mt-1 mr-2"
+                role="status"
+                style={{
+                  display: saveGalleryButton === true ? "inline-block" : "none",
+                }}
+                aria-hidden="true"
+              ></span>
+              {saveGalleryButton === true
+                ? " Loading, please wait..."
+                : "Save Gallery"}
+            </div>
+          </Button>
+        </Modal.Footer>
+        {/* </Form>
           )}
-        </Formik>
+        </Formik> */}
       </Modal>
     </div>
   );
