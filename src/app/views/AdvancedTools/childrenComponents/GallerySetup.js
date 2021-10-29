@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Modal, Form, InputGroup, Button, Alert } from "react-bootstrap";
+import {
+  Modal,
+  Form,
+  InputGroup,
+  Button,
+  Alert,
+  Carousel,
+} from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import { Formik } from "formik";
 import Swal from "sweetalert2";
@@ -18,6 +25,7 @@ function GallerySetup() {
   const [loading, setLoading] = useState(false);
   const [galleryActive, setGalleryActive] = useState(objLogin.galleryActive);
   const [showModalAmountInputs, setShowModalAmountInputs] = useState(false);
+  const [showModalGallery, setShowModalGallery] = useState(false);
   const [amountInputsGallery, setAmountInputsGallery] = useState(0);
   const [arrayToMapInputs, setArrayToMapInputs] = useState([]);
   const [arrayInputsValues, setArrayInputsValues] = useState([]);
@@ -28,6 +36,13 @@ function GallerySetup() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleCloseModalAmountInputs = () => setShowModalAmountInputs(false);
+
+  //Variables para el uso del carousel
+  const [index2, setIndex2] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex2(selectedIndex);
+  };
 
   const schemaModalAmount = Yup.object({
     imagesNumber: Yup.string().required("Number of images are required"),
@@ -269,7 +284,14 @@ function GallerySetup() {
   return (
     <div className="mt-3">
       {loading ? <SpinnerLoading /> : null}
-      <label className="font-weight-bold">Set up your gallery:</label>
+      <label className="font-weight-bold">
+        Set up your gallery:{" "}
+        {galleryImages === null ? (
+          <Icon.EyeSlashFill size={25} />
+        ) : (
+          <Icon.EyeSlashFill size={25} onClick={() => setShowModalGallery(true)} />
+        )}
+      </label>
       <InputGroup>
         <Form.Check
           type="switch"
@@ -288,6 +310,13 @@ function GallerySetup() {
           }}
         />
       </InputGroup>
+      {/* <Button
+        onClick={() => setShowModalGallery(true)}
+        disabled={galleryImages === null}
+      >
+        Show saved gallery
+      </Button>
+      <br /> */}
       <Button variant="light" className="mt-1" onClick={showConfirmDialog}>
         Click here to begin the steps
       </Button>
@@ -366,7 +395,7 @@ function GallerySetup() {
         </Formik>
       </Modal>
 
-      {/* Modal que muestra la cantidad de input files a subir */}
+      {/* Modal que muestra los input a subir con su respectiva url */}
       <Modal
         show={show}
         onHide={handleClose}
@@ -547,6 +576,44 @@ function GallerySetup() {
         {/* </Form>
           )}
         </Formik> */}
+      </Modal>
+
+      <Modal
+        show={showModalGallery}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Header>
+          <Modal.Title>Showing last saved gallery</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Carousel activeIndex={index2} onSelect={handleSelect}>
+            {galleryImages.length > 0
+              ? galleryImages.map((elemento, index) => (
+                  <Carousel.Item key={index}>
+                    <img
+                      className="d-block w-100"
+                      src={`${process.env.REACT_APP_API_URL}/render/image/${elemento.image}`}
+                      alt="First slide"
+                    />
+                  </Carousel.Item>
+                ))
+              : null}
+          </Carousel>
+        </Modal.Body>
+        <Modal.Footer className="col-lg-12">
+          <Button
+            variant="light"
+            onClick={() => {
+              setShowModalGallery(false);
+            }}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
