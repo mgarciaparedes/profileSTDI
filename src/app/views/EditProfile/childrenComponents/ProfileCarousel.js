@@ -24,9 +24,11 @@ export const ProfileCarousel = ({gallery}) => {
                   src={`${process.env.REACT_APP_API_URL}/render/image/${elemento.image}`}
                   alt="First slide"
                   onClick={
-                    () => {
-                      window.open(elemento.url);
-                    }
+                    elemento.url === null || elemento.url === ""
+                      ? null
+                      : () => {
+                          window.open(elemento.url);
+                        }
                   }
                 />
                 <Carousel.Caption>

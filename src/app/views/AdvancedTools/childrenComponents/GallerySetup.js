@@ -52,11 +52,27 @@ function GallerySetup() {
     axios
       .post("/users/activateGallery", payload)
       .then((res) => {
-        //console.log(res.data);
         setLoading(false);
+        const { ok, msg } = res.data;
+        if (!ok && msg === "Gallery not found.") {
+          Swal.fire({
+            title: "Something happened!",
+            text: "User without gallery registered.",
+            icon: "info",
+            confirmButtonText: "Ok",
+          });
+          setGalleryActive(false);
+          setGalleryActiveContext(false);
+        }
       })
       .catch((error) => {
         setLoading(false);
+        Swal.fire({
+          title: "An error occurred!",
+          text: "Please try again",
+          icon: "info",
+          confirmButtonText: "Ok",
+        });
       });
   };
 
@@ -234,11 +250,11 @@ function GallerySetup() {
 
       let inputs = [];
       let inputsValues = [];
-      let urlValues = []
+      let urlValues = [];
       for (let i = 0; i < amount; i++) {
         inputs.push(1);
         inputsValues.push(new File([""], "filename"));
-        urlValues.push({url:""});
+        urlValues.push({ url: "" });
       }
       setArrayToMapInputs(inputs);
       setArrayInputsValues(inputsValues);
@@ -467,10 +483,8 @@ function GallerySetup() {
                   placeholder="Url to open in another tab"
                   name={"url" + index}
                   onChange={(e) => {
-                    arrayURLValues[index] = 
-                    e.target.value;
-                  }
-                  }
+                    arrayURLValues[index] = e.target.value;
+                  }}
                   // value={"attachedDocument" + index}
                   // onChange={handleChange}
                   // isValid={!!touched.email && !errors.email}
