@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import { AppContext } from "./AppContext";
 import history from "./History";
+import whiteLogo from "../assets/images/logo-white.png"
 
 import ModalChangePassword from "./ModalChangePassword";
 
@@ -92,9 +93,15 @@ export const SideNavigation = () => {
         >
           <Icon.Power size={22} className="mb-1 mr-2" /> Log out
         </a>
+
+        {/****** LOGO STDI ******/}
+        <div className="text-center mt-5
+        ">
+          <img className="img-sidebar" src={whiteLogo} />
+        </div>
       </div>
 
-      <Button className="button-transparent" onClick={() => openNav()}>
+      <Button className="button-transparent pr-2 pl-2" onClick={() => openNav()}>
         <Icon.List size={22} />
       </Button>
     </>
