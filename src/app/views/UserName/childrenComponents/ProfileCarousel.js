@@ -25,7 +25,7 @@ export const ProfileCarousel = ({gallery}) => {
                   alt="First slide"
                   onClick={
                     () => {
-                      window.open("https://google.com/")
+                      window.open(elemento.url);
                     }
                   }
                 />

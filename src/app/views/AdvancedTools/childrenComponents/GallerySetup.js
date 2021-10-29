@@ -21,6 +21,7 @@ function GallerySetup() {
   const [amountInputsGallery, setAmountInputsGallery] = useState(0);
   const [arrayToMapInputs, setArrayToMapInputs] = useState([]);
   const [arrayInputsValues, setArrayInputsValues] = useState([]);
+  const [arrayURLValues, setArrayURLValues] = useState([]);
 
   //Variables para modal con info (primero)
   const [show, setShow] = useState(false);
@@ -74,19 +75,20 @@ function GallerySetup() {
         return false;
       }
     }
-  }
+  };
 
   const saveGallery = () => {
+    //console.log(arrayURLValues);
     setSaveGalleryButton(true);
 
-    //Primero voy a validar si los formatos de los archivos están correctos 
+    //Primero voy a validar si los formatos de los archivos están correctos
     //enviándole el arreglo de Files seleecionados a esta función
     const checkAttachedFiles = checkFilesFormat(arrayInputsValues);
 
     //Aquí valido que hayan sido seleccionado todos los archivos
     if (
       arrayInputsValues.some(
-        (elem) => elem.length === 0 || elem.name === "filename" 
+        (elem) => elem.length === 0 || elem.name === "filename"
       )
     ) {
       setSaveGalleryButton(false);
@@ -96,8 +98,8 @@ function GallerySetup() {
         icon: "error",
         confirmButtonText: "Ok",
       });
-    //Aquí valido que la funciión que revisa los formatos de los files hayan sido todos formato imagen
-    } else if(!checkAttachedFiles) {
+      //Aquí valido que la funciión que revisa los formatos de los files hayan sido todos formato imagen
+    } else if (!checkAttachedFiles) {
       setSaveGalleryButton(false);
       Swal.fire({
         title: "An error occurred!",
@@ -105,15 +107,16 @@ function GallerySetup() {
         icon: "error",
         confirmButtonText: "Ok",
       });
-    } else{
+    } else {
       //aquí comparo si el usuario ya tiene una galería previamente registrada
       //si gallery viene como null, quiere decir que no hay registros y se porcerá a usar el servicio saveNewGallery
       //por el contrario, si tiene ya registros, solo se deberá modificar el registro que ya tiene guardado.
       if (galleryImages !== null) {
         let formData2 = new FormData();
         formData2.append("galleryActive", objLogin.galleryActive);
-        for (var x = 0; x < gallery.length; x++) {
-          formData2.append("galleryImages", gallery[x]);
+        for (var x = 0; x < arrayInputsValues.length; x++) {
+          formData2.append("galleryImages", arrayInputsValues[x]);
+          formData2.append("galleryURL", arrayURLValues[x]);
         }
 
         axios
@@ -126,7 +129,7 @@ function GallerySetup() {
             setSaveGalleryButton(false);
 
             const { ok, msg, newData } = res.data;
-            const { galleryImages} = newData;
+            const { galleryImages } = newData;
 
             if (ok && msg === "Gallery updated succesfully.") {
               Swal.fire({
@@ -166,6 +169,7 @@ function GallerySetup() {
         formData.append("galleryActive", true);
         for (var x = 0; x < arrayInputsValues.length; x++) {
           formData.append("galleryImages", arrayInputsValues[x]);
+          formData.append("galleryURL", arrayURLValues[x]);
         }
 
         axios
@@ -214,7 +218,6 @@ function GallerySetup() {
           });
       }
     }
-   
   };
 
   const showConfirmDialog = () => setShowModalAmountInputs(true);
@@ -231,12 +234,15 @@ function GallerySetup() {
 
       let inputs = [];
       let inputsValues = [];
+      let urlValues = []
       for (let i = 0; i < amount; i++) {
         inputs.push(1);
         inputsValues.push(new File([""], "filename"));
+        urlValues.push({url:""});
       }
       setArrayToMapInputs(inputs);
       setArrayInputsValues(inputsValues);
+      setArrayURLValues(urlValues);
       setGallery(inputsValues);
     }
 
@@ -382,12 +388,9 @@ function GallerySetup() {
           </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
-          <Alert variant="info">
-            <Icon.InfoCircleFill className="mb-1" /> &nbsp; You need to choose
-            at once the pictures you might set into your gallery.
-          </Alert>
-          {/*<p>
+        {/*<Modal.Body>
+          
+          <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -396,8 +399,7 @@ function GallerySetup() {
                   dolore eu fugiat nulla pariatur. Excepteur sint occaecat
                   cupidatat non proident, sunt in culpa qui officia deserunt
                   mollit anim id est laborum.
-                </p> */}
-
+                </p>
           <Form.Group controlId="formFileMultiple">
             {/* <Form.Label>Set up your gallery:</Form.Label>
                         <Form.Control
@@ -406,9 +408,9 @@ function GallerySetup() {
                           onChange={(e) => {
                             setGallery(e.target.files);
                           }}
-                        /> */}
+                        />
 
-            {/* <Form.File custom>
+            <Form.File custom>
                           <Form.File.Input
                             multiple
                             id="attachedDocument"
@@ -443,32 +445,58 @@ function GallerySetup() {
                           <Form.Control.Feedback type="invalid">
                             {errors.attachedDocument}
                           </Form.Control.Feedback>
-                        </Form.File> */}
+                        </Form.File> 
           </Form.Group>
-        </Modal.Body>
+        </Modal.Body>*/}
         <Modal.Body className={amountInputsGallery ? "" : "d-none"}>
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
-                {arrayToMapInputs.map((elemento, index) => (
-                  <input
-                    type="file"
-                    onChange={(e) => {
-                      //console.log(e.target.files);
-                      arrayInputsValues[index] = e.target.files[0];
-                      if(e.target.files.length > 0){
-                        arrayInputsValues[index] = e.target.files[0];
-                      }else{
-                        arrayInputsValues[index] = new File([""], "filename");
-                      }
-                    }}
-                    name={"attachedDocument" + elemento}
-                    className="mb-2"
-                  />
-                ))}
-              </div>
+          <Alert variant="info">
+            <Icon.InfoCircleFill className="mb-1" /> &nbsp; Select the file in
+            the order especified before every button.
+          </Alert>
+          {arrayToMapInputs.map((elemento, index) => (
+            <div key={index}>
+              <label>Position {index + 1}</label>
+              <InputGroup className="mb-1">
+                <InputGroup.Prepend>
+                  <InputGroup.Text>
+                    <Icon.BoxArrowUpRight />
+                  </InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="text"
+                  placeholder="Url to open in another tab"
+                  name={"url" + index}
+                  onChange={(e) => {
+                    arrayURLValues[index] = 
+                    e.target.value;
+                  }
+                  }
+                  // value={"attachedDocument" + index}
+                  // onChange={handleChange}
+                  // isValid={!!touched.email && !errors.email}
+                  // isInvalid={!!errors.email && !!touched.email}
+                  // className="lowercase"
+                />
+                {/* <Form.Control.Feedback type="invalid">
+                  {errors.email}
+                </Form.Control.Feedback> */}
+              </InputGroup>
+              <input
+                type="file"
+                onChange={(e) => {
+                  //console.log(e.target.files);
+                  arrayInputsValues[index] = e.target.files[0];
+                  if (e.target.files.length > 0) {
+                    arrayInputsValues[index] = e.target.files[0];
+                  } else {
+                    arrayInputsValues[index] = new File([""], "filename");
+                  }
+                }}
+                name={"attachedDocument" + index}
+                className="mb-2"
+              />
             </div>
-          </div>
+          ))}
         </Modal.Body>
         <Modal.Footer className="col-lg-12">
           <Button
