@@ -289,7 +289,7 @@ function GallerySetup() {
         {galleryImages === null ? (
           <Icon.EyeSlashFill size={25} />
         ) : (
-          <Icon.EyeSlashFill size={25} onClick={() => setShowModalGallery(true)} />
+          <Icon.EyeFill size={25} onClick={() => setShowModalGallery(true)} />
         )}
       </label>
       <InputGroup>
