@@ -20,7 +20,7 @@ function GallerySetup() {
   const { objLogin, setGalleryActiveContext, setGalleryImageContext } =
     useContext(AppContext);
   const [gallery, setGallery] = useState([]);
-  const galleryImages = objLogin.galleryImages;
+  const [galleryImages, setGalleryImages] = useState([]);
   const [saveGalleryButton, setSaveGalleryButton] = useState(false);
   const [loading, setLoading] = useState(false);
   const [galleryActive, setGalleryActive] = useState(objLogin.galleryActive);
@@ -36,6 +36,7 @@ function GallerySetup() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleCloseModalAmountInputs = () => setShowModalAmountInputs(false);
+  const showModalInputs = () => setShowModalAmountInputs(true);
 
   //Variables para el uso del carousel
   const [index2, setIndex2] = useState(0);
@@ -45,12 +46,20 @@ function GallerySetup() {
   };
 
   const schemaModalAmount = Yup.object({
-    imagesNumber: Yup.string().required("Number of images are required"),
+    imagesNumber: Yup.number().required("Number of images are required"),
   });
 
-  const schema = Yup.object().shape({
-    attachedDocument: Yup.mixed().required("At least one file is required"),
-  });
+  //Este efecto es porque no podemos utilizar variables del objLogin directamente en el flujo
+  //da error al salir de la sesión ya que el objLogin, se destruye
+  //entonces solo se carga al entrar a esta vista, ya que si entra a esta vista
+  //quiere decir que hay una sesión abierta
+  useEffect(() => {
+    setGalleryImages(objLogin.galleryImages);
+  }, []);
+
+  // const schema = Yup.object().shape({
+  //   attachedDocument: Yup.mixed().required("At least one file is required"),
+  // });
 
   const activateGallery = (e) => {
     setGalleryActive(e.target.checked);
@@ -169,7 +178,6 @@ function GallerySetup() {
                 icon: "success",
                 confirmButtonText: "Ok",
               });
-              const { galleryImage } = newData;
 
               setGalleryActive(true);
               setGalleryActiveContext(true);
@@ -251,8 +259,6 @@ function GallerySetup() {
     }
   };
 
-  const showConfirmDialog = () => setShowModalAmountInputs(true);
-
   const RenderInputsGallery = (event) => {
     //Primero, cerramos el modal que está a la vista
     handleCloseModalAmountInputs();
@@ -317,7 +323,7 @@ function GallerySetup() {
         Show saved gallery
       </Button>
       <br /> */}
-      <Button variant="light" className="mt-1" onClick={showConfirmDialog}>
+      <Button variant="light" className="mt-1" onClick={showModalInputs}>
         Click here to begin the steps
       </Button>
 
@@ -368,6 +374,8 @@ function GallerySetup() {
                   name="imagesNumber"
                   value={values.imagesNumber}
                   onChange={handleChange}
+                  isValid={!!touched.imagesNumber && !errors.imagesNumber}
+                  isInvalid={!!errors.imagesNumber && !!touched.imagesNumber}
                 >
                   <option value="">Choose the number of images...</option>
                   <option value="1">1</option>
@@ -376,6 +384,9 @@ function GallerySetup() {
                   <option value="4">4</option>
                   <option value="5">5</option>
                 </Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  {errors.imagesNumber}
+                </Form.Control.Feedback>
               </Modal.Body>
               <Modal.Footer className="col-lg-12">
                 <Button
@@ -578,6 +589,7 @@ function GallerySetup() {
         </Formik> */}
       </Modal>
 
+      {/*Modal que muestra la galería que tiene actualmente el cliente*/}
       <Modal
         show={showModalGallery}
         onHide={handleClose}

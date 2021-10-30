@@ -18,6 +18,7 @@ function LinkToAnotherProfile() {
   const { objLogin, setLinkToExistentProfileContext } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [isLinked, setIsLinked] = useState(objLogin.isLinked);
+  const [isClicked, setIsClicked] = useState(false); //Esta variable la uso para saber si se hizo click en el switch de linkear perfil
   const [disabledButton2, setDisabledButton2] = useState(false);
 
   //Variables para modal con info (primero)
@@ -31,7 +32,10 @@ function LinkToAnotherProfile() {
   const handleShow2 = () => setShow2(true);
 
   useEffect(() => {
-    if (isLinked === false) {
+    if (isClicked === true && isLinked === false) {
+      //Si se hizo click la devolvemos a false, así reconocemos cuando se hizo click en caso de deshabilitar o apagar el linkeado
+      //de esta manera este use effect solo se activa cuando el usuario haga click en el switch y el resultado de ese click sea deshabilitar
+      setIsClicked(false);
       setLoading(true);
       axios
         .post("/users/linkingProfile", {
@@ -65,7 +69,7 @@ function LinkToAnotherProfile() {
         });
     } else {
     }
-  }, [isLinked]);
+  }, [isClicked,isLinked]);
 
   const onSubmitLinkingProfile = (event) => {
     setDisabledButton2(true);
@@ -135,11 +139,11 @@ function LinkToAnotherProfile() {
           checked={isLinked === true ? true : false}
           onChange={(e) => {
             setIsLinked(!isLinked);
+            setIsClicked(true);
             if (!isLinked) {
               handleShow();
             } else {
             }
-            //alert(e.target.checked);
           }}
         />
       </InputGroup>
