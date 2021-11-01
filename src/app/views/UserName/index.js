@@ -42,7 +42,8 @@ import CustomImageIcon from "../../../assets/svg/galleryimage.svg"
 //Componentes hijos
 import { SocialMedia } from "./childrenComponents/SocialMedia";
 import { CustomLink } from "./childrenComponents/CustomLink";
-import { CustomImage } from "./childrenComponents/CustomImage"
+import { CustomImage } from "./childrenComponents/CustomImage";
+import { CustomText } from "./childrenComponents/CustomText";
 import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
 import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 
@@ -293,6 +294,12 @@ export const UserName = ({ location }) => {
 
             {/*Componentes de links customizados al visualizar el perfil*/}
             <CustomLink
+              socialMedia={socialMedia}
+              CustomURLIcon={CustomURLIcon}
+            />
+
+            {/*Componentes de links customizados al visualizar el perfil*/}
+            <CustomText
               socialMedia={socialMedia}
               CustomURLIcon={CustomURLIcon}
             />

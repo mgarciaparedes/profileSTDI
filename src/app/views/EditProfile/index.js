@@ -18,6 +18,7 @@ import { SideNavigation } from "../../../components/SideNavigation";
 import NoDymanicForm from "./childrenComponents/NoDymanicForm";
 import Row from "./childrenComponents/Row";
 import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
+import { CustomText } from "./childrenComponents/CustomText";
 
 //Ícono
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
@@ -562,7 +563,7 @@ export const EditProfile = () => {
                 {rows.map((elemento, index) => (
                   <div key={index}>
                     {elemento.socialNetwork === "CustomURL" ? (
-                      <div className="row d-flex justify-content-center h5 pb-3">
+                      <div className="row d-flex justify-content-center h5">
                         <div className="border p-2 border-link col-10">
                           <a
                             className="btn-no-style"
@@ -586,6 +587,11 @@ export const EditProfile = () => {
                     ) : null}
                   </div>
                 ))}
+
+                <CustomText
+                  socialMedia={profileData}
+                  CustomURLIcon={CustomURLIcon}
+                />
 
                 {/*Se muestra el gallery si está activo*/}
                 <ProfileCarousel gallery={gallery} />
