@@ -82,6 +82,17 @@ export const SideNavigation = () => {
           email={objLogin.email}
         />
 
+        {/****** Opción Ayuda ******/}
+        <a
+          href="javascript:void(0)"
+          className="mb-3"
+          onClick={() => {
+            history.push("/help");
+          }}
+        >
+          <Icon.InfoCircle size={22} className="mb-1 mr-2" /> Help
+        </a>
+
         {/****** Opción Terminar Sesión ******/}
         <a
           href="javascript:void(0)"

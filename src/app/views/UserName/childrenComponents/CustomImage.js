@@ -31,7 +31,7 @@ export const CustomImage = ({ customImage, CustomImageIcon }) => {
   //   };
   return (
     <>
-      {customImage.map((elemento, index) => (
+      {customImage !== null ? customImage.map((elemento, index) => (
         <div key={index}>
           {elemento.customImageActive === true ? (
             <div className="row d-flex justify-content-center h5">
@@ -69,7 +69,7 @@ export const CustomImage = ({ customImage, CustomImageIcon }) => {
             </div>
           ) : null}
         </div>
-      ))}
+      )) : null}
 
       <Modal
         show={show}

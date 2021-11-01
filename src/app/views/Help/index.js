@@ -4,7 +4,7 @@ import { SideNavigation } from "../../../components/SideNavigation";
 import { AppContext } from "../../../components/AppContext";
 import logoImage from "../../../assets/images/logo-white.png";
 
-export const Dashboard = () => {
+export const Help = () => {
   const { objLogin } = useContext(AppContext);
   const [show, setShow] = useState(true);
   return (
@@ -28,31 +28,35 @@ export const Dashboard = () => {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <Alert variant="warning mt-3">
-                <p className="mt-2">
-                  Hi there, <b>{objLogin.user}</b>.
-                </p>
-                <p>
-                  Welcome to your STDI profile control panel, this is where you
-                  can set the data and links you want to share.
-                </p>
-                <p>
-                  We hope we can fill the void of your needs and may exceed your
-                  expectations.
-                </p>
-                <p>Thank you for your time.</p>
-                <p>Sincerely,</p>
-                <p>- STDI Team.</p>
-              </Alert>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+              
+              <p className="mt-2">
+                If you wanna learn more about us, please watch the next video:
               </p>
-              <p>
-                Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. 
+              <div className="w100 d-flex justify-content-center">
+                <iframe
+                  width="560"
+                  height="200"
+                  src={"https://www.youtube.com/embed/s35MTT9Zcws"}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <p className="mt-3">
+                Second thoughts? Watch this to see how it works!
               </p>
+              <div className="w100 d-flex justify-content-center mb-3">
+                <iframe
+                  width="560"
+                  height="200"
+                  src={"https://www.youtube.com/embed/17nOOa61oHE"}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
           </div>
         </div>

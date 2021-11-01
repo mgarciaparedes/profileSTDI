@@ -34,16 +34,22 @@ function CustomImageSetup() {
     useState("");
   const [modalArrayImages, setModalArrayImages] = useState([]);
 
-  //Variables para modal con info (primero)
+  //Variables para modal que muestra el input text y los inputs files
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  //Variables para modal que muestra la cantidad a seleccionar de archivos
   const handleCloseModalAmountInputs = () => setShowModalAmountInputs(false);
   const showModalInputs = () => setShowModalAmountInputs(true);
+
+  //Variables para modal que muestra la cantidad de customImageButton
   const [showModalCustomImageButtons, setShowModalCustomImageButtons] =
     useState(false);
   const handleCloseModalCustomImageButtons = () =>
     setShowModalCustomImageButtons(false);
+
+  //Variables para modal que muestra el carousel de cada customImageButton
   const [showModalCustomImageInCarousel, setShowModalCustomImageInCarousel] =
     useState(false);
   const handleCloseModalCustomImageInCarousel = () =>
