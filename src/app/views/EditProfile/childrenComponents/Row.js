@@ -51,7 +51,7 @@ function Row({
         <div className="row mb-2">
           <div className="col-12 col-sm-12">
             <label className="text-white">{socialNetwork}</label>
-            {socialNetwork !== "CustomURL" ? (
+            {socialNetwork !== "CustomURL" && socialNetwork !== "CustomText" ? (
               <InputGroup>
                 <Form.Control
                   name="profile"
@@ -117,7 +117,7 @@ function Row({
                   </Button>
                 </InputGroup.Append>
               </InputGroup>
-            ) : (
+            ) : socialNetwork === "CustomURL" ? (
               <>
                 <InputGroup>
                   <FormControl
@@ -141,10 +141,39 @@ function Row({
                   </InputGroup.Append>
                 </InputGroup>
               </>
+            ) : (
+              <>
+                <InputGroup>
+                  <FormControl
+                    placeholder="Description"
+                    name="linkName"
+                    value={linkName}
+                    onChange={(e) => onChange("linkName", e.target.value)}
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <FormControl
+                    as="textarea"
+                    placeholder="Type your text"
+                    name="profile"
+                    value={profile}
+                    onChange={(e) => onChange("profile", e.target.value)}
+                  />
+                  <InputGroup.Append>
+                    <Button variant="danger" onClick={onRemove}>
+                      <Icon.XCircleFill />
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </>
             )}
           </div>
         </div>
-      ) : view === 2 && socialNetwork !== "CustomURL" && socialNetwork !== "Embed Youtube Video" ? (
+      ) : view === 2 &&
+        socialNetwork !== "CustomURL" &&
+        socialNetwork !== "Embed Youtube Video"  && 
+        socialNetwork !== "CustomText"
+        ? (
         <>
           <div className="border border-link m-2 col-3">
             <a

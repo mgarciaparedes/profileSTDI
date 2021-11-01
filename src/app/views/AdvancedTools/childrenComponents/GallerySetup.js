@@ -523,17 +523,12 @@ function GallerySetup() {
                   placeholder="Url to open in another tab"
                   name={"url" + index}
                   onChange={(e) => {
-                    arrayURLValues[index] = e.target.value;
+                    
+                    arrayURLValues[index] = e.target.value
                   }}
-                  // value={"attachedDocument" + index}
-                  // onChange={handleChange}
-                  // isValid={!!touched.email && !errors.email}
-                  // isInvalid={!!errors.email && !!touched.email}
-                  // className="lowercase"
+                  
                 />
-                {/* <Form.Control.Feedback type="invalid">
-                  {errors.email}
-                </Form.Control.Feedback> */}
+                
               </InputGroup>
               <input
                 type="file"

@@ -232,6 +232,7 @@ function NoDymanicForm({
                   <option value="SMS">SMS</option>
                   <option value="Website">Website</option>
                   <option value="CustomURL">CustomURL</option>
+                  <option value="CustomText">CustomText</option>
                   <option value="Embed Youtube Video">
                     Embed Youtube Video
                   </option>

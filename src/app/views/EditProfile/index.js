@@ -166,7 +166,7 @@ export const EditProfile = () => {
     if (e.target.value !== "") {
       //el campo CustomURL va a guardar otro dato -> el nombre del link
       //Entonces dependiendo de la red social elegida digo si va a guardar ese dato extra o no
-      if (e.target.value === "CustomURL") {
+      if (e.target.value === "CustomURL" || e.target.value === "CustomText") {
         setRows(
           rows.concat({
             socialNetwork: e.target.value,
@@ -410,30 +410,8 @@ export const EditProfile = () => {
               <div className="text-white mt-2">
                 {objLogin.username}&nbsp;&nbsp;
               </div>
-              {/*<ModalChangePassword
-                name={name}
-                username={username}
-                serialNumber={serialNumber}
-                email={email}
-              />
-              &nbsp;&nbsp;*/}
-              <SideNavigation
-                // setSendNotifications={setSendNotifications}
-                // sendNotifications={sendNotifications}
-                // isLinked={isLinked}
-                // usernameLinked={usernameLinked}
-                // setIsLinked={setIsLinked}
-              />
-              {/*&nbsp;&nbsp;
-              <Button
-                variant="danger"
-                onClick={() => {
-                  //history.push("/login");
-                  logoutContext();
-                }}
-              >
-                <Icon.Power size={20} />
-              </Button>*/}
+
+              <SideNavigation />
             </div>
           </div>
 
@@ -610,78 +588,77 @@ export const EditProfile = () => {
                 ))}
 
                 {/*Se muestra el gallery si está activo*/}
-                <ProfileCarousel gallery={gallery} />     
+                <ProfileCarousel gallery={gallery} />
 
                 <div className="row mt-1 pb-3">
-                <div className="col-6">
-                <div className="d-flex justify-content-center">
-                  <div className="border border-link">
+                  <div className="col-6">
                     <div className="d-flex justify-content-center">
-                      <h5 className="font-bold pb-1 pt-2">QR Code</h5>
-                    </div>
-                    <QRCode
-                      id="QR"
-                      value={"https://profile.stdicompany.com/" + username}
-                      className="m-1 p-2"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-6">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="d-flex justify-content-center">
-                      <div className="border p-2 mr-1 border-link">
-                        {/*Inicio Botón Copy Link */}
+                      <div className="border border-link">
                         <div className="d-flex justify-content-center">
-                        <Button
-                          ref={target}
-                          onClick={() => {
-                            setShow(!show);
-                            copyToClipboard(username);
-                          }}
-                        >
-                          
-                          <span>
-                            <i className="bi bi-clipboard" />
-                          </span>
-                          &nbsp; Copy Link
-                        </Button>
+                          <h5 className="font-bold pb-1 pt-2">QR Code</h5>
                         </div>
-
-                        <Overlay
-                          target={target.current}
-                          show={show}
-                          placement="top"
-                        >
-                          {(props) => (
-                            <Tooltip id="overlay-example" {...props}>
-                              Profile copied to clipboard!
-                            </Tooltip>
-                          )}
-                        </Overlay>
-                        {/*Final Botón Copy Link */}
-
-                        {/*Inicio Botón Share Link */}
-                        <Button
-                          variant="success"
-                          ref={target}
-                          onClick={() => {
-                            shareLink(username);
-                          }}
-                          className="mt-3"
-                        >
-                          <span>
-                            <i className="bi bi-share" />
-                          </span>
-                          &nbsp; Share Link
-                        </Button>
+                        <QRCode
+                          id="QR"
+                          value={"https://profile.stdicompany.com/" + username}
+                          className="m-1 p-2"
+                        />
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+
+                  <div className="col-6">
+                    <div className="row">
+                      <div className="col-12">
+                        <div className="d-flex justify-content-center">
+                          <div className="border p-2 mr-1 border-link">
+                            {/*Inicio Botón Copy Link */}
+                            <div className="d-flex justify-content-center">
+                              <Button
+                                ref={target}
+                                onClick={() => {
+                                  setShow(!show);
+                                  copyToClipboard(username);
+                                }}
+                              >
+                                <span>
+                                  <i className="bi bi-clipboard" />
+                                </span>
+                                &nbsp; Copy Link
+                              </Button>
+                            </div>
+
+                            <Overlay
+                              target={target.current}
+                              show={show}
+                              placement="top"
+                            >
+                              {(props) => (
+                                <Tooltip id="overlay-example" {...props}>
+                                  Profile copied to clipboard!
+                                </Tooltip>
+                              )}
+                            </Overlay>
+                            {/*Final Botón Copy Link */}
+
+                            {/*Inicio Botón Share Link */}
+                            <Button
+                              variant="success"
+                              ref={target}
+                              onClick={() => {
+                                shareLink(username);
+                              }}
+                              className="mt-3"
+                            >
+                              <span>
+                                <i className="bi bi-share" />
+                              </span>
+                              &nbsp; Share Link
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
