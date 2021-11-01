@@ -15,6 +15,7 @@ import { AdvancedTools } from "./views/AdvancedTools/index";
 import { EditProfile } from "./views/EditProfile/index";
 import { ForgotPassword } from "./views/ForgotPassword/index";
 import { UserName } from "./views/UserName/index";
+import { ActivateLinkedProfile } from "./views/ActivateLinkedProfile";
 
 /*Componente para el manejo de rutas de la app*/
 const AppRoute = () => {
@@ -43,6 +44,11 @@ const AppRoute = () => {
             exact
             path="/:params"
             component={(params) => <UserName {...params} />}
+          />
+          <Route
+            exact
+            path="/activateLinkedProfile/:params"
+            component={(params) => <ActivateLinkedProfile {...params} />}
           />
           <Route exact path="/" render={() => <Redirect to="/login" />} />
         </Switch>

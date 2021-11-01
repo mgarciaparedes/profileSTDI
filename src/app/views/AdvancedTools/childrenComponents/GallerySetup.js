@@ -598,7 +598,7 @@ function GallerySetup() {
 
         <Modal.Body>
           <Carousel activeIndex={index2} onSelect={handleSelect}>
-            {galleryImages.length > 0
+            {galleryImages !== null && galleryImages.length > 0
               ? galleryImages.map((elemento, index) => (
                   <Carousel.Item key={index}>
                     <img
