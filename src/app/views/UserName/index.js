@@ -37,7 +37,7 @@ import SmsIcon from "../../../assets/svg/sms.svg";
 import PhoneIcon from "../../../assets/svg/phone.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
-import CustomImageIcon from "../../../assets/svg/galleryimage.svg"
+import CustomImageIcon from "../../../assets/svg/galleryimage.svg";
 
 //Componentes hijos
 import { SocialMedia } from "./childrenComponents/SocialMedia";
@@ -47,7 +47,8 @@ import { CustomText } from "./childrenComponents/CustomText";
 import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
 import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 
-const { swalOffBackend, convertStringWithPlus, copyToClipboard, shareLink } = helpers;
+const { swalOffBackend, convertStringWithPlus, copyToClipboard, shareLink } =
+  helpers;
 const QRCode = require("qrcode.react");
 
 /*Componente para manejar nombre del usuario*/
@@ -284,7 +285,7 @@ export const UserName = ({ location }) => {
               SmsIcon={SmsIcon}
               convertStringWithPlus={convertStringWithPlus}
               MapPinIcon={MapPinIcon}
-            /> 
+            />
 
             {/*Componentes de links customizados al visualizar el perfil*/}
             <CustomImage
@@ -331,37 +332,36 @@ export const UserName = ({ location }) => {
                       <div className="border p-2 mr-1 border-link">
                         {/*Inicio Botón Copy Link */}
                         <div className="d-flex justify-content-center">
-                        <Button
-                          ref={target}
-                          onClick={() => {
-                            setShow(!show);
-                            copyToClipboard(profileUsername);
-                          }}
-                        >
-                          <span>
-                            <i className="bi bi-clipboard" />
-                          </span>
-                          &nbsp; Copy Link
-                        </Button>
+                          <Overlay
+                            target={target.current}
+                            show={show}
+                            placement="top"
+                          >
+                            {(props) => (
+                              <Tooltip id="overlay-example" {...props}>
+                                Profile copied to clipboard!
+                              </Tooltip>
+                            )}
+                          </Overlay>
+                          <Button
+                            ref={target}
+                            onClick={() => {
+                              setShow(!show);
+                              copyToClipboard(profileUsername);
+                            }}
+                          >
+                            <span>
+                              <i className="bi bi-clipboard" />
+                            </span>
+                            &nbsp; Copy Link
+                          </Button>
                         </div>
 
-                        <Overlay
-                          target={target.current}
-                          show={show}
-                          placement="top"
-                        >
-                          {(props) => (
-                            <Tooltip id="overlay-example" {...props}>
-                              Profile copied to clipboard!
-                            </Tooltip>
-                          )}
-                        </Overlay>
                         {/*Final Botón Copy Link */}
 
                         {/*Inicio Botón Share Link */}
                         <Button
                           variant="success"
-                          ref={target}
                           onClick={() => {
                             shareLink(profileUsername);
                           }}

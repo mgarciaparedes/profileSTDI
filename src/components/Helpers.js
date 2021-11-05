@@ -3,6 +3,8 @@ import TwitterIcon from "../assets/svg/twitter.svg";
 import FacebookIcon from "../assets/svg/facebook.svg";
 import WhatsappIcon from "../assets/svg/whatsapp.svg";
 import TelegramIcon from "../assets/svg/telegram.svg";
+import MailIcon from "../assets/svg/mail.svg";
+import GmailIcon from "../assets/svg/gmail.svg";
 
 const helpers = {
   /*Con esta propiedad retornamos un swalfire cuando se ca */
@@ -24,7 +26,7 @@ const helpers = {
   //Función para copiar la url
   copyToClipboard(username) {
     var inputc = document.body.appendChild(document.createElement("input"));
-    inputc.value = "https://profile.stdicompany.com/"+username;
+    inputc.value = "https://profile.stdicompany.com/" + username;
     inputc.focus();
     inputc.select();
     document.execCommand("copy");
@@ -46,17 +48,29 @@ const helpers = {
         usernameURL +
         '"><img width="50" height="50" src=' +
         FacebookIcon +
-        " /></a> " + 
+        " /></a> " +
         '<a target="_blank" class="mr-2" href="https://twitter.com/intent/tweet?url=' +
         usernameURL +
         '"><img width="50" height="50" src=' +
         TwitterIcon +
-        " /></a> " + 
+        " /></a> " +
         '<a target="_blank" href="https://telegram.me/share/url?url=' +
         usernameURL +
         '"><img width="50" height="50" src=' +
         TelegramIcon +
-        " /></a> ",
+        " /></a> " +
+      '<div class="mt-2">' +
+        '<a target="_blank" class="mr-2" href="mailto:?subject=I wanted you to see this site&amp;body=Check out this site ' +
+        usernameURL +
+        '" title="Share by Email"><img width="50" height="50" src=' +
+        MailIcon +
+        " /></a> " +
+        '<a target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=Your+Subject+here&body=Check out this site ' +
+        usernameURL +
+        '&ui=2&tf=1&pli=1" title="Share by Gmail"><img width="50" height="50" src=' +
+        GmailIcon +
+        " /></a> " + 
+        '</div>',
       // icon: "info",
       confirmButtonText: "Close",
     });
@@ -68,8 +82,6 @@ const helpers = {
     //   }
     // });
   },
-
-  
 };
 
 export default helpers;

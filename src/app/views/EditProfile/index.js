@@ -23,7 +23,7 @@ import { CustomImage } from "./childrenComponents/CustomImage";
 
 //Ícono
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
-import CustomImageIcon from "../../../assets/svg/galleryimage.svg"
+import CustomImageIcon from "../../../assets/svg/galleryimage.svg";
 
 import FormData from "form-data";
 import SubmitAndClearDataButtons from "./childrenComponents/SubmitAndClearDataButtons";
@@ -74,7 +74,11 @@ export const EditProfile = () => {
       .get("/users/getProfileUserData")
       .then((res) => {
         console.log(res.data);
-        if (res.data.ok === true && res.data.msg==="User is registered but doesn't have any profile saved.") {
+        if (
+          res.data.ok === true &&
+          res.data.msg ===
+            "User is registered but doesn't have any profile saved."
+        ) {
           setExistentProfile(false); //Diferenciar si se le pega al servicio save
           setLoadingProfileData(false);
           //Esto pasa en caso de que exista el usuario registrado pero no tenga ningún perfil asociado
@@ -593,10 +597,10 @@ export const EditProfile = () => {
                 ))}
 
                 {/*Componentes de links customizados al visualizar el perfil*/}
-            <CustomImage
-              customImage={customImage}
-              CustomImageIcon={CustomImageIcon}
-            />
+                <CustomImage
+                  customImage={customImage}
+                  CustomImageIcon={CustomImageIcon}
+                />
 
                 <CustomText
                   socialMedia={profileData}
@@ -629,6 +633,17 @@ export const EditProfile = () => {
                           <div className="border p-2 mr-1 border-link">
                             {/*Inicio Botón Copy Link */}
                             <div className="d-flex justify-content-center">
+                              <Overlay
+                                target={target.current}
+                                show={show}
+                                placement="top"
+                              >
+                                {(props) => (
+                                  <Tooltip id="overlay-example" {...props}>
+                                    Profile copied to clipboard!
+                                  </Tooltip>
+                                )}
+                              </Overlay>
                               <Button
                                 ref={target}
                                 onClick={() => {
@@ -643,23 +658,11 @@ export const EditProfile = () => {
                               </Button>
                             </div>
 
-                            <Overlay
-                              target={target.current}
-                              show={show}
-                              placement="top"
-                            >
-                              {(props) => (
-                                <Tooltip id="overlay-example" {...props}>
-                                  Profile copied to clipboard!
-                                </Tooltip>
-                              )}
-                            </Overlay>
                             {/*Final Botón Copy Link */}
 
                             {/*Inicio Botón Share Link */}
                             <Button
                               variant="success"
-                              ref={target}
                               onClick={() => {
                                 shareLink(username);
                               }}
