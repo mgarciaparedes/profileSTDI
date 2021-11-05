@@ -19,9 +19,11 @@ import NoDymanicForm from "./childrenComponents/NoDymanicForm";
 import Row from "./childrenComponents/Row";
 import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 import { CustomText } from "./childrenComponents/CustomText";
+import { CustomImage } from "./childrenComponents/CustomImage";
 
 //Ícono
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
+import CustomImageIcon from "../../../assets/svg/galleryimage.svg"
 
 import FormData from "form-data";
 import SubmitAndClearDataButtons from "./childrenComponents/SubmitAndClearDataButtons";
@@ -37,6 +39,7 @@ export const EditProfile = () => {
   const [loadingProfileData, setLoadingProfileData] = useState(true); //Animación cargando datos de perfil
   const [sessionOver, setSessionOver] = useState(false);
   const [profileData, setProfileData] = useState([]); //Este de momento no se usa
+  const [customImage, setCustomImage] = useState([]);
   const [isLinked, setIsLinked] = useState(false);
   const [usernameLinked, setUsernameLinked] = useState("");
 
@@ -96,6 +99,7 @@ export const EditProfile = () => {
           setIsLinked(res.data.data.isLinked);
           setUsernameLinked(res.data.data.usernameLinked);
           setGallery(res.data.gallery);
+          setCustomImage(res.data.customImage);
 
           /*De no estar guardada la ruta de la imagen, mostramos un icono en fondo gris*/
           if (res.data.data.base64ProfilePhoto === "") {
@@ -587,6 +591,12 @@ export const EditProfile = () => {
                     ) : null}
                   </div>
                 ))}
+
+                {/*Componentes de links customizados al visualizar el perfil*/}
+            <CustomImage
+              customImage={customImage}
+              CustomImageIcon={CustomImageIcon}
+            />
 
                 <CustomText
                   socialMedia={profileData}
