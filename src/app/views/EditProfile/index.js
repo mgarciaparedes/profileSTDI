@@ -74,7 +74,7 @@ export const EditProfile = () => {
       .get("/users/getProfileUserData")
       .then((res) => {
         console.log(res.data);
-        if (res.data.ok === false) {
+        if (res.data.ok === true && res.data.msg==="User is registered but doesn't have any profile saved.") {
           setExistentProfile(false); //Diferenciar si se le pega al servicio save
           setLoadingProfileData(false);
           //Esto pasa en caso de que exista el usuario registrado pero no tenga ningún perfil asociado
