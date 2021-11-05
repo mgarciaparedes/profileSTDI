@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Carousel, Modal, Button, Alert } from "react-bootstrap";
-import Swal from "sweetalert2";
-import * as Icon from "react-bootstrap-icons";
+
 
 export const CustomImage = ({ customImage, CustomImageIcon }) => {
   //Variables para modal con info (primero)
@@ -16,60 +15,40 @@ export const CustomImage = ({ customImage, CustomImageIcon }) => {
     setIndex2(selectedIndex);
   };
 
-  //   const showCustomImage = (title, array) => {
-  //     Swal.fire({
-  //       title: title,
-  //       html:
-  //         "<Carousel>" +
-  //         array.map((index,elemento) => {
-  //             return "<Carousel.Item><img src='"+ `${process.env.REACT_APP_API_URL}/render/image/${elemento.image}` +"' />";
-  //         })
-  //         +"  </Carousel>",
-  //       text: "Click in the icon",
-  //       confirmButtonText: "Close",
-  //     });
-  //   };
   return (
     <>
-      {customImage !== null ? customImage.map((elemento, index) => (
-        <div key={index}>
-          {elemento.customImageActive === true ? (
-            <div className="row d-flex justify-content-center h5">
-              <div className="border p-2 border-link col-10">
-                {/* <a
-                  className="btn-no-style"
-                  target="_blank"
-                  href={elemento.profile}
-                > */}
-                <div
-                  className="d-flex col-lg-12 justify-content-center"
-                  onClick={() => {
-                    // showCustomImage(
-                    //   elemento.customImageButtonName,
-                    //   elemento.arrayWithImagesURL
-                    // )
-                    handleShow();
-                    setModalTitle(elemento.customImageButtonName);
-                    setModalArrayImages(elemento.arrayWithImagesURL);
-                  }}
-                >
-                  <img
-                      //style={{ marginTop: "6px" }}
-                      className="pb-1"
-                      width="25"
-                      height="25"
-                      src={CustomImageIcon}
-                      alt="CustomURL"
-                    />
-                  &nbsp;
-                  {elemento.customImageButtonName}
+      {customImage !== null
+        ? customImage.map((elemento, index) => (
+            <div key={index}>
+              {elemento.customImageActive === true ? (
+                <div className="row d-flex justify-content-center h5">
+                  <div className="border p-2 border-link col-10">
+                    <a className="btn-no-style" href="javascript:void(0)">
+                      <div
+                        className="d-flex col-lg-12 justify-content-center"
+                        onClick={() => {
+                          handleShow();
+                          setModalTitle(elemento.customImageButtonName);
+                          setModalArrayImages(elemento.arrayWithImagesURL);
+                        }}
+                      >
+                        <img
+                          style={{ marginTop: "6px" }}
+                          width="25"
+                          height="25"
+                          src={CustomImageIcon}
+                          alt="CustomURL"
+                        />
+                        &nbsp;
+                        {elemento.customImageButtonName}
+                      </div>
+                    </a>
+                  </div>
                 </div>
-                {/* </a> */}
-              </div>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-      )) : null}
+          ))
+        : null}
 
       <Modal
         show={show}
@@ -109,7 +88,7 @@ export const CustomImage = ({ customImage, CustomImageIcon }) => {
                             )
                           }
                         >
-                         Open in another tab
+                          Open in another tab
                         </Button>
                       </Carousel.Caption>
                     </Carousel.Item>
