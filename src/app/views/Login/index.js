@@ -57,7 +57,7 @@ export const Login = () => {
               customImage,
             } = res2.data;
             /*Sí el login es ok, loguea*/
-            if (ok && msg === "User data found.") {
+            if (ok) {
               setDisabledButton(false);
 
               const json = {
@@ -77,11 +77,10 @@ export const Login = () => {
                     ? gallery.galleryActive
                     : null,
                 customImage: customImage ? customImage : null,
-                sendNotifications: data.sendNotifications,
-                isLinked: data.isLinked,
-                usernameLinked: data.usernameLinked,
+                sendNotifications: data ? data.sendNotifications : null,
+                isLinked: data ? data.isLinked : null,
+                usernameLinked: data ? data.usernameLinked : null,
               };
-
               loginContext(json);
 
               history.push("/dashboard");

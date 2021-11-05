@@ -275,7 +275,7 @@ function GallerySetup() {
       for (let i = 0; i < amount; i++) {
         inputs.push(1);
         inputsValues.push(new File([""], "filename"));
-        urlValues.push({ url: "" });
+        urlValues.push({ url: null });
       }
       setArrayToMapInputs(inputs);
       setArrayInputsValues(inputsValues);
@@ -523,7 +523,7 @@ function GallerySetup() {
                   placeholder="Url to open in another tab"
                   name={"url" + index}
                   onChange={(e) => {
-                    
+                    console.log(e.target.value);
                     arrayURLValues[index] = e.target.value
                   }}
                   
@@ -534,7 +534,7 @@ function GallerySetup() {
                 type="file"
                 onChange={(e) => {
                   //console.log(e.target.files);
-                  arrayInputsValues[index] = e.target.files[0];
+                  //arrayInputsValues[index] = e.target.files[0];
                   if (e.target.files.length > 0) {
                     arrayInputsValues[index] = e.target.files[0];
                   } else {

@@ -8,14 +8,14 @@ export const ActivateLinkedProfile = ({ location }) => {
   const [loading, setLoading] = useState(false);
   const { pathname } = location;
   const username = pathname.replace("/activateLinkedProfile/", "");
-  const payload = {
+  const payloadToActivateLinkedProfile = {
     usernameToActivateLink: username,
   };
 
   useEffect(() => {
     setLoading(true);
     axios
-      .post("users/activateLinkingProfile", payload)
+      .post("users/activateLinkingProfile", payloadToActivateLinkedProfile)
       .then((res) => {
         setLoading(false);
         const { ok, msg } = res.data;
