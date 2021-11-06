@@ -24,6 +24,7 @@ import { CustomImage } from "./childrenComponents/CustomImage";
 //Ícono
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
 import CustomImageIcon from "../../../assets/svg/galleryimage.svg";
+import CustomTextIcon from "../../../assets/svg/text.svg";
 
 import FormData from "form-data";
 import SubmitAndClearDataButtons from "./childrenComponents/SubmitAndClearDataButtons";
@@ -604,7 +605,7 @@ export const EditProfile = () => {
 
                 <CustomText
                   socialMedia={profileData}
-                  CustomURLIcon={CustomURLIcon}
+                  CustomTextIcon={CustomTextIcon}
                 />
 
                 {/*Se muestra el gallery si está activo*/}

@@ -145,6 +145,12 @@ $font-family-sans-serif: "Cairo Regular";
   white-space: pre-wrap;
 }
 
+//Clase para pintar los svg de un color específico
+//https://codepen.io/sosuke/pen/Pjoqqp
+.filter-grey{
+filter: invert(50%) sepia(4%) saturate(318%) hue-rotate(155deg) brightness(96%) contrast(88%);
+}
+
 @media screen and (min-width: 0px) {
   .banner { height: 200px; }
   .banner-with-no-image { height: 200px; }

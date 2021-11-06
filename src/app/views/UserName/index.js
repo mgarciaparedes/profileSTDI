@@ -38,6 +38,7 @@ import PhoneIcon from "../../../assets/svg/phone.svg";
 import WebsiteIcon from "../../../assets/svg/website.svg";
 import CustomURLIcon from "../../../assets/svg/customurl.svg";
 import CustomImageIcon from "../../../assets/svg/galleryimage.svg";
+import CustomTextIcon from "../../../assets/svg/text.svg";
 
 //Componentes hijos
 import { SocialMedia } from "./childrenComponents/SocialMedia";
@@ -302,7 +303,7 @@ export const UserName = ({ location }) => {
             {/*Componentes de links customizados al visualizar el perfil*/}
             <CustomText
               socialMedia={socialMedia}
-              CustomURLIcon={CustomURLIcon}
+              CustomTextIcon={CustomTextIcon}
             />
 
             {/*Carrusel Imágenes*/}

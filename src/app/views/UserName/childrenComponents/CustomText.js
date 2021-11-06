@@ -1,7 +1,7 @@
 import React from "react";
 import Swal from "sweetalert2";
 
-export const CustomText = ({ socialMedia, CustomURLIcon }) => {
+export const CustomText = ({ socialMedia, CustomTextIcon }) => {
   const showText = (title,text) => {
     Swal.fire({
         title: title,
@@ -26,9 +26,10 @@ export const CustomText = ({ socialMedia, CustomURLIcon }) => {
                 > */}
                 <div className="d-flex col-lg-12 justify-content-center pt-2 pb-1">
                   <img
+                  className="filter-grey"
                     width="25"
                     height="25"
-                    src={CustomURLIcon}
+                    src={CustomTextIcon}
                     alt="CustomText"
                   />
                   &nbsp;

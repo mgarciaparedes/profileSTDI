@@ -1,10 +1,10 @@
 import React from "react";
 import Swal from "sweetalert2";
 
-export const CustomText = ({ socialMedia, CustomURLIcon }) => {
-  const showText = (title,text) => {
+export const CustomText = ({ socialMedia, CustomTextIcon }) => {
+  const showText = (title, text) => {
     Swal.fire({
-        title: title,
+      title: title,
       html: "<div class='pre-wrap'>" + text + "</div>",
       confirmButtonText: "Close",
     });
@@ -17,7 +17,7 @@ export const CustomText = ({ socialMedia, CustomURLIcon }) => {
             <div className="row d-flex justify-content-center h5">
               <div
                 className="border p-2 border-link col-10"
-                onClick={() => showText(elemento.linkName,elemento.profile)}
+                onClick={() => showText(elemento.linkName, elemento.profile)}
               >
                 {/* <a
                   className="btn-no-style"
@@ -26,9 +26,10 @@ export const CustomText = ({ socialMedia, CustomURLIcon }) => {
                 > */}
                 <div className="d-flex col-lg-12 justify-content-center pt-2 pb-1">
                   <img
+                    className="filter-grey"
                     width="25"
                     height="25"
-                    src={CustomURLIcon}
+                    src={CustomTextIcon}
                     alt="CustomText"
                   />
                   &nbsp;
