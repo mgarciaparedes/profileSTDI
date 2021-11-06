@@ -3,18 +3,19 @@ import { Button } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import { AppContext } from "./AppContext";
 import history from "./History";
-import whiteLogo from "../assets/images/logo-white.png"
+import whiteLogo from "../assets/images/logo-white.png";
+import userImage from "../assets/images/default-user-image.png";
 
 import ModalChangePassword from "./ModalChangePassword";
 
 export const SideNavigation = () => {
   const { logoutContext, objLogin } = useContext(AppContext);
-  console.log(objLogin.profileData);
+  //console.log(objLogin.profileData);
   const openNav = () => {
     // if (window.screen.width < 400) {
     //   document.getElementById("mySidenav").style.width = "100%";
     // } else {
-      document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("mySidenav").style.width = "250px";
     // }
   };
 
@@ -25,6 +26,23 @@ export const SideNavigation = () => {
   return (
     <>
       <div id="mySidenav" className="sidenav">
+        <div className="header">
+          <img
+            width="25"
+            height="25"
+            style={{
+              borderRadius: "20px"
+            }}
+            src={
+              objLogin.profileData &&
+              (objLogin.profileData.base64ProfilePhoto !== null ||
+                objLogin.profileData.base64ProfilePhoto === "")
+                ? `${process.env.REACT_APP_API_URL}/render/image/${objLogin.profileData.base64ProfilePhoto}`
+                : userImage
+            }
+          />{" "}
+          <label className="ml-1">{objLogin.user}</label>
+        </div>
         <a
           href="javascript:void(0)"
           className="closebtn"
@@ -34,7 +52,7 @@ export const SideNavigation = () => {
         </a>
 
         {/****** Opción HOME ******/}
-        <a href="/dashboard" className="mb-3">
+        <a href="/dashboard" className="mt-4 mb-3">
           <Icon.House size={22} className="mb-1 mr-2" /> Home
         </a>
 
@@ -106,13 +124,18 @@ export const SideNavigation = () => {
         </a>
 
         {/****** LOGO STDI ******/}
-        <div className="text-center mt-5
-        ">
+        <div
+          className="text-center mt-5
+        "
+        >
           <img className="img-sidebar" src={whiteLogo} />
         </div>
       </div>
 
-      <Button className="button-transparent pr-2 pl-2" onClick={() => openNav()}>
+      <Button
+        className="button-transparent pr-2 pl-2"
+        onClick={() => openNav()}
+      >
         <Icon.List size={22} />
       </Button>
     </>

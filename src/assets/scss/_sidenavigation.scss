@@ -39,6 +39,14 @@
   margin-left: 50px;
 }
 
+.sidenav .header {
+  position: absolute;
+  top: 25px;
+  right: 20;
+  font-size: 16px;
+  margin-left: 32px;
+}
+
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
   transition: margin-left 0.5s;
