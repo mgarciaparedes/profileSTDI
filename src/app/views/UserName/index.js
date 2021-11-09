@@ -70,6 +70,7 @@ export const UserName = ({ location }) => {
 
   const [sendNotifications2, setSendNotifications2] = useState(false);
   const [emailProfile, setEmailProfile] = useState("");
+  const [sendingLocationButton, setSendingLocationButton] = useState(false);
   const [show, setShow] = useState(false);
   const target = useRef(null);
 
@@ -85,6 +86,9 @@ export const UserName = ({ location }) => {
       .post("/users/usernameData", payload)
       .then((res) => {
         const { ok, msg, data, email, gallery, customImage } = res.data;
+
+        //Guardamos el email
+        setEmailProfile(email);
 
         if (ok && msg === "Username Profile Data found.") {
           const {
@@ -125,7 +129,7 @@ export const UserName = ({ location }) => {
           //Guardamos esto en una variable (no se usa de momento)
           setSendNotifications2(sendNotifications);
           //Envío el valor a ver si se va a enviar correo o no
-          sendEmailNotifications(sendNotifications, email);
+          sendEmailNotifications(sendNotifications, email, 1);
 
           setLoadingProfileData(false);
         }
@@ -156,8 +160,8 @@ export const UserName = ({ location }) => {
       });
   }, []);
 
-  const sendEmailNotifications = (value, email) => {
-    if (value === true) {
+  const sendEmailNotifications = (value, email, whereIsClicked) => {
+    if (value === true && whereIsClicked === 1) {
       //Si el valor que recibe es true entonces enviamos el correo
       navigator.geolocation.getCurrentPosition(function (position) {
         console.log("Latitude is :", position.coords.latitude);
@@ -182,6 +186,52 @@ export const UserName = ({ location }) => {
           })
           .catch((error) => {
             console.log("Ha ocurrido un error al enviar correo");
+          });
+      });
+    } else if (value === true && whereIsClicked === 2) {
+      setSendingLocationButton(true);
+      //Si el valor que recibe es true entonces enviamos el correo
+      navigator.geolocation.getCurrentPosition(function (position) {
+        console.log("Latitude is :", position.coords.latitude);
+        console.log("Longitude is :", position.coords.longitude);
+
+        const payloadToSendNotifications = {
+          to: email,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+
+        console.log(payloadToSendNotifications);
+
+        axios
+          .post("email/sendNotification", payloadToSendNotifications)
+          .then((res) => {
+            if (res.data.ok === true) {
+              setSendingLocationButton(false);
+              Swal.fire({
+                title: "Everything's ok ;)",
+                text: "GPS Location was sent succesfully",
+                icon: "success",
+                confirmButtonText: "Try again",
+              });
+            } else {
+              setSendingLocationButton(false);
+              Swal.fire({
+                title: "Error",
+                text: "An error occurred",
+                icon: "error",
+                confirmButtonText: "Try again",
+              });
+            }
+          })
+          .catch((error) => {
+            setSendingLocationButton(false);
+            Swal.fire({
+              title: "Error",
+              text: "An error occurred",
+              icon: "error",
+              confirmButtonText: "Try again",
+            });
           });
       });
     } else {
@@ -361,18 +411,57 @@ export const UserName = ({ location }) => {
                         {/*Final Botón Copy Link */}
 
                         {/*Inicio Botón Share Link */}
-                        <Button
-                          variant="success"
-                          onClick={() => {
-                            shareLink(profileUsername);
-                          }}
-                          className="mt-3"
-                        >
-                          <span>
-                            <i className="bi bi-share" />
-                          </span>
-                          &nbsp; Share Link
-                        </Button>
+                        <div className="d-flex justify-content-center">
+                          <Button
+                            variant="success"
+                            onClick={() => {
+                              shareLink(profileUsername);
+                            }}
+                            className="mt-3"
+                          >
+                            <span>
+                              <i className="bi bi-share" />
+                            </span>
+                            &nbsp; Share Link
+                          </Button>
+                        </div>
+                        {/*Final Botón Share Link */}
+
+                        {/*Inicio Botón Send GPS Location */}
+                        {sendNotifications2 ? (
+                          <div className="d-flex justify-content-center">
+                            <Button
+                              variant="secondary"
+                              onClick={() => {
+                                sendEmailNotifications(true, emailProfile, 2);
+                              }}
+                              disabled={sendingLocationButton === true}
+                              className="mt-3"
+                            >
+                              <div className="d-flex d-inline-block justify-content-center">
+                                <span
+                                  className="spinner-border spinner-border-sm mt-1 mr-2"
+                                  role="status"
+                                  style={{
+                                    display:
+                                      sendingLocationButton === true
+                                        ? "inline-block"
+                                        : "none",
+                                  }}
+                                  aria-hidden="true"
+                                ></span>
+                                {sendingLocationButton === true ? (
+                                  " Loading"
+                                ) : (
+                                  <>
+                                    <span>Send Location</span>
+                                  </>
+                                )}
+                              </div>
+                            </Button>
+                          </div>
+                        ) : null}
+                        {/*Final Botón Send GPS Location*/}
                       </div>
                     </div>
                   </div>
