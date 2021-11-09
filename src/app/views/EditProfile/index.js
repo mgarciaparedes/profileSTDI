@@ -417,9 +417,9 @@ export const EditProfile = () => {
         <div className="container mt-3">
           <div className="row">
             <div className="col-sm-12 d-flex justify-content-end">
-              <div className="text-white mt-2">
+              {/* <div className="text-white mt-2">
                 {objLogin.username}&nbsp;&nbsp;
-              </div>
+              </div> */}
 
               <SideNavigation />
             </div>

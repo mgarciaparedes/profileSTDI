@@ -78,7 +78,7 @@ const AppProvider = ({ children }) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       cancelButtonText: "No",
-      confirmButtonText: "Si",
+      confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
         const json = {

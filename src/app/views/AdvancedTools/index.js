@@ -1,5 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Alert, Form } from "react-bootstrap";
+import axios from "axios";
+import history from "../../../components/History";
+import Swal from "sweetalert2";
 import { SideNavigation } from "../../../components/SideNavigation";
 import { AppContext } from "../../../components/AppContext";
 import logoImage from "../../../assets/images/logo-white.png";
@@ -12,15 +15,47 @@ import GallerySetup from "./childrenComponents/GallerySetup";
 import CustomImageSetup from "./childrenComponents/CustomImageSetup";
 
 export const AdvancedTools = () => {
-  const { objLogin } = useContext(AppContext);;
+  const { objLogin } = useContext(AppContext);
+
+  //uso este servicio para validar que haya token en la petición
+  //Con esto evitamos que si se cae el token o el objLogin o se recarga la página pueda funcionar el front
+  useEffect(() => {
+    axios
+      .get("/users/getProfileUserData")
+      .then((res) => {
+        const { ok } = res.data;
+
+        if (!ok) {
+          Swal.fire({
+            title: "This session is over",
+            text: "Please login again",
+            icon: "error",
+            confirmButtonText: "OK",
+          }).then((result) => {
+            history.push("/");
+          });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "This session is over",
+          text: "Please login again",
+          icon: "error",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          history.push("/");
+        });
+      });
+  }, []);
+
   return (
     <>
       <div className="container mt-3">
         <div className="row">
           <div className="col-sm-12 d-flex justify-content-end">
-            <div className="text-white mt-2">
+            {/* <div className="text-white mt-2">
               {objLogin.username}&nbsp;&nbsp;
-            </div>
+            </div> */}
             <SideNavigation />
           </div>
         </div>
@@ -34,13 +69,12 @@ export const AdvancedTools = () => {
 
               <Alert variant="info">
                 <Icon.InfoCircleFill className="mb-1" size={20} />
-                &nbsp;
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur.
+                &nbsp; Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna
+                aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                aute irure dolor in reprehenderit in voluptate velit esse cillum
+                dolore eu fugiat nulla pariatur.
               </Alert>
 
               {/*Opción activar notificaciones */}
