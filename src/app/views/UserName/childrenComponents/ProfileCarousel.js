@@ -24,10 +24,16 @@ export const ProfileCarousel = ({ gallery }) => {
                         src={`${process.env.REACT_APP_API_URL}/render/image/${elemento.image}`}
                         alt="First slide"
                         onClick={
-                          elemento.url === null || elemento.url === "" || elemento.url === "[object Object]"
+                          elemento.url === null ||
+                          elemento.url === "" ||
+                          elemento.url === "[object Object]"
                             ? null
                             : () => {
-                                window.open(elemento.url);
+                                if (elemento.url.startsWith("http")) {
+                                  window.open(elemento.url);
+                                } else {
+                                  window.open("https://api.whatsapp.com/send/?phone="+elemento.url+"&text&app_absent=0");
+                                }
                               }
                         }
                       />

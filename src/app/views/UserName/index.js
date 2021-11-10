@@ -48,7 +48,7 @@ import { CustomText } from "./childrenComponents/CustomText";
 import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
 import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 
-const { swalOffBackend, convertStringWithPlus, copyToClipboard, shareLink } =
+const { swalOffBackend, convertStringWithPlus, copyToClipboard, copyTextToClipboard, shareLink } =
   helpers;
 const QRCode = require("qrcode.react");
 
@@ -354,6 +354,7 @@ export const UserName = ({ location }) => {
             <CustomText
               socialMedia={socialMedia}
               CustomTextIcon={CustomTextIcon}
+              copyTextToClipboard={copyTextToClipboard}
             />
 
             {/*Carrusel Imágenes*/}
@@ -383,7 +384,7 @@ export const UserName = ({ location }) => {
                       <div className="border p-2 mr-1 border-link">
                         {/*Inicio Botón Copy Link */}
                         <div className="d-flex justify-content-center">
-                          <Overlay
+                          {/* <Overlay
                             target={target.current}
                             show={show}
                             placement="top"
@@ -393,12 +394,13 @@ export const UserName = ({ location }) => {
                                 Profile copied to clipboard!
                               </Tooltip>
                             )}
-                          </Overlay>
+                          </Overlay> */}
                           <Button
-                            ref={target}
+                            //ref={target}
                             onClick={() => {
                               setShow(!show);
                               copyToClipboard(profileUsername);
+                              Swal.fire("Text copied to clipboard!", "", "success");
                             }}
                           >
                             <span>
@@ -506,19 +508,6 @@ export const UserName = ({ location }) => {
             </div>
           </div>
 
-          {/* Comantado ya que se usará para la info privada
-            <div className="row d-flex justify-content-center h5">
-                <div className="m-2 card col-sm-3" onClick={viewPrivateLinks} style={{cursor: 'pointer'}}>
-                    <div className="card-body">
-                        <span className="btn-sm" style={{backgroundColor: 'black', 
-                            borderRadius: '15px',
-                            textAlign: 'center', color: 'white' }}
-                        >
-                        <i className="bi bi-lock-fill"></i></span>
-                        &#160;<label style={{ color: "black" }}> Private</label>
-                    </div>
-                </div>
-            </div>*/}
         </div>
       )}
     </div>

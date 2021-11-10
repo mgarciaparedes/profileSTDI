@@ -413,97 +413,11 @@ function GallerySetup() {
         backdrop="static"
         keyboard={false}
       >
-        {/* <Formik
-          validationSchema={schema}
-          onSubmit={saveGallery}
-          initialValues={{
-            arrayToMapInputs.map((elemento, index) => (
-              attachedDocument+elemento:
-            ))
-          }}
-        >
-          {({
-            handleSubmit,
-            handleChange,
-            setFieldValue,
-            values,
-            touched,
-            isValid,
-            errors,
-          }) => (
-            <Form
-              onSubmit={handleSubmit}
-              noValidate
-              autoComplete="off"
-              name="addServiceData"
-              id="addServiceData"
-            > */}
         <Modal.Header>
           <Modal.Title>
             <Icon.Images className="mb-1" /> Set up your gallery
           </Modal.Title>
         </Modal.Header>
-
-        {/*<Modal.Body>
-          
-          <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
-                </p>
-          <Form.Group controlId="formFileMultiple">
-            {/* <Form.Label>Set up your gallery:</Form.Label>
-                        <Form.Control
-                          type="file"
-                          multiple
-                          onChange={(e) => {
-                            setGallery(e.target.files);
-                          }}
-                        />
-
-            <Form.File custom>
-                          <Form.File.Input
-                            multiple
-                            id="attachedDocument"
-                            name="attachedDocument"
-                            onChange={(e) => {
-                              handleChange(e);
-                              setFilesLength(e.target.files.length);
-                              setGallery(e.target.files);
-                              console.log(e.target.files);
-                            }}
-                            isValid={
-                              !!touched.attachedDocument &&
-                              !errors.attachedDocument
-                            }
-                            // isValid={
-                            //   !!touched.attachedDocument && isValidFile === true
-                            // }
-                            isInvalid={
-                              !!touched.attachedDocument &&
-                              !!errors.attachedDocument
-                            }
-                          />
-
-                          <Form.File.Label data-browse="Seleccionar">
-                            {filesLength > 0
-                              ? filesLength === 1
-                                ? filesLength + " file selected"
-                                : filesLength + " files selected"
-                              : "Select files..."}
-                          </Form.File.Label>
-
-                          <Form.Control.Feedback type="invalid">
-                            {errors.attachedDocument}
-                          </Form.Control.Feedback>
-                        </Form.File> 
-          </Form.Group>
-        </Modal.Body>*/}
         <Modal.Body className={amountInputsGallery ? "" : "d-none"}>
           <Alert variant="info">
             <Icon.InfoCircleFill className="mb-1" /> &nbsp; Select the file in
@@ -524,11 +438,9 @@ function GallerySetup() {
                   name={"url" + index}
                   onChange={(e) => {
                     console.log(e.target.value);
-                    arrayURLValues[index] = e.target.value
+                    arrayURLValues[index] = e.target.value;
                   }}
-                  
                 />
-                
               </InputGroup>
               <input
                 type="file"
@@ -579,9 +491,6 @@ function GallerySetup() {
             </div>
           </Button>
         </Modal.Footer>
-        {/* </Form>
-          )}
-        </Formik> */}
       </Modal>
 
       {/*Modal que muestra la galería que tiene actualmente el cliente*/}

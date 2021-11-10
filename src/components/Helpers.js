@@ -33,6 +33,16 @@ const helpers = {
     inputc.parentNode.removeChild(inputc);
   },
 
+  //Función para copiar la url
+  copyTextToClipboard(text) {
+    var inputc = document.body.appendChild(document.createElement("input"));
+    inputc.value = text;
+    inputc.focus();
+    inputc.select();
+    document.execCommand("copy");
+    inputc.parentNode.removeChild(inputc);
+  },
+
   shareLink(profileUsername) {
     const usernameURL = "https://profile.stdicompany.com/" + profileUsername;
     Swal.fire({

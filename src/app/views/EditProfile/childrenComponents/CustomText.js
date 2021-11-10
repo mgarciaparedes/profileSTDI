@@ -1,12 +1,21 @@
 import React from "react";
 import Swal from "sweetalert2";
 
-export const CustomText = ({ socialMedia, CustomTextIcon }) => {
+export const CustomText = ({ socialMedia, CustomTextIcon, copyTextToClipboard }) => {
   const showText = (title, text) => {
     Swal.fire({
       title: title,
       html: "<div class='pre-wrap'>" + text + "</div>",
-      confirmButtonText: "Close",
+      confirmButtonText: "Copy text",
+      showCancelButton: true,
+      cancelButtonText: "Close",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        copyTextToClipboard(text);
+        Swal.fire("Text copied to clipboard!", "", "success");
+      } else if (result.isDenied) {
+      }
     });
   };
   return (

@@ -31,7 +31,7 @@ import SubmitAndClearDataButtons from "./childrenComponents/SubmitAndClearDataBu
 
 const QRCode = require("qrcode.react");
 
-const { convertStringWithPlus, copyToClipboard, shareLink } = helpers;
+const { convertStringWithPlus, copyToClipboard, copyTextToClipboard, shareLink } = helpers;
 
 export const EditProfile = () => {
   const [existentProfile, setExistentProfile] = useState(true);
@@ -606,6 +606,7 @@ export const EditProfile = () => {
                 <CustomText
                   socialMedia={profileData}
                   CustomTextIcon={CustomTextIcon}
+                  copyTextToClipboard={copyTextToClipboard}
                 />
 
                 {/*Se muestra el gallery si está activo*/}
@@ -634,7 +635,7 @@ export const EditProfile = () => {
                           <div className="border p-2 mr-1 border-link">
                             {/*Inicio Botón Copy Link */}
                             <div className="d-flex justify-content-center">
-                              <Overlay
+                              {/* <Overlay
                                 target={target.current}
                                 show={show}
                                 placement="top"
@@ -644,12 +645,13 @@ export const EditProfile = () => {
                                     Profile copied to clipboard!
                                   </Tooltip>
                                 )}
-                              </Overlay>
+                              </Overlay> */}
                               <Button
-                                ref={target}
+                                //ref={target}
                                 onClick={() => {
                                   setShow(!show);
                                   copyToClipboard(username);
+                                  Swal.fire("Text copied to clipboard!", "", "success");
                                 }}
                               >
                                 <span>
