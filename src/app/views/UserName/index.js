@@ -48,8 +48,13 @@ import { CustomText } from "./childrenComponents/CustomText";
 import { YoutubeEmbedVideo } from "./childrenComponents/YoutubeEmbedVideo";
 import { ProfileCarousel } from "./childrenComponents/ProfileCarousel";
 
-const { swalOffBackend, convertStringWithPlus, copyToClipboard, copyTextToClipboard, shareLink } =
-  helpers;
+const {
+  swalOffBackend,
+  convertStringWithPlus,
+  copyToClipboard,
+  copyTextToClipboard,
+  shareLink,
+} = helpers;
 const QRCode = require("qrcode.react");
 
 /*Componente para manejar nombre del usuario*/
@@ -339,15 +344,15 @@ export const UserName = ({ location }) => {
             />
 
             {/*Componentes de links customizados al visualizar el perfil*/}
-            <CustomImage
-              customImage={customImage}
-              CustomImageIcon={CustomImageIcon}
-            />
-
-            {/*Componentes de links customizados al visualizar el perfil*/}
             <CustomLink
               socialMedia={socialMedia}
               CustomURLIcon={CustomURLIcon}
+            />
+            
+            {/*Componentes de links customizados al visualizar el perfil*/}
+            <CustomImage
+              customImage={customImage}
+              CustomImageIcon={CustomImageIcon}
             />
 
             {/*Componentes de links customizados al visualizar el perfil*/}
@@ -400,7 +405,11 @@ export const UserName = ({ location }) => {
                             onClick={() => {
                               setShow(!show);
                               copyToClipboard(profileUsername);
-                              Swal.fire("Text copied to clipboard!", "", "success");
+                              Swal.fire(
+                                "Text copied to clipboard!",
+                                "",
+                                "success"
+                              );
                             }}
                           >
                             <span>
@@ -507,7 +516,6 @@ export const UserName = ({ location }) => {
               </div>
             </div>
           </div>
-
         </div>
       )}
     </div>
