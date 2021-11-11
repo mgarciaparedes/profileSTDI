@@ -20,7 +20,7 @@ function GallerySetup() {
   const { objLogin, setGalleryActiveContext, setGalleryImageContext } =
     useContext(AppContext);
   const [gallery, setGallery] = useState([]);
-  const [galleryImages, setGalleryImages] = useState([]);
+  const [galleryImages, setGalleryImages] = useState(objLogin.galleryImages);
   const [saveGalleryButton, setSaveGalleryButton] = useState(false);
   const [loading, setLoading] = useState(false);
   const [galleryActive, setGalleryActive] = useState(objLogin.galleryActive);
@@ -30,6 +30,7 @@ function GallerySetup() {
   const [arrayToMapInputs, setArrayToMapInputs] = useState([]);
   const [arrayInputsValues, setArrayInputsValues] = useState([]);
   const [arrayURLValues, setArrayURLValues] = useState([]);
+  const [galleryToRenderInModal, setGalleryToRenderInModal] = useState([]);
 
   //Variables para modal con info (primero)
   const [show, setShow] = useState(false);
@@ -48,14 +49,6 @@ function GallerySetup() {
   const schemaModalAmount = Yup.object({
     imagesNumber: Yup.number().required("Number of images are required"),
   });
-
-  //Este efecto es porque no podemos utilizar variables del objLogin directamente en el flujo
-  //da error al salir de la sesión ya que el objLogin, se destruye
-  //entonces solo se carga al entrar a esta vista, ya que si entra a esta vista
-  //quiere decir que hay una sesión abierta
-  useEffect(() => {
-    setGalleryImages(objLogin.galleryImages);
-  }, []);
 
   // const schema = Yup.object().shape({
   //   attachedDocument: Yup.mixed().required("At least one file is required"),
@@ -118,7 +111,6 @@ function GallerySetup() {
   };
 
   const saveGallery = () => {
-    //console.log(arrayURLValues);
     setSaveGalleryButton(true);
 
     //Primero voy a validar si los formatos de los archivos están correctos
@@ -148,15 +140,18 @@ function GallerySetup() {
         confirmButtonText: "Ok",
       });
     } else {
+      setGalleryActive(true);
+      setGalleryActiveContext(true);
       //aquí comparo si el usuario ya tiene una galería previamente registrada
       //si gallery viene como null, quiere decir que no hay registros y se porcerá a usar el servicio saveNewGallery
       //por el contrario, si tiene ya registros, solo se deberá modificar el registro que ya tiene guardado.
       if (galleryImages !== null) {
+        console.log(arrayURLValues);
         let formData2 = new FormData();
-        formData2.append("galleryActive", objLogin.galleryActive);
+        formData2.append("galleryActive", true);
         for (var x = 0; x < arrayInputsValues.length; x++) {
           formData2.append("galleryImages", arrayInputsValues[x]);
-          formData2.append("galleryURL", arrayURLValues[x]);
+          formData2.append("galleryURL", arrayURLValues[x].url);
         }
 
         axios
@@ -169,7 +164,6 @@ function GallerySetup() {
             setSaveGalleryButton(false);
 
             const { ok, msg, newData } = res.data;
-            const { galleryImages } = newData;
 
             if (ok && msg === "Gallery updated succesfully.") {
               Swal.fire({
@@ -179,9 +173,8 @@ function GallerySetup() {
                 confirmButtonText: "Ok",
               });
 
-              setGalleryActive(true);
-              setGalleryActiveContext(true);
-              setGalleryImageContext(galleryImages);
+              setGalleryImages(newData.galleryImages);
+              setGalleryImageContext(newData.galleryImages);
               handleClose();
               // document.getElementById("attachedDocument").value = "";
               // setFilesLength(0);
@@ -204,11 +197,12 @@ function GallerySetup() {
             });
           });
       } else {
+        console.log(arrayURLValues);
         let formData = new FormData();
         formData.append("galleryActive", true);
         for (var x = 0; x < arrayInputsValues.length; x++) {
           formData.append("galleryImages", arrayInputsValues[x]);
-          formData.append("galleryURL", arrayURLValues[x]);
+          formData.append("galleryURL", arrayURLValues[x].url);
         }
 
         axios
@@ -223,6 +217,12 @@ function GallerySetup() {
             const { ok, msg, event } = res.data;
 
             if (ok && msg === "Gallery created succesfully.") {
+              const { galleryImages } = event;
+
+              handleClose();
+              setGalleryImages(galleryImages);
+              setGalleryImageContext(galleryImages);
+
               Swal.fire({
                 title: "Process succesfully",
                 text: msg,
@@ -230,12 +230,6 @@ function GallerySetup() {
                 confirmButtonText: "Ok",
               });
 
-              const { galleryImages } = event;
-
-              handleClose();
-              setGalleryActive(true);
-              setGalleryActiveContext(true);
-              setGalleryImageContext(galleryImages);
               // document.getElementById("attachedDocument").value = "";
               // setFilesLength(0);
             } else {
@@ -275,7 +269,7 @@ function GallerySetup() {
       for (let i = 0; i < amount; i++) {
         inputs.push(1);
         inputsValues.push(new File([""], "filename"));
-        urlValues.push({ url: null });
+        urlValues.push({ url: "" });
       }
       setArrayToMapInputs(inputs);
       setArrayInputsValues(inputsValues);
@@ -295,7 +289,13 @@ function GallerySetup() {
         {galleryImages === null ? (
           <Icon.EyeSlashFill size={25} />
         ) : (
-          <Icon.EyeFill size={25} onClick={() => setShowModalGallery(true)} />
+          <Icon.EyeFill
+            size={25}
+            onClick={() => {
+              setGalleryToRenderInModal(objLogin.galleryImages);
+              setShowModalGallery(true);
+            }}
+          />
         )}
       </label>
       <InputGroup>
@@ -437,8 +437,8 @@ function GallerySetup() {
                   placeholder="Url to open in another tab"
                   name={"url" + index}
                   onChange={(e) => {
-                    console.log(e.target.value);
-                    arrayURLValues[index] = e.target.value;
+                    arrayURLValues[index].url = e.target.value;
+                    console.log(arrayURLValues);
                   }}
                 />
               </InputGroup>
@@ -507,8 +507,9 @@ function GallerySetup() {
 
         <Modal.Body>
           <Carousel activeIndex={index2} onSelect={handleSelect}>
-            {galleryImages !== null && galleryImages.length > 0
-              ? galleryImages.map((elemento, index) => (
+            {galleryToRenderInModal !== null &&
+            galleryToRenderInModal.length > 0
+              ? galleryToRenderInModal.map((elemento, index) => (
                   <Carousel.Item key={index}>
                     <img
                       className="d-block w-100"

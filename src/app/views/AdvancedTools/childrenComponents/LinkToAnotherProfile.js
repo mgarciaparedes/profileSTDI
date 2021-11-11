@@ -69,7 +69,7 @@ function LinkToAnotherProfile() {
         });
     } else {
     }
-  }, [isClicked,isLinked]);
+  }, [isClicked, isLinked]);
 
   const onSubmitLinkingProfile = (event) => {
     setDisabledButton2(true);
@@ -91,7 +91,7 @@ function LinkToAnotherProfile() {
           handleClose2();
           Swal.fire({
             title: "Changes saved succesfully",
-            text: res.data.msg,
+            text: "Petition was sent to " + event.usernameToBeLinked,
             icon: "success",
             confirmButtonText: "OK",
           });
@@ -156,7 +156,8 @@ function LinkToAnotherProfile() {
       >
         <Modal.Header>
           <Modal.Title>
-            <Icon.Diagram2Fill className="mb-1" /> Connecting to existent profile
+            <Icon.Diagram2Fill className="mb-1" /> Connecting to existent
+            profile
           </Modal.Title>
         </Modal.Header>
 
@@ -165,8 +166,9 @@ function LinkToAnotherProfile() {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 m-auto">
                 <Alert variant="info">
-                  <Icon.InfoCircleFill className="mb-1" size={20} /> &nbsp; Please read
-                  the following info where we explain what does this mean.
+                  <Icon.InfoCircleFill className="mb-1" size={20} /> &nbsp;
+                  Please read the following info where we explain what does this
+                  mean.
                 </Alert>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
