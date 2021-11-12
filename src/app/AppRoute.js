@@ -16,6 +16,7 @@ import { EditProfile } from "./views/EditProfile/index";
 import { ForgotPassword } from "./views/ForgotPassword/index";
 import { UserName } from "./views/UserName/index";
 import { ActivateLinkedProfile } from "./views/ActivateLinkedProfile";
+import { Error404 } from "./views/Error404";
 
 /*Componente para el manejo de rutas de la app*/
 const AppRoute = () => {
@@ -40,6 +41,7 @@ const AppRoute = () => {
           <Route exact path="/help" component={() => <Help />} />
 
           {/*Con esto obtenemos el user del stdcompany/username y redireccionamos al login porque es una "/"" sola*/}
+          
           <Route
             exact
             path="/:params"
@@ -51,6 +53,7 @@ const AppRoute = () => {
             component={(params) => <ActivateLinkedProfile {...params} />}
           />
           <Route exact path="/" render={() => <Redirect to="/login" />} />
+          <Route path="*" component={() => <Error404 />} />
         </Switch>
       </AppProvider>
     </>

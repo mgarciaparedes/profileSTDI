@@ -16,7 +16,9 @@ const schema = Yup.object({
   userName: Yup.string()
     .required("Username is required.")
     .min(8, "Username must have at least 8 digits.")
-    .matches(/^\S*$/, "Username can't have spaces."),
+    .max(35, "Username must have a maximum of 35 digits.")
+    .matches(/^\S*$/, "Username can't have spaces.")
+    .matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g,"Username can't have special symbols"),
   email: Yup.string()
     .required("Email is required.")
     .email("Invalid email format."),
