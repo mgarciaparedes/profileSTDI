@@ -1,12 +1,20 @@
 import React, { useState, useContext } from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Carousel } from "react-bootstrap";
 import { SideNavigation } from "../../../components/SideNavigation";
 import { AppContext } from "../../../components/AppContext";
 import logoImage from "../../../assets/images/logo-white.png";
+import banner from "../../../assets/images/Banner.jpg";
+import banner2 from "../../../assets/images/Banner2.png";
+import * as Icon from "react-bootstrap-icons";
 
 export const Dashboard = () => {
   const { objLogin } = useContext(AppContext);
   const [show, setShow] = useState(true);
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
   return (
     <>
       <div className="container mt-3 pr-4">
@@ -28,7 +36,62 @@ export const Dashboard = () => {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <Alert variant="warning mt-3">
+              <Alert variant="warning" className="mb-1 pb-1 mt-3">
+                <p>
+                  <Icon.PersonCircle size={20} /> &nbsp; Hi there,{" "}
+                  <b>{objLogin.user}</b>.
+                </p>
+              </Alert>
+              <div className="text-center mt-3">
+                <Carousel activeIndex={index} onSelect={handleSelect}>
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src={banner}
+                      alt="First slide"
+                    />
+
+                    <Carousel.Caption>
+                      <h3>Set up your Profile</h3>
+                      <p>
+                        Tap in the button on top to display setup options.
+                      </p>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src={banner2}
+                      alt="First slide"
+                    />
+
+                    <Carousel.Caption>
+                      <h3>
+                      Stay tunned!
+                      </h3>
+                      <p>
+                        We share news and updates in this section.
+                      </p>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                </Carousel>
+              </div>
+              <Alert variant="info mt-3 pb-1">
+                <p>
+                  <strong> Wanna learn more?</strong>{" "}
+                  <a target="_blank" href="https://www.stdicompany.com/">
+                    Tap here to see more
+                  </a>
+                </p>
+                <p>
+                  <strong> Wanna contact us?</strong>{" "}
+                  <a target="_blank" href="https://www.stdicompany.com/contact">
+                    Tap here to contact us
+                  </a>
+                </p>
+              </Alert>
+              {/*<Alert variant="warning mt-3">
                 <p className="mt-2">
                   Hi there, <b>{objLogin.user}</b>.
                 </p>
@@ -44,7 +107,7 @@ export const Dashboard = () => {
                 <p>Sincerely,</p>
                 <p>- STDI Team.</p>
               </Alert>
-              <p>
+               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. 
               </p>
@@ -52,7 +115,7 @@ export const Dashboard = () => {
                 Duis aute irure dolor
                 in reprehenderit in voluptate velit esse cillum dolore eu fugiat
                 nulla pariatur. 
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

@@ -359,7 +359,7 @@ function GallerySetup() {
             >
               <Modal.Header>
                 <Modal.Title>
-                  <Icon.Images className="mb-1" />
+                  <Icon.Images className="mb-1" />&nbsp;
                   Set up your gallery
                 </Modal.Title>
               </Modal.Header>

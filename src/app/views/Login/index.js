@@ -230,9 +230,9 @@ export const Login = () => {
               <div className="d-flex justify-content-center">
                 <a href="/forgot-password">Forgot your password?</a>
               </div>
-              <div className="d-flex justify-content-center">
+              {/* <div className="d-flex justify-content-center">
                 <a href="/">Privacy Policy and Terms of Service</a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

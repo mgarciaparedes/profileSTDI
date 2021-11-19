@@ -312,9 +312,9 @@ export const CreateYourProfile = () => {
                 Don't have an account? &nbsp;
                 <a href="/create-profile"> Sign Up</a>
               </div>
-              <div className="d-flex justify-content-center">
+              {/* <div className="d-flex justify-content-center">
                 <a href="/">Privacy Policy and Terms of Service</a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

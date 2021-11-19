@@ -68,13 +68,11 @@ export const AdvancedTools = () => {
               <h5 className="mt-4 mb-3">Advanced Tools:</h5>
 
               <Alert variant="info">
-                <Icon.InfoCircleFill className="mb-1" size={20} />
-                &nbsp; Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-                aute irure dolor in reprehenderit in voluptate velit esse cillum
-                dolore eu fugiat nulla pariatur.
+                <Icon.ExclamationCircleFill className="mb-1" size={20} />
+                &nbsp; In this area you can add more advanced tools such as
+                customizing your profile buttons, adding a photo gallery, and
+                sub functions that will be explained when activating each
+                function.
               </Alert>
 
               {/*Opción activar notificaciones */}

@@ -442,7 +442,7 @@ export const UserName = ({ location }) => {
                         {sendNotifications2 ? (
                           <div className="d-flex justify-content-center">
                             <Button
-                              variant="secondary"
+                              variant="danger"
                               onClick={() => {
                                 sendEmailNotifications(true, emailProfile, 2);
                               }}
