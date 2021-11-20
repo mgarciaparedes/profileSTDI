@@ -33,7 +33,7 @@ export const CustomText = ({ socialMedia, CustomTextIcon, copyTextToClipboard })
                   target="_blank"
                   href={elemento.profile}
                 > */}
-                <div className="d-flex col-lg-12 justify-content-center pt-2 pb-1">
+                <div className="d-flex col-lg-12 justify-content-center pt-2 pb-1 font-bold text-uppercase">
                   <img
                     className="filter-grey"
                     width="25"

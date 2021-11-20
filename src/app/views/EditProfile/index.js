@@ -579,7 +579,7 @@ export const EditProfile = () => {
                             target="_blank"
                             href={elemento.profile}
                           >
-                            <div className="d-flex col-lg-12 justify-content-center">
+                            <div className="d-flex col-lg-12 justify-content-center font-bold text-uppercase">
                               <img
                                 className="mt-1"
                                 width="25"

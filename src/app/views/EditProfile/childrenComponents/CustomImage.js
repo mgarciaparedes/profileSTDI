@@ -25,7 +25,7 @@ export const CustomImage = ({ customImage, CustomImageIcon }) => {
                   <div className="border p-2 border-link col-10">
                     <a className="btn-no-style" href="javascript:void(0)">
                       <div
-                        className="d-flex col-lg-12 justify-content-center"
+                        className="d-flex col-lg-12 justify-content-center font-bold text-uppercase"
                         onClick={() => {
                           handleShow();
                           setModalTitle(elemento.customImageButtonName);

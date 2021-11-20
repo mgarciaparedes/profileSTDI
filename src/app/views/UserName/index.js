@@ -386,9 +386,10 @@ export const UserName = ({ location }) => {
                 <div className="row">
                   <div className="col-12">
                     <div className="d-flex justify-content-center">
-                      <div className="border p-2 mr-1 border-link">
+                      <div className="border pt-3 pr-2 pb-3 pl-2 mr-1 border-link">
+                        
                         {/*Inicio Botón Copy Link */}
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex justify-content-center" style={{"marginTop": "4px"}}>
                           {/* <Overlay
                             target={target.current}
                             show={show}
@@ -440,7 +441,7 @@ export const UserName = ({ location }) => {
 
                         {/*Inicio Botón Send GPS Location */}
                         {sendNotifications2 ? (
-                          <div className="d-flex justify-content-center">
+                          <div className="d-flex justify-content-center" style={{"marginBottom": "4px"}}>
                             <Button
                               variant="danger"
                               onClick={() => {

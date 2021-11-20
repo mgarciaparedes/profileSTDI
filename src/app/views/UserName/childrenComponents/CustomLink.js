@@ -13,7 +13,8 @@ export const CustomLink = ({ socialMedia, CustomURLIcon }) => {
                   target="_blank"
                   href={elemento.profile}
                 >
-                  <div className="d-flex col-lg-12 justify-content-center">
+                  <div className="d-flex col-lg-12 justify-content-center font-bold text-uppercase
+                  ">
                     <img
                       style={{ marginTop: "6px" }}
                       width="25"
