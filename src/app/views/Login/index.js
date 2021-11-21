@@ -77,9 +77,9 @@ export const Login = () => {
                     ? gallery.galleryActive
                     : null,
                 customImage: customImage ? customImage : null,
-                sendNotifications: data ? data.sendNotifications : null,
-                isLinked: data ? data.isLinked : null,
-                usernameLinked: data ? data.usernameLinked : null,
+                sendNotifications: data ? data.sendNotifications : false,
+                isLinked: data ? data.isLinked : false,
+                usernameLinked: data ? data.usernameLinked : "",
               };
               loginContext(json);
 
