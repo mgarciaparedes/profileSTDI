@@ -118,7 +118,7 @@ function GallerySetup() {
     const checkAttachedFiles = checkFilesFormat(arrayInputsValues);
 
     //Aquí valido que hayan sido seleccionado todos los archivos
-    if (
+   if (
       arrayInputsValues.some(
         (elem) => elem.length === 0 || elem.name === "filename"
       )
@@ -127,6 +127,15 @@ function GallerySetup() {
       Swal.fire({
         title: "An error occurred!",
         text: "Some files to upload are missing, please tap in every button to upload all the files.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      //Aquí valido que el tamaño de las imágenes a subir no sobrepasen los 5MB.
+    } else if (arrayInputsValues.some((elem) => elem.size >= 5000000)) {
+      setSaveGalleryButton(false);
+      Swal.fire({
+        title: "An error occurred!",
+        text: "Images should not exceed 5MB.",
         icon: "error",
         confirmButtonText: "Ok",
       });
@@ -359,8 +368,8 @@ function GallerySetup() {
             >
               <Modal.Header>
                 <Modal.Title>
-                  <Icon.Images className="mb-1" />&nbsp;
-                  Set up your gallery
+                  <Icon.Images className="mb-1" />
+                  &nbsp; Set up your gallery
                 </Modal.Title>
               </Modal.Header>
 

@@ -31,7 +31,12 @@ import SubmitAndClearDataButtons from "./childrenComponents/SubmitAndClearDataBu
 
 const QRCode = require("qrcode.react");
 
-const { convertStringWithPlus, copyToClipboard, copyTextToClipboard, shareLink } = helpers;
+const {
+  convertStringWithPlus,
+  copyToClipboard,
+  copyTextToClipboard,
+  shareLink,
+} = helpers;
 
 export const EditProfile = () => {
   const [existentProfile, setExistentProfile] = useState(true);
@@ -43,6 +48,10 @@ export const EditProfile = () => {
   const [customImage, setCustomImage] = useState([]);
   const [isLinked, setIsLinked] = useState(false);
   const [usernameLinked, setUsernameLinked] = useState("");
+
+  //Con estas variables valido el tamaño de las imágenes
+  const [imgProfileSize, setImgProfileSize] = useState(0);
+  const [imgBannerSize, setImgBannerSize] = useState(0);
 
   /*Con estos estados manejamos cuando adjuntamos una imagen la convertimos en base64 para pintarlas
    *en la vista. También cuando el servicio(getProfileUserData) se encarga de mostrar
@@ -274,7 +283,6 @@ export const EditProfile = () => {
     });
   };
 
-
   const onSubmit = () => {
     setDisabledButton(true);
     console.log(rows);
@@ -320,6 +328,17 @@ export const EditProfile = () => {
         Swal.fire({
           title: "Profile Fullname is required",
           text: "We need at least this information to save your profile",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+        
+      } else if (imgProfileSize >= 5000000 || imgBannerSize >= 5000000) {
+        //en esta validación no dejamos guardar imágenes que tengan
+        //tamaño superior a 5MB
+        setDisabledButton(false);
+        Swal.fire({
+          title: "Images should not exceed 5MB",
+          text: "Please change them for smallers ones.",
           icon: "info",
           confirmButtonText: "OK",
         });
@@ -470,6 +489,8 @@ export const EditProfile = () => {
                 clearData={clearData}
                 setImgProfileToUpload={setImgProfileToUpload}
                 setImgBannerToUpload={setImgBannerToUpload}
+                setImgProfileSize={setImgProfileSize}
+                setImgBannerSize={setImgBannerSize}
               />
 
               {/*Comienzo de sección en donde se van mostrando los campos para escribir las rrss*/}
@@ -615,7 +636,6 @@ export const EditProfile = () => {
                     ) : null}
                   </div>
                 ))}
-                
 
                 {/*Componentes de links customizados al visualizar el perfil*/}
                 <CustomImage
@@ -634,22 +654,27 @@ export const EditProfile = () => {
                   <div key={index}>
                     {elemento.socialNetwork === "CustomText" ? (
                       <div className="row d-flex justify-content-center h5">
-                        <div className="border p-2 border-link col-10" onClick={() => showText(elemento.linkName, elemento.profile)}>
+                        <div
+                          className="border p-2 border-link col-10"
+                          onClick={() =>
+                            showText(elemento.linkName, elemento.profile)
+                          }
+                        >
                           {/* <a
                             className="btn-no-style"
                             href={elemento.profile}
                           > */}
-                            <div className="d-flex col-lg-12 justify-content-center font-bold text-uppercase">
-                              <img
-                                className="mt-1"
-                                width="25"
-                                height="25"
-                                src={CustomTextIcon}
-                                alt="CustomText"
-                              />
-                              &nbsp;
-                              {elemento.linkName}
-                            </div>
+                          <div className="d-flex col-lg-12 justify-content-center font-bold text-uppercase">
+                            <img
+                              className="mt-1"
+                              width="25"
+                              height="25"
+                              src={CustomTextIcon}
+                              alt="CustomText"
+                            />
+                            &nbsp;
+                            {elemento.linkName}
+                          </div>
                           {/* </a> */}
                         </div>
                       </div>
@@ -659,8 +684,6 @@ export const EditProfile = () => {
 
                 {/*Se muestra el gallery si está activo*/}
                 <ProfileCarousel gallery={gallery} />
-
-                
 
                 <div className="row mt-1 pb-3">
                   <div className="col-6">
@@ -701,7 +724,11 @@ export const EditProfile = () => {
                                 onClick={() => {
                                   setShow(!show);
                                   copyToClipboard(username);
-                                  Swal.fire("Text copied to clipboard!", "", "success");
+                                  Swal.fire(
+                                    "Text copied to clipboard!",
+                                    "",
+                                    "success"
+                                  );
                                 }}
                               >
                                 <span>

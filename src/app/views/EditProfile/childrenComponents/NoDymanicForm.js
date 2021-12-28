@@ -29,6 +29,8 @@ function NoDymanicForm({
   setBase64ImgBanner,
   setImgProfileToUpload,
   setImgBannerToUpload,
+  setImgProfileSize,
+  setImgBannerSize
 }) {
   const [socialMediaState, setSocialMediaState] = useState("");
   return (
@@ -95,7 +97,7 @@ function NoDymanicForm({
                         ) {
                           /*Acá seteamos el perfil para enviarlo por formData (no en base64) */
                           setImgProfileToUpload(e.target.files[0]);
-
+                          setImgProfileSize(e.target.files[0].size);
                           reader.readAsDataURL(e.target.files[0]);
                         } else {
                           Swal.fire({
@@ -132,7 +134,7 @@ function NoDymanicForm({
                         ) {
                           /*Acá guardamos el banner para enviarlo por formData (no formato base64)*/
                           setImgBannerToUpload(e.target.files[0]);
-
+                          setImgBannerSize(e.target.files[0].size);
                           reader2.readAsDataURL(e.target.files[0]);
                         } else {
                           Swal.fire({

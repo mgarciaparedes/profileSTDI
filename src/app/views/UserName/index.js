@@ -217,7 +217,7 @@ export const UserName = ({ location }) => {
                 title: "Everything's ok ;)",
                 text: "GPS Location was sent succesfully",
                 icon: "success",
-                confirmButtonText: "Try again",
+                confirmButtonText: "OK",
               });
             } else {
               setSendingLocationButton(false);
@@ -348,7 +348,7 @@ export const UserName = ({ location }) => {
               socialMedia={socialMedia}
               CustomURLIcon={CustomURLIcon}
             />
-            
+
             {/*Componentes de links customizados al visualizar el perfil*/}
             <CustomImage
               customImage={customImage}
@@ -387,9 +387,11 @@ export const UserName = ({ location }) => {
                   <div className="col-12">
                     <div className="d-flex justify-content-center">
                       <div className="border pt-3 pr-2 pb-3 pl-2 mr-1 border-link">
-                        
                         {/*Inicio Botón Copy Link */}
-                        <div className="d-flex justify-content-center" style={{"marginTop": "4px"}}>
+                        <div
+                          className="d-flex justify-content-center"
+                          style={{ marginTop: "4px" }}
+                        >
                           {/* <Overlay
                             target={target.current}
                             show={show}
@@ -403,6 +405,7 @@ export const UserName = ({ location }) => {
                           </Overlay> */}
                           <Button
                             //ref={target}
+                            className="w-100"
                             onClick={() => {
                               setShow(!show);
                               copyToClipboard(profileUsername);
@@ -429,7 +432,7 @@ export const UserName = ({ location }) => {
                             onClick={() => {
                               shareLink(profileUsername);
                             }}
-                            className="mt-3"
+                            className="mt-3 w-100"
                           >
                             <span>
                               <i className="bi bi-share" />
@@ -441,14 +444,17 @@ export const UserName = ({ location }) => {
 
                         {/*Inicio Botón Send GPS Location */}
                         {sendNotifications2 ? (
-                          <div className="d-flex justify-content-center" style={{"marginBottom": "4px"}}>
+                          <div
+                            className="d-flex justify-content-center"
+                            style={{ marginBottom: "4px" }}
+                          >
                             <Button
                               variant="danger"
                               onClick={() => {
                                 sendEmailNotifications(true, emailProfile, 2);
                               }}
                               disabled={sendingLocationButton === true}
-                              className="mt-3"
+                              className="mt-3 w-100"
                             >
                               <div className="d-flex d-inline-block justify-content-center">
                                 <span
@@ -492,11 +498,26 @@ export const UserName = ({ location }) => {
             <div className="col-12">
               <div className="d-flex justify-content-center">
                 <a
-                  className="text-white font-bold"
+                  className="text-white font-bold text-center"
                   href="https://shop.stdicompany.com/"
                   target="_blank"
                 >
                   STDI rocks, right? Tap here to get yours.
+                </a>
+                <b
+                  style={{
+                    fontSize: "30px",
+                  }}
+                  className="text-white text-center pr-1 pl-1"
+                >
+                  |
+                </b>
+                <a
+                  className="text-white font-bold text-center"
+                  href="https://profile.stdicompany.com/login"
+                  target="_blank"
+                >
+                  Want to set up? Tap here to log in.
                 </a>
               </div>
             </div>

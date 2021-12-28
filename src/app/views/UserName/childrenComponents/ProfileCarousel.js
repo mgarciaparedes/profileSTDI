@@ -13,7 +13,7 @@ export const ProfileCarousel = ({ gallery }) => {
     <>
       {gallery ? (
         gallery.galleryActive && gallery.galleryImages !== null ? (
-          <div className="row p-2 mb-2">
+          <div className="row p-2 mb-2 mt-3">
             <div className="col-lg-12">
               <div className="d-flex justify-content-center">
                 <Carousel activeIndex={index} onSelect={handleSelect}>

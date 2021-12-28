@@ -109,8 +109,16 @@ function CustomImageSetup() {
         icon: "error",
         confirmButtonText: "Ok",
       });
-      //Aquí valido que la funciión que revisa los formatos de los files hayan sido todos formato imagen
-    } else if (!checkAttachedFiles) {
+     //Aquí valido que el tamaño de las imágenes a subir no sobrepasen los 5MB.
+    } else if (arrayInputsValues.some((elem) => elem.size >= 5000000)) {
+      setSaveCustomImageButton(false);
+      Swal.fire({
+        title: "An error occurred!",
+        text: "Images should not exceed 5MB.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    }else if (!checkAttachedFiles) {
       setSaveCustomImageButton(false);
       Swal.fire({
         title: "An error occurred!",
