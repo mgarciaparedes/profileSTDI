@@ -96,7 +96,7 @@ export const EditProfile = () => {
           //de hacer su primer registro se pueda redirigir hacia su username
           setUsername(res.data.username);
           Swal.fire({
-            title: "Hi, welcome to STDI profiles",
+            title: "Hi, welcome to QTap profiles",
             text: "Save your data to see your profile ;)",
             icon: "info",
             confirmButtonText: "OK",

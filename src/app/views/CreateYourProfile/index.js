@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import history from "../../../components/History";
-import LogoWhite from "../../../assets/images/logo-white.png";
+import LogoWhite from "../../../assets/images/logo-white.gif";
 import * as Icon from "react-bootstrap-icons";
 import axios from "axios";
 import helpers from "../../../components/Helpers";

@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Alert, Carousel } from "react-bootstrap";
 import { SideNavigation } from "../../../components/SideNavigation";
 import { AppContext } from "../../../components/AppContext";
-import logoImage from "../../../assets/images/logo-white.png";
+import logoImage from "../../../assets/images/logo-white.gif";
 import banner from "../../../assets/images/Banner.jpg";
 import banner2 from "../../../assets/images/Banner2.png";
 import * as Icon from "react-bootstrap-icons";
@@ -96,7 +96,7 @@ export const Dashboard = () => {
                   Hi there, <b>{objLogin.user}</b>.
                 </p>
                 <p>
-                  Welcome to your STDI profile control panel, this is where you
+                  Welcome to your QTap profile control panel, this is where you
                   can set the data and links you want to share.
                 </p>
                 <p>
@@ -105,7 +105,7 @@ export const Dashboard = () => {
                 </p>
                 <p>Thank you for your time.</p>
                 <p>Sincerely,</p>
-                <p>- STDI Team.</p>
+                <p>- QTap Team.</p>
               </Alert>
                <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -128,7 +128,7 @@ export const Dashboard = () => {
             href="https://shop.stdicompany.com/"
             target="_blank"
           >
-            STDI rocks, right? Tap here to get yours.
+            QTap rocks, right? Tap here to get yours.
           </a>
         </div>
       </div>
@@ -140,7 +140,7 @@ export const Dashboard = () => {
           </a>
         </div>
         <div className="d-flex justify-content-center mt-2">
-          <h5 className="font-bold">STDI Company</h5>
+          <h5 className="font-bold">QTap</h5>
         </div>
         <div className="d-flex justify-content-center">
           <h6>All features registered &copy;</h6>

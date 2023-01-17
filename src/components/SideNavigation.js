@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import { AppContext } from "./AppContext";
 import history from "./History";
-import whiteLogo from "../assets/images/logo-white.png";
+import whiteLogo from "../assets/images/logo-white.gif";
 import userImage from "../assets/images/default-user-image.png";
 
 import ModalChangePassword from "./ModalChangePassword";
@@ -123,7 +123,7 @@ export const SideNavigation = () => {
           <Icon.Power size={22} className="mb-1 mr-2" /> Log out
         </a>
 
-        {/****** LOGO STDI ******/}
+        {/****** LOGO QTap ******/}
         <div
           className="text-center mt-5
         "

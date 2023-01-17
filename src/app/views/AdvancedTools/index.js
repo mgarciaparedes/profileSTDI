@@ -5,7 +5,7 @@ import history from "../../../components/History";
 import Swal from "sweetalert2";
 import { SideNavigation } from "../../../components/SideNavigation";
 import { AppContext } from "../../../components/AppContext";
-import logoImage from "../../../assets/images/logo-white.png";
+import logoImage from "../../../assets/images/logo-white.gif";
 import * as Icon from "react-bootstrap-icons";
 
 //Componentes Hijos
@@ -98,7 +98,7 @@ export const AdvancedTools = () => {
             href="https://shop.stdicompany.com/"
             target="_blank"
           >
-            STDI rocks, right? Tap here to get yours.
+            QTap rocks, right? Tap here to get yours.
           </a>
         </div>
       </div>
@@ -110,7 +110,7 @@ export const AdvancedTools = () => {
           </a>
         </div>
         <div className="d-flex justify-content-center mt-2">
-          <h5 className="font-bold">STDI Company</h5>
+          <h5 className="font-bold">QTap</h5>
         </div>
         <div className="d-flex justify-content-center">
           <h6>All features registered &copy;</h6>

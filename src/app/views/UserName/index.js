@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Overlay, Tooltip } from "react-bootstrap";
 import userImage from "../../../assets/images/default-user-image.png";
-import logoImage from "../../../assets/images/logo-white.png";
+import logoImage from "../../../assets/images/logo-white.gif";
 import noBanner from "../../../assets/images/no-banner.jpg";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Swal from "sweetalert2";
@@ -502,7 +502,7 @@ export const UserName = ({ location }) => {
                   href="https://shop.stdicompany.com/"
                   target="_blank"
                 >
-                  STDI rocks, right? Tap here to get yours.
+                  QTap rocks, right? Tap here to get yours.
                 </a>
                 <b
                   style={{
@@ -531,7 +531,7 @@ export const UserName = ({ location }) => {
                 </a>
               </div>
               <div className="d-flex justify-content-center mt-2">
-                <h5 className="font-bold">STDI Company</h5>
+                <h5 className="font-bold">QTap</h5>
               </div>
               <div className="d-flex justify-content-center">
                 <h6>All features registered &copy;</h6>
