@@ -375,7 +375,7 @@ export const UserName = ({ location }) => {
                     </div>
                     <QRCode
                       id="QR"
-                      value={"https://profile.stdicompany.com/" + username}
+                      value={"https://qtap.me/" + username}
                       className="m-1 p-2"
                     />
                   </div>
@@ -514,7 +514,7 @@ export const UserName = ({ location }) => {
                 </b>
                 <a
                   className="text-white font-bold text-center"
-                  href="https://profile.stdicompany.com/login"
+                  href="https://qtap.me/login"
                   target="_blank"
                 >
                   Want to set up? Tap here to log in.

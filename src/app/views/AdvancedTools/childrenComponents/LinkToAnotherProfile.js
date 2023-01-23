@@ -243,7 +243,7 @@ function LinkToAnotherProfile() {
                       <InputGroup>
                         <InputGroup.Prepend>
                           <InputGroup.Text>
-                            profile.stdicompany.com/
+                            qtap.me/
                           </InputGroup.Text>
                         </InputGroup.Prepend>
                         <Form.Control

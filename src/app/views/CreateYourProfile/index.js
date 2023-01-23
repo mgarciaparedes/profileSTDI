@@ -163,7 +163,7 @@ export const CreateYourProfile = () => {
                     <InputGroup className="mb-2">
                       <InputGroup.Prepend>
                         <InputGroup.Text>
-                          profile.stdicompany.com/
+                          qtap.me/
                         </InputGroup.Text>
                       </InputGroup.Prepend>
                       <Form.Control

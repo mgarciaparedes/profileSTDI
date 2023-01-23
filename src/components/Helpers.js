@@ -26,7 +26,7 @@ const helpers = {
   //Función para copiar la url
   copyToClipboard(username) {
     var inputc = document.body.appendChild(document.createElement("input"));
-    inputc.value = "https://profile.stdicompany.com/" + username;
+    inputc.value = "https://qtap.me/" + username;
     inputc.focus();
     inputc.select();
     document.execCommand("copy");
@@ -44,7 +44,7 @@ const helpers = {
   },
 
   shareLink(profileUsername) {
-    const usernameURL = "https://profile.stdicompany.com/" + profileUsername;
+    const usernameURL = "https://qtap.me/" + profileUsername;
     Swal.fire({
       title: "Share Link",
       text: "Click in the icon",

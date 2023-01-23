@@ -366,7 +366,7 @@ export const EditProfile = () => {
                   if (result.isConfirmed) {
                     window
                       .open(
-                        "https://profile.stdicompany.com/" + username,
+                        "https://qtap.me/" + username,
                         "_blank"
                       )
                       .focus();
@@ -417,7 +417,7 @@ export const EditProfile = () => {
                   if (result.isConfirmed) {
                     window
                       .open(
-                        "https://profile.stdicompany.com/" + username,
+                        "https://qtap.me/" + username,
                         "_blank"
                       )
                       .focus();
@@ -694,7 +694,7 @@ export const EditProfile = () => {
                         </div>
                         <QRCode
                           id="QR"
-                          value={"https://profile.stdicompany.com/" + username}
+                          value={"https://qtap.me/" + username}
                           className="m-1 p-2"
                         />
                       </div>
